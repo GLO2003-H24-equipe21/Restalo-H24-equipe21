@@ -67,3 +67,15 @@ Voici quelques exemples suivant les conventions nommées précédemment:
 ## Clean Code
 
 Nous utilisons l'outil [Checkstyle](https://checkstyle.sourceforge.io/version/8.20/index.html) afin de vérifier le formatage de notre code automatiquement. La configuration appliquée est celle de [Google Java Style](https://google.github.io/styleguide/javaguide.html).
+
+## Planification du travail
+
+### GitHub Project
+
+### Milestone
+
+### Issues
+
+### Pull requests
+
+### Arbre de commits
