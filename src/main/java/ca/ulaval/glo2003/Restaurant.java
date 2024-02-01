@@ -1,16 +1,17 @@
 package ca.ulaval.glo2003;
 
 import java.time.LocalTime;
+import java.util.UUID;
 
 public class Restaurant {
-    private String id;
+    private final UUID id = UUID.randomUUID();
     private String name;
     private int capacity;
     private String owner;
     private String openingTime;
     private String closingTime;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -34,10 +35,6 @@ public class Restaurant {
         return closingTime;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public void setName(String name){
         this.name = name;
     }
@@ -58,38 +55,40 @@ public class Restaurant {
         this.closingTime = closingTime;
     }
 
-    private boolean validateRestaurantData(Restaurant restaurant){
-        if (restaurant.getName() == null || restaurant.getName().isEmpty())
-            return false;
-
-        if (restaurant.getCapacity() < 1)
-            return false;
-
-        if (restaurant.getOwner() == null || restaurant.getOwner().isEmpty())
-            return false;
-
-        if (!validateOpeningAndClosingTimes(restaurant.getOpeningTime(), restaurant.getClosingTime())) {
-            return false;
-        }
-
-        if (!validateUniqueId(restaurant.getId())) {
-            return false;
-        }
-
-        return true;
+    private boolean isRestaurantDataValid(){
+        return isNameValid() &&
+                isCapacityValid() &&
+                isOwnerValid() &&
+                isOpeningTimeValid() &&
+                isClosingTimeValid() &&
+                isOpenAtLeastOneHour();
     }
 
-    private boolean validateOpeningAndClosingTimes(String openingTime, String closingTime) {
-        LocalTime open = LocalTime.parse(openingTime);
-        LocalTime close = LocalTime.parse(closingTime);
-
-        return !open.isBefore(LocalTime.MIDNIGHT) &&
-                close.isBefore(LocalTime.MIDNIGHT) &&
-                close.isAfter(open.plusHours(1));
+    private boolean isNameValid() {
+        return name != null && !name.isEmpty();
     }
 
-    private boolean validateUniqueId(String id) {
-        // À implémenter
-        return true;
+    private boolean isCapacityValid() {
+        return capacity >= 1;
     }
+
+    private boolean isOwnerValid() {
+        return owner != null && !owner.isEmpty();
+    }
+
+    private boolean isOpeningTimeValid() {
+        return !LocalTime.parse(openingTime).isBefore(LocalTime.MIDNIGHT);
+    }
+
+    private boolean isClosingTimeValid() {
+        return !LocalTime.parse(openingTime).isAfter(LocalTime.MIDNIGHT);
+    }
+
+    private boolean isOpenAtLeastOneHour() {
+        return LocalTime.parse(closingTime).isBefore(LocalTime.MIDNIGHT) &&
+                LocalTime.parse(closingTime).isAfter(LocalTime.parse(openingTime).plusHours(1));
+    }
+
+    // LocalTime open = LocalTime.parse(openingTime);
+    // LocalTime close = LocalTime.parse(closingTime);
 }
