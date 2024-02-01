@@ -65,30 +65,45 @@ public class Restaurant {
     }
 
     private boolean isNameValid() {
-        return name != null && !name.isEmpty();
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Restaurant's name is invalid.");
+        }
+        return true;
     }
 
     private boolean isCapacityValid() {
-        return capacity >= 1;
+        if (capacity < 1) {
+            throw new IllegalArgumentException("Restaurant's capacity is invalid.");
+        }
+        return true;
     }
 
     private boolean isOwnerValid() {
-        return owner != null && !owner.isEmpty();
+        if (owner == null || owner.isEmpty()){
+            throw new IllegalArgumentException("Restaurant's owner is invalid.");
+        }
+        return true;
     }
 
     private boolean isOpeningTimeValid() {
-        return !LocalTime.parse(openingTime).isBefore(LocalTime.MIDNIGHT);
+        if (LocalTime.parse(openingTime).isBefore(LocalTime.MIDNIGHT)){
+            throw new IllegalArgumentException("Restaurant's opening time is invalid.");
+        }
+        return true;
     }
 
     private boolean isClosingTimeValid() {
-        return !LocalTime.parse(openingTime).isAfter(LocalTime.MIDNIGHT);
+        if (LocalTime.parse(openingTime).isAfter(LocalTime.MIDNIGHT)){
+            throw new IllegalArgumentException("Restaurant's closing time is invalid.");
+        }
+        return true;
     }
 
     private boolean isOpenAtLeastOneHour() {
-        return LocalTime.parse(closingTime).isBefore(LocalTime.MIDNIGHT) &&
-                LocalTime.parse(closingTime).isAfter(LocalTime.parse(openingTime).plusHours(1));
+        if (LocalTime.parse(closingTime).isBefore(LocalTime.MIDNIGHT) &&
+                LocalTime.parse(closingTime).isAfter(LocalTime.parse(openingTime).plusHours(1))){
+            throw new IllegalArgumentException("The restaurant is not open for at least 1 hour.");
+        }
+        return true;
     }
-
-    // LocalTime open = LocalTime.parse(openingTime);
-    // LocalTime close = LocalTime.parse(closingTime);
 }
