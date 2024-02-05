@@ -9,17 +9,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ca.ulaval.glo2003.Main.BASE_URI;
 
 @Path("")
 public class RestaurantResource {
-    Map<String, List<String>> ownerIdToRestaurants = new HashMap<>();
+
+    Map<String, List<String>> ownerIdToRestaurantsId = new HashMap<>();
     Map<String, Restaurant> restaurantIdToRestaurant = new HashMap<>();
     Map<String, String> restaurantIdToOwnerId = new HashMap<>();
 
-
-    @Path("/restaurants/{id}")
+    @Path("restaurants/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRestaurant(@PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId)
@@ -49,7 +50,7 @@ public class RestaurantResource {
                 .build();
     }
 
-    @Path("/restaurants")
+    @Path("restaurants")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRestaurant(@HeaderParam("Owner") String owner,RestaurantRequest restaurant) {
@@ -64,26 +65,32 @@ public class RestaurantResource {
         return Response.status(Response.Status.CREATED)
                 .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
                 .build();
-
-
     }
 
     private void addRestaurant(Restaurant entity, String ownerId) {
-        if (!ownerIdToRestaurants.containsKey(ownerId)){
-            ownerIdToRestaurants.put(ownerId, new ArrayList<>());
+        if (!ownerIdToRestaurantsId.containsKey(ownerId)){
+            ownerIdToRestaurantsId.put(ownerId, new ArrayList<>());
         }
-        ownerIdToRestaurants.get(ownerId).add(entity.getId());
+        ownerIdToRestaurantsId.get(ownerId).add(entity.getId());
         restaurantIdToRestaurant.put(entity.getId(), entity);
         restaurantIdToOwnerId.put(entity.getId(), ownerId);
     }
 
-    @Path("/restaurants")
     @GET
+    @Path("restaurants")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRestaurantList()
-    {
-        return Response.ok(new RestaurantResponse("This is a restaurant list")).build();
+    public Response getRestaurant(@HeaderParam("Owner") String ownerId) {
+        if (ownerId == null) throw new NullPointerException("Owner id should be provided");
+        if (!ownerIdToRestaurantsId.containsKey(ownerId)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        List<Restaurant> restaurants = ownerIdToRestaurantsId.get(ownerId)
+                .stream()
+                .map(restaurantIdToRestaurant::get)
+                .collect(Collectors.toList());
+        return Response.status(Response.Status.OK)
+                .entity(restaurants)
+                .build();
     }
-
 
 }
