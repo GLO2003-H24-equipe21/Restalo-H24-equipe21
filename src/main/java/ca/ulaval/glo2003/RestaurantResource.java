@@ -5,17 +5,43 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RestaurantResource {
+    Map<String, Restaurant> restaurantIdToRestaurant = new HashMap<>();
+    Map<String, String> restaurantIdToOwnerId = new HashMap<>();
 
 
     @Path("/restaurants/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRestaurant(@PathParam("id") String id)
+    public Response getRestaurant(@PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId)
     {
-        return Response.ok(new RestaurantResponse("This is a restaurant json")).build();
+        if (ownerId == null) throw new NullPointerException("Owner is missing");
+        if (restaurantIdToRestaurant.get(restaurantId).getCapacity() == 0) {
+            throw new NullPointerException("Capacity is missing");
+        }
+        if (restaurantIdToRestaurant.get(restaurantId).getOpeningTime() == null){
+            throw new NullPointerException("Opening time is missing");
+        }
+        if (restaurantIdToRestaurant.get(restaurantId).getClosingTime() == null){
+            throw new NullPointerException("Closing time is missing");
+        }
+        if (!restaurantIdToRestaurant.containsKey(restaurantId)) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("The restaurant does not exist.")
+                    .build();
+        }
+        if (!restaurantIdToOwnerId.get(restaurantId).equals(ownerId)) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("The restaurant does not belong to the owner")
+                    .build();
+        }
+        return Response.status(Response.Status.OK)
+                .entity(restaurantIdToRestaurant.get(restaurantId))
+                .build();
     }
 
     @Path("/restaurants")
