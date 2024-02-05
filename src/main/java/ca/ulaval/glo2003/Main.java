@@ -11,7 +11,11 @@ public class Main {
 
     public static HttpServer startServer() {
         final ResourceConfig rc = new ResourceConfig()
-                .register(new HealthResource());
+                .register(new HealthResource())
+                .register(new RestaurantResource())
+                .register(new NullPointerExceptionMapper())
+                .register(new IllegalArgumentExceptionMapper())
+                .register(new RuntimeExceptionMapper());
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
