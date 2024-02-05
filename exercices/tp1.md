@@ -71,11 +71,28 @@ Nous utilisons l'outil [Checkstyle](https://checkstyle.sourceforge.io/version/8.
 ## Planification du travail
 
 ### GitHub Project
+![Project](pictures/Project_tp1.png)
 
 ### Milestone
+![Milestone](pictures/milestone_tp1.png)
 
 ### Issues
+Issue 3
+![Issues_3](pictures/issue_3_tp1.png)
+
+Issue 6
+![Issues_6](pictures/issue_6_tp1.png)
+
+Issue 10
+![Issues_10](pictures/issue_10_tp1.png)
 
 ### Pull requests
+pull-request 3
+![Pull_request_11](pictures/PR_11.png)
 
+pull-request 22
+![Pull_request_22](pictures/PR_22.png)
+
+pull-request 24
+![Pull_request_24](pictures/PR_24.png)
 ### Arbre de commits
