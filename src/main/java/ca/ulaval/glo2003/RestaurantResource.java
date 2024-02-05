@@ -5,19 +5,22 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static ca.ulaval.glo2003.Main.BASE_URI;
 
+@Path("")
 public class RestaurantResource {
 
     Map<String, List<String>> ownerIdToRestaurantsId = new HashMap<>();
     Map<String, Restaurant> restaurantIdToRestaurant = new HashMap<>();
     Map<String, String> restaurantIdToOwnerId = new HashMap<>();
 
-    @Path("/restaurants/{id}")
+    @Path("restaurants/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRestaurant(@PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId)
@@ -26,12 +29,12 @@ public class RestaurantResource {
         if (restaurantIdToRestaurant.get(restaurantId).getCapacity() == 0) {
             throw new NullPointerException("Capacity is missing");
         }
-        if (restaurantIdToRestaurant.get(restaurantId).getOpeningTime() == null){
+        /*if (restaurantIdToRestaurant.get(restaurantId).getOpeningTime() == null){
             throw new NullPointerException("Opening time is missing");
         }
         if (restaurantIdToRestaurant.get(restaurantId).getClosingTime() == null){
             throw new NullPointerException("Closing time is missing");
-        }
+        }*/
         if (!restaurantIdToRestaurant.containsKey(restaurantId)) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("The restaurant does not exist.")
@@ -47,22 +50,30 @@ public class RestaurantResource {
                 .build();
     }
 
-    @Path("/restaurants")
+    @Path("restaurants")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createRestaurant(@HeaderParam("Owner") String owner,Restaurant restaurant) {
-        URI uri = URI.create("http://0.0.0.0:8080/products");
-        boolean valid_parameters = true; //il faut ajouter les code pour vérifier si les parametres sont valides
-        boolean missing_parameters = false;
+    public Response createRestaurant(@HeaderParam("Owner") String owner,RestaurantRequest restaurant) {
+        if (owner == null) throw new NullPointerException("Owner id should be provided");
+        Restaurant entity = new Restaurant(
+                restaurant.name,
+                restaurant.capacity,
+                restaurant.hours.open,
+                restaurant.hours.close
+        );
+        addRestaurant(entity, owner);
+        return Response.status(Response.Status.CREATED)
+                .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
+                .build();
+    }
 
-        System.out.println(restaurant.getOwner());
-        System.out.println(restaurant.getCapacity());
-        if (valid_parameters && !missing_parameters)
-        {
-            return Response.created(uri).header("Location", "Created Resource URI").build();
+    private void addRestaurant(Restaurant entity, String ownerId) {
+        if (!ownerIdToRestaurantsId.containsKey(ownerId)){
+            ownerIdToRestaurantsId.put(ownerId, new ArrayList<>());
         }
-        return Response.status(400).build(); // il faut ajouter le code pour créer les json de réponse demandée.
-
+        ownerIdToRestaurantsId.get(ownerId).add(entity.getId());
+        restaurantIdToRestaurant.put(entity.getId(), entity);
+        restaurantIdToOwnerId.put(entity.getId(), ownerId);
     }
 
     @GET
