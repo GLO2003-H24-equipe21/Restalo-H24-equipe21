@@ -6,13 +6,16 @@ import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class RestaurantResource {
+
+    Map<String, List<String>> ownerIdToRestaurantsId = new HashMap<>();
     Map<String, Restaurant> restaurantIdToRestaurant = new HashMap<>();
     Map<String, String> restaurantIdToOwnerId = new HashMap<>();
-
 
     @Path("/restaurants/{id}")
     @GET
@@ -62,13 +65,21 @@ public class RestaurantResource {
 
     }
 
-    @Path("/restaurants")
     @GET
+    @Path("restaurants")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRestaurantList()
-    {
-        return Response.ok(new RestaurantResponse("This is a restaurant list")).build();
+    public Response getRestaurant(@HeaderParam("Owner") String ownerId) {
+        if (ownerId == null) throw new NullPointerException("Owner id should be provided");
+        if (!ownerIdToRestaurantsId.containsKey(ownerId)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        List<Restaurant> restaurants = ownerIdToRestaurantsId.get(ownerId)
+                .stream()
+                .map(restaurantIdToRestaurant::get)
+                .collect(Collectors.toList());
+        return Response.status(Response.Status.OK)
+                .entity(restaurants)
+                .build();
     }
-
 
 }
