@@ -29,7 +29,7 @@ public class RestaurantResource {
         if (restaurantIdToRestaurant.get(restaurantId).getClosingTime() == null){
             throw new NullPointerException("Closing time is missing");
         }
-        if (restaurantId == null || !restaurantIdToRestaurant.containsKey(restaurantId)) {
+        if (!restaurantIdToRestaurant.containsKey(restaurantId)) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("The restaurant does not exist.")
                     .build();
