@@ -19,6 +19,8 @@ Voici les types utilisés et leurs utilités:
 - **`docs`**: Afin d'ajouter de la documentation.
 - **`refactor`**: Lorsque le code est restructuré/retravaillé.
 - **`test`**: Pour ajouter des tests au code.
+- **`del`**: Lors de la suppression de fichiers.
+- **`misc`**: Si aucun des autres types ne s'applique.
 
 L'attribut optionnel `scope` fait référence à un mot qui fournit de l'information contextuelle supplémentaire. Celui-ci est mis entre parenthèses et doit décrire une section du code.
 
@@ -51,6 +53,7 @@ Les préfixes disponibles sont:
 2. **`bugfix`**: Lorsqu'il y a un *bug* à résoudre dans l'environnement de travail (branche `main`).
 3. **`hotfix`**: Au cas où il y a un *bug* à corriger très rapidement sur une version du code en production (branche `production`).
 4. **`docs`**: Lorsque les ajouts sont de la documentation.
+5. **`misc`**: Si aucun des autres types ne s'applique.
 
 Le paramètre `issue-number` correspond au numéro de l'*issue* associée à la branche.
 
@@ -66,7 +69,7 @@ Voici quelques exemples suivant les conventions nommées précédemment:
 
 ## Clean Code
 
-Nous utilisons l'outil [Checkstyle](https://checkstyle.sourceforge.io/version/8.20/index.html) afin de vérifier le formatage de notre code automatiquement. La configuration appliquée est celle de [Google Java Style](https://google.github.io/styleguide/javaguide.html).
+Nous utilisons l'outil [Spotless](https://github.com/diffplug/spotless) afin de vérifier le formatage de notre code automatiquement. La configuration appliquée est celle de [Google Java Style](https://google.github.io/styleguide/javaguide.html). Les commandes Maven utilisées sont `mvn spotless:check` (vérifier le formatage des fichiers) et `mvn spotless:apply` (appliquer le formatage).
 
 ## Planification du travail
 
@@ -93,6 +96,8 @@ pull-request 3
 pull-request 22
 ![Pull_request_22](pictures/PR_22.png)
 
-pull-request 24
-![Pull_request_24](pictures/PR_24.png)
+pull-request 29
+![Pull_request_29](pictures/PR_29.png)
 ### Arbre de commits
+
+![Commit tree](pictures/commit_tree.png)
