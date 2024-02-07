@@ -68,7 +68,7 @@ public class RestaurantResource {
     public Response listRestaurants(@HeaderParam("Owner") String ownerId) {
         if (ownerId == null) throw new NullPointerException("Owner id must be provided");
         if (!ownerIdToRestaurantsId.containsKey(ownerId)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.OK).entity(new ArrayList<>()).build();
         }
         List<Restaurant> restaurants =
                 ownerIdToRestaurantsId.get(ownerId).stream()
