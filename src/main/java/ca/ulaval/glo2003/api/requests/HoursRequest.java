@@ -1,4 +1,4 @@
-package ca.ulaval.glo2003;
+package ca.ulaval.glo2003.api.requests;
 
 public class HoursRequest {
     public String open;
