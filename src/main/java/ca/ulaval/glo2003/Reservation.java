@@ -12,7 +12,7 @@ public class Reservation {
     private LocalDate date;
     private LocalTime startTime;
     private Integer groupSize;
-    private Customer customer;
+    private final Customer customer;
 
     public Reservation(String date, String startTime, Integer groupSize, Customer customer) {
         setDate(date);
@@ -41,17 +41,6 @@ public class Reservation {
         try {
             LocalTime baseTime = this.startTime.withSecond(0);
             this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
-
-            if (this.startTime.getMinute() <= 15) {
-                this.startTime = this.startTime.withMinute(15);
-            }
-            else if (this.startTime.getMinute() <= 45) {
-                this.startTime = this.startTime.withMinute(15);
-            }
-            else  {
-                this.startTime = this.startTime.withMinute(0);
-                this.startTime = this.startTime.plusHours(1);
-            }
 
             if (this.startTime.isAfter(baseTime.withMinute(45))) {
                 this.startTime = this.startTime.withMinute(0);
