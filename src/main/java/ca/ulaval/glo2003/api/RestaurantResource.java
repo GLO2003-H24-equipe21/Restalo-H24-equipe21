@@ -1,7 +1,8 @@
-package ca.ulaval.glo2003;
+package ca.ulaval.glo2003.api;
 
 import static ca.ulaval.glo2003.Main.BASE_URI;
 
+import ca.ulaval.glo2003.domain.entities.Restaurant;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

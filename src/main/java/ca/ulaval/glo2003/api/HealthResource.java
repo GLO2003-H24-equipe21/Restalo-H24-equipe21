@@ -1,5 +1,6 @@
-package ca.ulaval.glo2003;
+package ca.ulaval.glo2003.api;
 
+import ca.ulaval.glo2003.api.responses.HealthResponse;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
