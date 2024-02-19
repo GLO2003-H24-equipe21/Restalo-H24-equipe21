@@ -1,8 +1,8 @@
 package ca.ulaval.glo2003.api.responses;
 
-import ca.ulaval.glo2003.domain.dto.CustomerDto;
-import ca.ulaval.glo2003.domain.dto.ReservationTimeDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantDto;
+import ca.ulaval.glo2003.domain.dtos.CustomerDto;
+import ca.ulaval.glo2003.domain.dtos.ReservationTimeDto;
+import ca.ulaval.glo2003.domain.dtos.RestaurantDto;
 
 public class ReservationResponse {
     public String number;

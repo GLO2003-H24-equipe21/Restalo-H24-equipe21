@@ -2,7 +2,8 @@ package ca.ulaval.glo2003.api;
 
 import static ca.ulaval.glo2003.Main.BASE_URI;
 
-import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
+import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
+import ca.ulaval.glo2003.api.requests.ReservationRequest;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import jakarta.ws.rs.*;
@@ -43,7 +44,7 @@ public class RestaurantResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRestaurant(
-            @HeaderParam("Owner") String owner, RestaurantRequest restaurant) {
+            @HeaderParam("Owner") String owner, CreateRestaurantRequest restaurant) {
         if (owner == null) throw new NullPointerException("Owner id must be provided");
         Restaurant entity =
                 new Restaurant(
@@ -85,7 +86,7 @@ public class RestaurantResource {
     @POST
     @Path("restaurants/{id}/reservations")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createReservation(@PathParam("id") String restaurantId, CreateReservationRequest reservation) {
+    public Response createReservation(@PathParam("id") String restaurantId, ReservationRequest reservation) {
         Reservation entity =
                 new Reservation(
                         reservation.date,
@@ -100,7 +101,7 @@ public class RestaurantResource {
     }
 
     private void addReservation(Reservation entity, String restaurantId) {
-        reservationNumberToReservation.put(entity.getID(), entity);
-        reservationNumberToRestaurantID.put(entity.getID(), restaurantId);
+        reservationNumberToReservation.put(entity.getId(), entity);
+        reservationNumberToRestaurantID.put(entity.getId(), restaurantId);
     }
 }

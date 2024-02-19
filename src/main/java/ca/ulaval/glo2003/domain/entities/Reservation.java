@@ -1,5 +1,4 @@
 package ca.ulaval.glo2003.domain.entities;
-import ca.ulaval.glo2003.domain.entities.Customer;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,6 +24,15 @@ public class Reservation {
         this.customer = customer;
     }
 
+    public Reservation(LocalDate date, LocalTime startTime, Integer groupSize, Customer customer, Restaurant restaurant) {
+
+        setDate(date.toString());
+        setStartTime(startTime.toString());
+        setGroupSize(groupSize);
+        this.restaurant = restaurant;
+        this.customer = customer;
+    }
+
     public void setDate(String date) {
         if (date == null) throw new NullPointerException("Date must be provided");
         try {
@@ -43,23 +51,15 @@ public class Reservation {
     public void setStartTime(String startTime) {
         if (startTime == null) throw new NullPointerException("Start time must be provided");
         try {
-            LocalTime baseTime = this.startTime.withSecond(0);
             this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-            if (this.startTime.isAfter(baseTime.withMinute(45))) {
-                this.startTime = this.startTime.withMinute(0);
-                this.startTime = this.startTime.plusHours(1);
-            }
-            else if (this.startTime.isAfter(baseTime.withMinute(30))) {
-                this.startTime = this.startTime.withMinute(45);
-            }
-            else if (this.startTime.isAfter(baseTime.withMinute(15))){
-                this.startTime = this.startTime.withMinute(30);
-            }
-            else if (this.startTime.isAfter(baseTime.withMinute(0))){
-                this.startTime = this.startTime.withMinute(15);
-            }
-            this.startTime = this.startTime.withSecond(0);
+            int seconds = this.startTime.getMinute() * 60 + this.startTime.getSecond();
+            //convert to seconds
+            long addedSeconds = ((4500 - seconds) % 900) / 60;
+            //only adds
+            this.startTime = this.startTime.withSecond(0)
+                    .withNano(0)
+                    .plusMinutes((long) Math.ceil(addedSeconds));
 
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Start time format is not valid (HH:mm:ss)");
@@ -81,5 +81,5 @@ public class Reservation {
     }
 
     public Customer getCustomer() {return customer;}
-    public String getID() {return id.toString();}
+    public String getId() {return id.toString();}
 }

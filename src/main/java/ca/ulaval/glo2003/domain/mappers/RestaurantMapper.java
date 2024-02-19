@@ -1,6 +1,6 @@
 package ca.ulaval.glo2003.domain.mappers;
 
-import ca.ulaval.glo2003.domain.dto.RestaurantDto;
+import ca.ulaval.glo2003.domain.dtos.RestaurantDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
