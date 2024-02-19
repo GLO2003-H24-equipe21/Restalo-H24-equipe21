@@ -1,4 +1,4 @@
-package ca.ulaval.glo2003.domain.dto;
+package ca.ulaval.glo2003.domain.dtos;
 
 import java.util.Objects;
 
