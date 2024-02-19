@@ -1,4 +1,4 @@
-package ca.ulaval.glo2003;
+package ca.ulaval.glo2003.api.requests;
 
 import ca.ulaval.glo2003.domain.entities.Customer;
 

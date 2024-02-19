@@ -2,6 +2,8 @@ package ca.ulaval.glo2003.api;
 
 import static ca.ulaval.glo2003.Main.BASE_URI;
 
+import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
+import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -83,7 +85,7 @@ public class RestaurantResource {
     @POST
     @Path("restaurants/{id}/reservations")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createReservation(@PathParam("id") String restaurantId, ReservationRequest reservation) {
+    public Response createReservation(@PathParam("id") String restaurantId, CreateReservationRequest reservation) {
         Reservation entity =
                 new Reservation(
                         reservation.date,
