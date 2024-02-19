@@ -4,6 +4,7 @@ public class RestaurantRequest {
     public String name;
     public Integer capacity;
     public HoursRequest hours;
+    public ReservationRequest reservations;
 
     public RestaurantRequest() {}
 }

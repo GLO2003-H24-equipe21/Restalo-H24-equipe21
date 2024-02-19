@@ -9,6 +9,15 @@ public class Restaurant {
     private Integer capacity;
     private Hours hours;
 
+    private Reservation reservation;
+
+    public Restaurant(String name, Integer capacity, String open, String close, int duration) {
+        setName(name);
+        setCapacity(capacity);
+        setHours(open, close);
+        setReservation(duration);
+    }
+
     public Restaurant(String name, Integer capacity, String open, String close) {
         setName(name);
         setCapacity(capacity);
@@ -45,5 +54,14 @@ public class Restaurant {
 
     public String getId() {
         return id.toString();
+    }
+
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(int duration) {
+        this.reservation = new Reservation();
+        this.reservation.setDuration(duration);
     }
 }

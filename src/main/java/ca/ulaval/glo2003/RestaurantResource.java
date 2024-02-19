@@ -41,12 +41,23 @@ public class RestaurantResource {
     public Response createRestaurant(
             @HeaderParam("Owner") String owner, RestaurantRequest restaurant) {
         if (owner == null) throw new NullPointerException("Owner id must be provided");
-        Restaurant entity =
-                new Restaurant(
-                        restaurant.name,
-                        restaurant.capacity,
-                        restaurant.hours.open,
-                        restaurant.hours.close);
+        Restaurant entity;
+        if(restaurant.reservations == null){
+
+            entity = new Restaurant(
+                            restaurant.name,
+                            restaurant.capacity,
+                            restaurant.hours.open,
+                            restaurant.hours.close);
+        }else{
+            entity = new Restaurant(
+                            restaurant.name,
+                            restaurant.capacity,
+                            restaurant.hours.open,
+                            restaurant.hours.close,
+                            restaurant.reservations.duration);
+        }
+
         addRestaurant(entity, owner);
         return Response.status(Response.Status.CREATED)
                 .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
