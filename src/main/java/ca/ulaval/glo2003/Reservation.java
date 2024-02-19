@@ -1,17 +1,19 @@
 package ca.ulaval.glo2003;
 
-
 public class Reservation {
-    private int duration;
+    private Integer duration;
 
-    public Reservation() {
+    public Reservation() {}
+
+    public Reservation(Integer duration) {
+        setDuration(duration);
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 }

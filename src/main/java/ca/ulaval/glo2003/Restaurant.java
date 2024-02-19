@@ -11,11 +11,23 @@ public class Restaurant {
 
     private Reservation reservation;
 
-    public Restaurant(String name, Integer capacity, String open, String close, int duration) {
+    public Restaurant(String name, Integer capacity, String open, String close, Integer duration) {
         setName(name);
         setCapacity(capacity);
         setHours(open, close);
         setReservation(duration);
+    }
+
+    public Restaurant(
+            String name,
+            Integer capacity,
+            String open,
+            String close,
+            ReservationRequest reservation) {
+        setName(name);
+        setCapacity(capacity);
+        setHours(open, close);
+        setReservation();
     }
 
     public Restaurant(String name, Integer capacity, String open, String close) {
@@ -60,8 +72,11 @@ public class Restaurant {
         return reservation;
     }
 
-    public void setReservation(int duration) {
+    public void setReservation(Integer duration) {
+        this.reservation = new Reservation(duration);
+    }
+
+    public void setReservation() {
         this.reservation = new Reservation();
-        this.reservation.setDuration(duration);
     }
 }
