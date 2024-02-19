@@ -1,4 +1,6 @@
-package ca.ulaval.glo2003;
+package ca.ulaval.glo2003.domain.entities;
+import ca.ulaval.glo2003.domain.entities.Customer;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

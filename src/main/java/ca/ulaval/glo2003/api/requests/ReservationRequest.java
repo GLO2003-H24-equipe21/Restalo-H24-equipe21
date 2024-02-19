@@ -1,8 +1,6 @@
 package ca.ulaval.glo2003;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.UUID;
+import ca.ulaval.glo2003.domain.entities.Customer;
 
 public class ReservationRequest {
     public String date;
