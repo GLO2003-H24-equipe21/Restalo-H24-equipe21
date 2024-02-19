@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003;
 
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -55,8 +56,4 @@ public class Restaurant {
         return id.toString();
     }
 
-    public void addReservation (Reservation reservation){
-        LocalDateTime localDateTime = LocalDateTime.of(reservation.getDate(), reservation.getStartTime());
-        reservationMap.put(localDateTime, reservation);
-    }
 }

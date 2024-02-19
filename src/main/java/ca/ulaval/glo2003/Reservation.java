@@ -13,11 +13,13 @@ public class Reservation {
     private LocalTime startTime;
     private Integer groupSize;
     private final Customer customer;
+    private final Restaurant restaurant;
 
-    public Reservation(String date, String startTime, Integer groupSize, Customer customer) {
+    public Reservation(String date, String startTime, Integer groupSize, Customer customer, Restaurant restaurant) {
         setDate(date);
         setStartTime(startTime);
         setGroupSize(groupSize);
+        this.restaurant = restaurant;
         this.customer = customer;
     }
 
@@ -77,4 +79,5 @@ public class Reservation {
     }
 
     public Customer getCustomer() {return customer;}
+    public String getID() {return id.toString();}
 }

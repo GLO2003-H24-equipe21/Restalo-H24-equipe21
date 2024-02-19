@@ -5,10 +5,8 @@ import static ca.ulaval.glo2003.Main.BASE_URI;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("")
@@ -17,6 +15,9 @@ public class RestaurantResource {
     Map<String, List<String>> ownerIdToRestaurantsId = new HashMap<>();
     Map<String, Restaurant> restaurantIdToRestaurant = new HashMap<>();
     Map<String, String> restaurantIdToOwnerId = new HashMap<>();
+    Map<String, Reservation> reservationNumberToReservation = new HashMap<>();
+
+    Map<String, String> reservationNumberToRestaurantID = new HashMap<>();
 
     @GET
     @Path("restaurants/{id}")
@@ -81,28 +82,22 @@ public class RestaurantResource {
     @POST
     @Path("restaurants/{id}/reservations")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createReservation(ReservationRequest reservation) {
+    public Response createReservation(@PathParam("id") String restaurantId, ReservationRequest reservation) {
         Reservation entity =
                 new Reservation(
                         reservation.date,
                         reservation.startTime,
                         reservation.groupSize,
-                        reservation.customer);
-        addReservation(entity, );
+                        reservation.customer,
+                        restaurantIdToRestaurant.get(restaurantId));
+        addReservation(entity, restaurantId);
         return Response.status(Response.Status.CREATED)
                 .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
                 .build();
     }
 
-
-
-    private void addReservation(Restaurant entity, String ownerId) {
-        if (!ownerIdToRestaurantsId.containsKey(ownerId)) {
-            ownerIdToRestaurantsId.put(ownerId, new ArrayList<>());
-        }
-
-        ownerIdToRestaurantsId.get(ownerId).add(entity.getId());
-        restaurantIdToRestaurant.put(entity.getId(), entity);
-        restaurantIdToOwnerId.put(entity.getId(), ownerId);
+    private void addReservation(Reservation entity, String restaurantId) {
+        reservationNumberToReservation.put(entity.getID(), entity);
+        reservationNumberToRestaurantID.put(entity.getID(), restaurantId);
     }
 }
