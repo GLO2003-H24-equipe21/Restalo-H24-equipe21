@@ -1,5 +1,10 @@
 package ca.ulaval.glo2003;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public class Restaurant {
@@ -8,6 +13,9 @@ public class Restaurant {
     private String name;
     private Integer capacity;
     private Hours hours;
+
+    //ordered map in order of date and time
+    private TreeMap<LocalDateTime, Reservation> reservationMap = new TreeMap<>();
 
     public Restaurant(String name, Integer capacity, String open, String close) {
         setName(name);
@@ -45,5 +53,10 @@ public class Restaurant {
 
     public String getId() {
         return id.toString();
+    }
+
+    public void addReservation (Reservation reservation){
+        LocalDateTime localDateTime = LocalDateTime.of(reservation.getDate(), reservation.getStartTime());
+        reservationMap.put(localDateTime, reservation);
     }
 }

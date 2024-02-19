@@ -76,4 +76,33 @@ public class RestaurantResource {
                         .collect(Collectors.toList());
         return Response.status(Response.Status.OK).entity(restaurants).build();
     }
+
+//    post a reservation to a restaurant
+    @POST
+    @Path("restaurants/{id}/reservations")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createReservation(ReservationRequest reservation) {
+        Reservation entity =
+                new Reservation(
+                        reservation.date,
+                        reservation.startTime,
+                        reservation.groupSize,
+                        reservation.customer);
+        addReservation(entity, );
+        return Response.status(Response.Status.CREATED)
+                .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
+                .build();
+    }
+
+
+
+    private void addReservation(Restaurant entity, String ownerId) {
+        if (!ownerIdToRestaurantsId.containsKey(ownerId)) {
+            ownerIdToRestaurantsId.put(ownerId, new ArrayList<>());
+        }
+
+        ownerIdToRestaurantsId.get(ownerId).add(entity.getId());
+        restaurantIdToRestaurant.put(entity.getId(), entity);
+        restaurantIdToOwnerId.put(entity.getId(), ownerId);
+    }
 }
