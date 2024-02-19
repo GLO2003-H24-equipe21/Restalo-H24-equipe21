@@ -87,6 +87,9 @@ public class RestaurantResource {
     @Path("restaurants/{id}/reservations")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createReservation(@PathParam("id") String restaurantId, ReservationRequest reservation) {
+        if (!restaurantIdToRestaurant.containsKey(restaurantId)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         Reservation entity =
                 new Reservation(
                         reservation.date,
@@ -96,7 +99,7 @@ public class RestaurantResource {
                         restaurantIdToRestaurant.get(restaurantId));
         addReservation(entity, restaurantId);
         return Response.status(Response.Status.CREATED)
-                .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
+                .header("Location", String.format("%sreservations/%s", BASE_URI, entity.getId()))
                 .build();
     }
 
