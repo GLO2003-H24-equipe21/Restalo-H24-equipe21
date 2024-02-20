@@ -2,13 +2,17 @@ package ca.ulaval.glo2003.api;
 
 import static ca.ulaval.glo2003.Main.BASE_URI;
 
+import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
+import ca.ulaval.glo2003.api.requests.ReservationRequest;
+import ca.ulaval.glo2003.domain.entities.Reservation;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.RestaurantHours;
+import ca.ulaval.glo2003.domain.mappers.RestaurantHoursMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Path("")
@@ -17,6 +21,9 @@ public class RestaurantResource {
     Map<String, List<String>> ownerIdToRestaurantsId = new HashMap<>();
     Map<String, Restaurant> restaurantIdToRestaurant = new HashMap<>();
     Map<String, String> restaurantIdToOwnerId = new HashMap<>();
+    Map<String, Reservation> reservationNumberToReservation = new HashMap<>();
+
+    Map<String, String> reservationNumberToRestaurantID = new HashMap<>();
 
     @GET
     @Path("restaurants/{id}")
@@ -39,14 +46,14 @@ public class RestaurantResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRestaurant(
-            @HeaderParam("Owner") String owner, RestaurantRequest restaurant) {
+            @HeaderParam("Owner") String owner, CreateRestaurantRequest restaurant) {
         if (owner == null) throw new NullPointerException("Owner id must be provided");
+        RestaurantHoursMapper hoursMapper = new RestaurantHoursMapper();
         Restaurant entity =
                 new Restaurant(
                         restaurant.name,
                         restaurant.capacity,
-                        restaurant.hours.open,
-                        restaurant.hours.close);
+                        hoursMapper.fromDto(restaurant.hours));
         addRestaurant(entity, owner);
         return Response.status(Response.Status.CREATED)
                 .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
@@ -75,5 +82,31 @@ public class RestaurantResource {
                         .map(restaurantIdToRestaurant::get)
                         .collect(Collectors.toList());
         return Response.status(Response.Status.OK).entity(restaurants).build();
+    }
+
+//    post a reservation to a restaurant
+    @POST
+    @Path("restaurants/{id}/reservations")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createReservation(@PathParam("id") String restaurantId, ReservationRequest reservation) {
+        if (!restaurantIdToRestaurant.containsKey(restaurantId)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        Reservation entity =
+                new Reservation(
+                        reservation.date,
+                        reservation.startTime,
+                        reservation.groupSize,
+                        reservation.customer,
+                        restaurantIdToRestaurant.get(restaurantId));
+        addReservation(entity, restaurantId);
+        return Response.status(Response.Status.CREATED)
+                .header("Location", String.format("%sreservations/%s", BASE_URI, entity.getId()))
+                .build();
+    }
+
+    private void addReservation(Reservation entity, String restaurantId) {
+        reservationNumberToReservation.put(entity.getId(), entity);
+        reservationNumberToRestaurantID.put(entity.getId(), restaurantId);
     }
 }

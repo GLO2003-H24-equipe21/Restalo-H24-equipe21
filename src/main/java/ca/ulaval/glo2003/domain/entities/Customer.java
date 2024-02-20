@@ -4,33 +4,43 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Customer {
-    private final String name;
-    private final String email;
-    private final String phoneNumber;
+    private String name;
+    private String email;
+    private String phoneNumber;
 
     public Customer(String name, String email, String phoneNumber) {
-        validateName(name);
-        validateEmail(email);
-        validatePhoneNumber(phoneNumber);
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
+        setName(name);
+        setEmail(email);
+        setPhoneNumber(phoneNumber);
     }
 
-    private void validateName(String name) {
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("Customer name must not be empty");
+    public void setName(String name) {
+        if (name == null) throw new NullPointerException("Name must be provided");
+        try {
+            this.name = name;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Name format is invalid");
         }
     }
 
-    private void validateEmail(String email) {
-        if (!Pattern.compile("[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z0-9]+").matcher(email).matches()) {
-            throw new IllegalArgumentException("Customer email must be valid (x@y.z)");
+    public void setEmail(String email) {
+        if (email == null) throw new NullPointerException("Email must be provided");
+        String regexPattern = "[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z0-9]+";
+        if(Pattern.compile(regexPattern).matcher(email).matches())
+        {
+            this.email = email;
+        }
+        else {
+            throw new IllegalArgumentException("Email format is not valid(x@y.z)");
         }
     }
 
-    private void validatePhoneNumber(String phoneNumber) {
-        if (!Pattern.compile("\\d{18}").matcher(phoneNumber).matches()) {
+    public void setPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null) throw new NullPointerException("Phone number must be provided");
+        if(phoneNumber.matches("\\d{10}")) {
+            this.phoneNumber = phoneNumber;
+        }
+        else {
             throw new IllegalArgumentException("Customer phone number must be 10 numbers");
         }
     }

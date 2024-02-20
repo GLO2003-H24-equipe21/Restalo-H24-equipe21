@@ -1,5 +1,11 @@
 package ca.ulaval.glo2003.domain.entities;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public class Restaurant {
@@ -8,16 +14,16 @@ public class Restaurant {
     private final String name;
     private final Integer capacity;
     private final RestaurantHours hours;
-    private final RestaurantReservations reservations;
+//    private final RestaurantReservations reservations;
 
-    public Restaurant(String name, Integer capacity, RestaurantHours hours, RestaurantReservations reservations) {
+    public Restaurant(String name, Integer capacity, RestaurantHours hours) {
         validateName(name);
         validateCapacity(capacity);
         this.id = UUID.randomUUID();
         this.name = name;
         this.capacity = capacity;
         this.hours = hours;
-        this.reservations = reservations;
+//        this.reservations = reservations;
     }
 
     private void validateName(String name) {
@@ -26,10 +32,6 @@ public class Restaurant {
 
     private void validateCapacity(Integer capacity) {
         if (capacity < 1) throw new IllegalArgumentException("Minimal capacity must be one");
-    }
-
-    public String getId() {
-        return id.toString();
     }
 
     public String getName() {
@@ -44,7 +46,11 @@ public class Restaurant {
         return hours;
     }
 
-    public RestaurantReservations getReservations() {
-        return reservations;
+    public String getId() {
+        return id.toString();
     }
+
+//    public RestaurantReservations getReservations() {
+//        return reservations;
+//    }
 }

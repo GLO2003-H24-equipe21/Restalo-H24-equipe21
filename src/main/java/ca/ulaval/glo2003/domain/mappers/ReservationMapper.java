@@ -3,6 +3,7 @@ package ca.ulaval.glo2003.domain.mappers;
 import ca.ulaval.glo2003.domain.dto.ReservationDto;
 import ca.ulaval.glo2003.domain.entities.Customer;
 import ca.ulaval.glo2003.domain.entities.Reservation;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
