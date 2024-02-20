@@ -5,8 +5,8 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class RestaurantHours {
-    private LocalTime open;
-    private LocalTime close;
+    private final LocalTime open;
+    private final LocalTime close;
 
     public RestaurantHours(LocalTime open, LocalTime close) {
         validateHours(open, close);
