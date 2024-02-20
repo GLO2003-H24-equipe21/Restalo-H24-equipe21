@@ -1,6 +1,6 @@
 package ca.ulaval.glo2003.domain.mappers;
 
-import ca.ulaval.glo2003.domain.dtos.CustomerDto;
+import ca.ulaval.glo2003.domain.dto.CustomerDto;
 import ca.ulaval.glo2003.domain.entities.Customer;
 
 import java.util.Objects;

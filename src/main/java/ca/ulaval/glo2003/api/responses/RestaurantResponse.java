@@ -1,7 +1,7 @@
 package ca.ulaval.glo2003.api.responses;
 
-import ca.ulaval.glo2003.domain.dtos.RestaurantHoursDto;
-import ca.ulaval.glo2003.domain.dtos.RestaurantReservationsDto;
+import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
+import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
 
 public class RestaurantResponse {
     public String id;

@@ -1,5 +1,6 @@
 package ca.ulaval.glo2003.domain.entities;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Customer {
@@ -24,8 +25,7 @@ public class Customer {
 
     public void setEmail(String email) {
         if (email == null) throw new NullPointerException("Email must be provided");
-        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        String regexPattern = "[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z0-9]+";
         if(Pattern.compile(regexPattern).matcher(email).matches())
         {
             this.email = email;
@@ -37,11 +37,11 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         if (phoneNumber == null) throw new NullPointerException("Phone number must be provided");
-        if(phoneNumber.matches("\\d+")) {
+        if(phoneNumber.matches("\\d{10}")) {
             this.phoneNumber = phoneNumber;
         }
         else {
-            throw new IllegalArgumentException("Phone number format is not valid (########## (10 numbers))");
+            throw new IllegalArgumentException("Customer phone number must be 10 numbers");
         }
     }
 
@@ -55,5 +55,20 @@ public class Customer {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(name, customer.name)
+                && Objects.equals(email, customer.email)
+                && Objects.equals(phoneNumber, customer.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, email, phoneNumber);
     }
 }

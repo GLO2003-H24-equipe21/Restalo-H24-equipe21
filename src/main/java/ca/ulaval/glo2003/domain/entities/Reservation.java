@@ -5,11 +5,12 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Reservation {
 
-    private final UUID id = UUID.randomUUID();
+    private String number;
     private LocalDate date;
     private LocalTime startTime;
     private Integer groupSize;
@@ -20,6 +21,7 @@ public class Reservation {
         setDate(date);
         setStartTime(startTime);
         setGroupSize(groupSize);
+        setNumber();
         this.restaurant = restaurant;
         this.customer = customer;
     }
@@ -29,8 +31,13 @@ public class Reservation {
         setDate(date.toString());
         setStartTime(startTime.toString());
         setGroupSize(groupSize);
+        setNumber();
         this.restaurant = restaurant;
         this.customer = customer;
+    }
+
+    private void setNumber() {
+        this.number =  String.format("%040d", new java.math.BigInteger(UUID.randomUUID().toString().replace("-", ""), 16));
     }
 
     public void setDate(String date) {
@@ -81,5 +88,23 @@ public class Reservation {
     }
 
     public Customer getCustomer() {return customer;}
-    public String getId() {return id.toString();}
+    public String getId() {return number.toString();}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(number, that.number)
+                && Objects.equals(date, that.date)
+                && Objects.equals(startTime, that.startTime)
+                && Objects.equals(groupSize, that.groupSize)
+                && Objects.equals(customer, that.customer)
+                && Objects.equals(restaurant, that.restaurant);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number, date, startTime, groupSize, customer, restaurant);
+    }
 }

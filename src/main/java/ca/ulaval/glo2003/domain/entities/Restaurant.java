@@ -10,34 +10,28 @@ import java.util.UUID;
 
 public class Restaurant {
 
-    private final UUID id = UUID.randomUUID();
-    private String name;
-    private Integer capacity;
-    private Hours hours;
+    private final UUID id;
+    private final String name;
+    private final Integer capacity;
+    private final RestaurantHours hours;
+//    private final RestaurantReservations reservations;
 
-    //ordered map in order of date and time
-    private TreeMap<LocalDateTime, Reservation> reservationMap = new TreeMap<>();
-
-    public Restaurant(String name, Integer capacity, String open, String close) {
-        setName(name);
-        setCapacity(capacity);
-        setHours(open, close);
-    }
-
-    public void setName(String name) {
-        if (name == null) throw new NullPointerException("Name must be provided");
-        if (name.isEmpty()) throw new IllegalArgumentException("Name must not be empty");
+    public Restaurant(String name, Integer capacity, RestaurantHours hours) {
+        validateName(name);
+        validateCapacity(capacity);
+        this.id = UUID.randomUUID();
         this.name = name;
-    }
-
-    public void setCapacity(Integer capacity) {
-        if (capacity == null) throw new NullPointerException("Capacity must be provided");
-        if (capacity < 1) throw new IllegalArgumentException("Minimal capacity must be one");
         this.capacity = capacity;
+        this.hours = hours;
+//        this.reservations = reservations;
     }
 
-    public void setHours(String open, String close) {
-        this.hours = new Hours(open, close);
+    private void validateName(String name) {
+        if (name.isEmpty()) throw new IllegalArgumentException("Name must not be empty");
+    }
+
+    private void validateCapacity(Integer capacity) {
+        if (capacity < 1) throw new IllegalArgumentException("Minimal capacity must be one");
     }
 
     public String getName() {
@@ -48,7 +42,7 @@ public class Restaurant {
         return capacity;
     }
 
-    public Hours getHours() {
+    public RestaurantHours getHours() {
         return hours;
     }
 
@@ -56,4 +50,7 @@ public class Restaurant {
         return id.toString();
     }
 
+//    public RestaurantReservations getReservations() {
+//        return reservations;
+//    }
 }

@@ -1,6 +1,6 @@
 package ca.ulaval.glo2003.domain.mappers;
 
-import ca.ulaval.glo2003.domain.dtos.RestaurantReservationsDto;
+import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
 import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
 
 public class RestaurantReservationsMapper {
