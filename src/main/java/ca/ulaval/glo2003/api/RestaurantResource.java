@@ -2,8 +2,12 @@ package ca.ulaval.glo2003.api;
 
 import static ca.ulaval.glo2003.Main.BASE_URI;
 
+import ca.ulaval.glo2003.api.mappers.SearchRestaurantsRequestMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.requests.ReservationRequest;
+import ca.ulaval.glo2003.api.requests.SearchRestaurantsRequest;
+import ca.ulaval.glo2003.data.RestaurantRepository;
+import ca.ulaval.glo2003.domain.dto.SearchDto;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
