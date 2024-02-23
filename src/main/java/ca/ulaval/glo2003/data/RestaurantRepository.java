@@ -8,8 +8,13 @@ import java.util.Map;
 
 public class RestaurantRepository {
 
-    Map<String, List<String>> ownerIdToRestaurantsId = new HashMap<>();
     Map<String, Restaurant> restaurantIdToRestaurant = new HashMap<>();
-    Map<String, String> restaurantIdToOwnerId = new HashMap<>();
-    
+
+    public Restaurant get(String restaurantId) {
+        return null;
+    }
+
+    public void add(Restaurant restaurant) {
+
+    }
 }
