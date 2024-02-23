@@ -15,9 +15,10 @@ public class Restaurant {
     private final String name;
     private final Integer capacity;
     private final RestaurantHours hours;
-//    private final RestaurantReservations reservations;
+    private final RestaurantReservations reservations;
 
-    public Restaurant(String ownerId, String name, Integer capacity, RestaurantHours hours) {
+  
+    public Restaurant(String ownerId, String name, Integer capacity, RestaurantHours hours, RestaurantReservations reservations) {
         validateName(name);
         validateCapacity(capacity);
         this.ownerId = ownerId;
@@ -25,7 +26,7 @@ public class Restaurant {
         this.name = name;
         this.capacity = capacity;
         this.hours = hours;
-//        this.reservations = reservations;
+        this.reservations = reservations;
     }
 
     private void validateName(String name) {
@@ -56,7 +57,7 @@ public class Restaurant {
         return id.toString();
     }
 
-//    public RestaurantReservations getReservations() {
-//        return reservations;
-//    }
+    public RestaurantReservations getReservations() {
+        return reservations;
+    }
 }

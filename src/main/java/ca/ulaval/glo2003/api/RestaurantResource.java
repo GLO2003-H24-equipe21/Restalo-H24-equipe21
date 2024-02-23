@@ -8,6 +8,7 @@ import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.mappers.RestaurantHoursMapper;
+import ca.ulaval.glo2003.domain.mappers.RestaurantReservationsMapper;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -49,11 +50,14 @@ public class RestaurantResource {
             @HeaderParam("Owner") String owner, CreateRestaurantRequest restaurant) {
         if (owner == null) throw new NullPointerException("Owner id must be provided");
         RestaurantHoursMapper hoursMapper = new RestaurantHoursMapper();
+        RestaurantReservationsMapper resReservMap = new RestaurantReservationsMapper();
         Restaurant entity =
                 new Restaurant(
                         restaurant.name,
                         restaurant.capacity,
-                        hoursMapper.fromDto(restaurant.hours));
+                        hoursMapper.fromDto(restaurant.hours),
+                        resReservMap.fromDto(restaurant.reservations));
+
         addRestaurant(entity, owner);
         return Response.status(Response.Status.CREATED)
                 .header("Location", String.format("%srestaurants/%s", BASE_URI, entity.getId()))
