@@ -11,7 +11,6 @@ public class RestaurantReservations {
     }
 
     private void validate(Integer number) {
-
     }
 
     public Integer getDuration() {

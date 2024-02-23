@@ -13,7 +13,6 @@ public class ReservationTime {
     }
 
     public ReservationTime(LocalTime start, int durationInMinutes) {
-
         this.start = roundToNext15Minutes(start);
         this.end = this.start.plusMinutes(durationInMinutes);
     }

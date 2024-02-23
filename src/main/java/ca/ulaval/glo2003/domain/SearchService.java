@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class SearchService {
     private final SearchMapper searchMapper;
     private final RestaurantMapper restaurantMapper;

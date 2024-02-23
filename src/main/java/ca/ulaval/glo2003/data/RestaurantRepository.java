@@ -11,9 +11,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RestaurantRepository {
-
-    Map<String, Restaurant> restaurantIdToRestaurant;
-
+    private final Map<String, Restaurant> restaurantIdToRestaurant;
+  
     public RestaurantRepository() {
         restaurantIdToRestaurant = new HashMap<>();
     }
@@ -39,5 +38,19 @@ public class RestaurantRepository {
 
     private boolean matchesRestaurantCloseHour(Restaurant restaurant, LocalTime to) {
         return restaurant.getHours().getClose().isBefore(to);
+
+    public Restaurant get(String restaurantId) {
+        return null;
+    }
+
+    public List<Restaurant> findByOwnerId(String ownerId) {
+        return null;
+    }
+
+    public void add(Restaurant restaurant) {
+
+    }
+
+    public void delete(String restaurantId) {
     }
 }
