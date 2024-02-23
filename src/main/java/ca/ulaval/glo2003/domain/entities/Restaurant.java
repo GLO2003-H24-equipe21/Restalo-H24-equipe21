@@ -10,15 +10,17 @@ import java.util.UUID;
 
 public class Restaurant {
 
+    private final String ownerId;
     private final UUID id;
     private final String name;
     private final Integer capacity;
     private final RestaurantHours hours;
 //    private final RestaurantReservations reservations;
 
-    public Restaurant(String name, Integer capacity, RestaurantHours hours) {
+    public Restaurant(String ownerId, String name, Integer capacity, RestaurantHours hours) {
         validateName(name);
         validateCapacity(capacity);
+        this.ownerId = ownerId;
         this.id = UUID.randomUUID();
         this.name = name;
         this.capacity = capacity;
@@ -32,6 +34,10 @@ public class Restaurant {
 
     private void validateCapacity(Integer capacity) {
         if (capacity < 1) throw new IllegalArgumentException("Minimal capacity must be one");
+    }
+
+    public String getOwnerId() {
+        return ownerId;
     }
 
     public String getName() {
