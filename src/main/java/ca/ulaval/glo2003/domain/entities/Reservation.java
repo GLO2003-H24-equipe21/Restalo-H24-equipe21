@@ -73,6 +73,13 @@ public class Reservation {
         }
 
         //TO-DO: check if the reservation end is before or equal to close
+
+        //TO-DO: check if the reservation end is before or equal to close
+        LocalTime closeTime = this.restaurant.getHours().getClose();
+        LocalTime endReservation = this.startTime.plusHours(restaurant.getReservations().getDuration());
+        if (closeTime.isBefore(endReservation)){
+            throw new IllegalArgumentException("The reservation must end before the restaurant closes");
+        }
     }
 
     public LocalDate getDate() {
