@@ -1,4 +1,4 @@
-package ca.ulaval.glo2003.domain;
+package ca.ulaval.glo2003;
 
 import ca.ulaval.glo2003.api.ReservationResource;
 import ca.ulaval.glo2003.api.RestaurantResource;
