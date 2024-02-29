@@ -12,26 +12,28 @@ public class Reservation {
 
     private String number;
     private LocalDate date;
-
-    private ReservationTime reservationTime;
+    private ReservationTime time;
     private Integer groupSize;
     private final Customer customer;
     private final Restaurant restaurant;
 
     public Reservation(String date, String startTime, Integer groupSize, Customer customer, Restaurant restaurant) {
-        setDate(date);
-        setReservationTime(startTime);
-        setGroupSize(groupSize);
-        setNumber();
         this.restaurant = restaurant;
         this.customer = customer;
+        setDate(date);
+        setTime(startTime);
+        setGroupSize(groupSize);
+        setNumber();
+        if (this.restaurant == null) {
+            throw new NullPointerException("null restaurant");
+        }
     }
 
     public Reservation(LocalDate date, LocalTime startTime, Integer groupSize, Customer customer, Restaurant restaurant) {
 
         setDate(date.toString());
         setGroupSize(groupSize);
-        setReservationTime(startTime.toString());
+        setTime(startTime.toString());
         setNumber();
         this.restaurant = restaurant;
         this.customer = customer;
@@ -56,7 +58,7 @@ public class Reservation {
         this.groupSize = groupSize;
     }
 
-    public void setReservationTime(String startTimeString) {
+    public void setTime(String startTimeString) {
         if (startTimeString == null) throw new NullPointerException("Start time must be provided");
         LocalTime startTime;
         try {
@@ -66,16 +68,16 @@ public class Reservation {
         }
 
         int duration = this.restaurant.getReservations().getDuration();
-        this.reservationTime = new ReservationTime(startTime, duration);
+        this.time = new ReservationTime(startTime, duration);
 
         LocalTime openTime = this.restaurant.getHours().getOpen();
         LocalTime closeTime = this.restaurant.getHours().getClose();
 
-        if (openTime.isAfter(this.reservationTime.getStart())){
+        if (openTime.isAfter(this.time.getStart())){
             throw new IllegalArgumentException("The reservation must start after the restaurant opens");
         }
 
-        if (closeTime.isBefore(this.reservationTime.getEnd())){
+        if (closeTime.isBefore(this.time.getEnd())){
             throw new IllegalArgumentException("The reservation must end before the restaurant closes");
         }
     }
@@ -84,8 +86,8 @@ public class Reservation {
         return date;
     }
 
-    public ReservationTime getReservationTime() {
-        return this.reservationTime;
+    public ReservationTime getTime() {
+        return this.time;
     }
 
     public Integer getGroupSize() {
@@ -102,7 +104,7 @@ public class Reservation {
         Reservation that = (Reservation) o;
         return Objects.equals(number, that.number)
                 && Objects.equals(date, that.date)
-                && Objects.equals(reservationTime, that.reservationTime)
+                && Objects.equals(time, that.time)
                 && Objects.equals(groupSize, that.groupSize)
                 && Objects.equals(customer, that.customer)
                 && Objects.equals(restaurant, that.restaurant);
@@ -110,6 +112,6 @@ public class Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, date, reservationTime, groupSize, customer, restaurant);
+        return Objects.hash(number, date, time, groupSize, customer, restaurant);
     }
 }

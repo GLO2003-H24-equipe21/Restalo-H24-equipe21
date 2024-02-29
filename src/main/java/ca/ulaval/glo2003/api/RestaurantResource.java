@@ -3,14 +3,17 @@ package ca.ulaval.glo2003.api;
 import static ca.ulaval.glo2003.Main.BASE_URI;
 
 import ca.ulaval.glo2003.api.mappers.SearchRestaurantsRequestMapper;
+import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.requests.ReservationRequest;
 import ca.ulaval.glo2003.api.requests.SearchRestaurantsRequest;
 import ca.ulaval.glo2003.data.RestaurantRepository;
 import ca.ulaval.glo2003.domain.dto.SearchDto;
+import ca.ulaval.glo2003.domain.entities.Customer;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
+import ca.ulaval.glo2003.domain.mappers.CustomerMapper;
 import ca.ulaval.glo2003.domain.mappers.RestaurantHoursMapper;
 import ca.ulaval.glo2003.domain.mappers.RestaurantReservationsMapper;
 import jakarta.ws.rs.*;
@@ -61,7 +64,8 @@ public class RestaurantResource {
                         restaurant.name,
                         restaurant.capacity,
                         hoursMapper.fromDto(restaurant.hours),
-                        resReservMap.fromDto(restaurant.reservations));
+                        resReservMap.fromDto(restaurant.reservations)
+                );
 
         addRestaurant(entity, owner);
         return Response.status(Response.Status.CREATED)
@@ -94,19 +98,21 @@ public class RestaurantResource {
     }
 
 //    post a reservation to a restaurant
-    @POST
     @Path("restaurants/{id}/reservations")
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createReservation(@PathParam("id") String restaurantId, ReservationRequest reservation) {
+    public Response createReservation(
+            @PathParam("id") String restaurantId, CreateReservationRequest reservation) {
         if (!restaurantIdToRestaurant.containsKey(restaurantId)) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        CustomerMapper customerMapper = new CustomerMapper();
         Reservation entity =
                 new Reservation(
                         reservation.date,
                         reservation.startTime,
                         reservation.groupSize,
-                        reservation.customer,
+                        customerMapper.fromDto(reservation.customer),
                         restaurantIdToRestaurant.get(restaurantId));
         addReservation(entity, restaurantId);
         return Response.status(Response.Status.CREATED)
@@ -118,4 +124,20 @@ public class RestaurantResource {
         reservationNumberToReservation.put(entity.getId(), entity);
         reservationNumberToRestaurantID.put(entity.getId(), restaurantId);
     }
+
+    @GET
+    @Path("reservations/{number}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getReservation(
+            @PathParam("number") String reservationNumber) {
+        if (!reservationNumberToReservation.containsKey(reservationNumber))
+        {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.status(Response.Status.OK)
+                .entity(reservationNumberToReservation.get(reservationNumber))
+                .build();
+    }
+
 }

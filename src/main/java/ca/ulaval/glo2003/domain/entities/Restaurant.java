@@ -11,7 +11,7 @@ import java.util.UUID;
 public class Restaurant {
 
     private final String ownerId;
-    private final UUID id;
+    private final String id;
     private final String name;
     private final Integer capacity;
     private final RestaurantHours hours;
@@ -22,7 +22,7 @@ public class Restaurant {
         validateName(name);
         validateCapacity(capacity);
         this.ownerId = ownerId;
-        this.id = UUID.randomUUID();
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.capacity = capacity;
         this.hours = hours;
@@ -54,7 +54,7 @@ public class Restaurant {
     }
 
     public String getId() {
-        return id.toString();
+        return id;
     }
 
     public RestaurantReservations getReservations() {

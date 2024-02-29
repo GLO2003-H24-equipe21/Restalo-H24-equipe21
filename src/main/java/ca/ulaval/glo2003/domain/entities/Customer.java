@@ -14,7 +14,7 @@ public class Customer {
         setPhoneNumber(phoneNumber);
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         if (name == null) throw new NullPointerException("Name must be provided");
         try {
             this.name = name;
@@ -23,9 +23,9 @@ public class Customer {
         }
     }
 
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         if (email == null) throw new NullPointerException("Email must be provided");
-        String regexPattern = "[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z0-9]+";
+        String regexPattern = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
         if(Pattern.compile(regexPattern).matcher(email).matches())
         {
             this.email = email;
@@ -35,7 +35,7 @@ public class Customer {
         }
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    private void setPhoneNumber(String phoneNumber) {
         if (phoneNumber == null) throw new NullPointerException("Phone number must be provided");
         if(phoneNumber.matches("\\d{10}")) {
             this.phoneNumber = phoneNumber;
