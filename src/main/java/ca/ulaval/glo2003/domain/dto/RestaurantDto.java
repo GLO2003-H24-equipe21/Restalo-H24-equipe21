@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class RestaurantDto {
     public String id;
+    public String ownerId;
+
     public String name;
     public Integer capacity;
     public RestaurantHoursDto hours;
@@ -15,6 +17,7 @@ public class RestaurantDto {
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (RestaurantDto) obj;
         return Objects.equals(this.id, that.id)
+                && Objects.equals(this.ownerId, that.ownerId)
                 && Objects.equals(this.name, that.name)
                 && Objects.equals(this.capacity, that.capacity)
                 && Objects.equals(this.hours, that.hours)

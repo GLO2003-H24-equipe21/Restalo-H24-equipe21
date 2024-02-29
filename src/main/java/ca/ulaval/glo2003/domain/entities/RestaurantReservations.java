@@ -6,11 +6,7 @@ public class RestaurantReservations {
     private final Integer duration;
 
     public RestaurantReservations(Integer duration) {
-        validate(duration);
         this.duration = duration;
-    }
-
-    private void validate(Integer number) {
     }
 
     public Integer getDuration() {

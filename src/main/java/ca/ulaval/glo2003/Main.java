@@ -1,7 +1,7 @@
 package ca.ulaval.glo2003;
 
 import ca.ulaval.glo2003.api.HealthResource;
-import ca.ulaval.glo2003.api.RestaurantResource;
+import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.RuntimeExceptionMapper;
@@ -14,10 +14,15 @@ public class Main {
     public static final String BASE_URI = "http://0.0.0.0:8080/";
 
     public static HttpServer startServer() {
+        ApplicationContext applicationContext = new ApplicationContext();
+
         final ResourceConfig rc =
                 new ResourceConfig()
                         .register(new HealthResource())
-                        .register(new RestaurantResource())
+                        .register(applicationContext.getRestaurantResource())
+                        .register(applicationContext.getReservationResource())
+                        .register(applicationContext.getSearchResource())
+                        .register(new ConstraintViolationExceptionMapper())
                         .register(new NullPointerExceptionMapper())
                         .register(new IllegalArgumentExceptionMapper())
                         .register(new RuntimeExceptionMapper());
