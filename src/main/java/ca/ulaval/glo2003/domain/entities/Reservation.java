@@ -12,14 +12,15 @@ public class Reservation {
 
     private String number;
     private LocalDate date;
-    private LocalTime startTime;
+
+    private ReservationTime reservationTime;
     private Integer groupSize;
     private final Customer customer;
     private final Restaurant restaurant;
 
     public Reservation(String date, String startTime, Integer groupSize, Customer customer, Restaurant restaurant) {
         setDate(date);
-        setStartTime(startTime);
+        setReservationTime(startTime);
         setGroupSize(groupSize);
         setNumber();
         this.restaurant = restaurant;
@@ -29,8 +30,8 @@ public class Reservation {
     public Reservation(LocalDate date, LocalTime startTime, Integer groupSize, Customer customer, Restaurant restaurant) {
 
         setDate(date.toString());
-        setStartTime(startTime.toString());
         setGroupSize(groupSize);
+        setReservationTime(startTime.toString());
         setNumber();
         this.restaurant = restaurant;
         this.customer = customer;
@@ -55,29 +56,26 @@ public class Reservation {
         this.groupSize = groupSize;
     }
 
-    public void setStartTime(String startTime) {
-        if (startTime == null) throw new NullPointerException("Start time must be provided");
+    public void setReservationTime(String startTimeString) {
+        if (startTimeString == null) throw new NullPointerException("Start time must be provided");
+        LocalTime startTime;
         try {
-            this.startTime = LocalTime.parse(startTime, DateTimeFormatter.ofPattern("HH:mm:ss"));
-
-            int seconds = this.startTime.getMinute() * 60 + this.startTime.getSecond();
-            //convert to seconds
-            long addedSeconds = ((4500 - seconds) % 900) / 60;
-            //only adds
-            this.startTime = this.startTime.withSecond(0)
-                    .withNano(0)
-                    .plusMinutes((long) Math.ceil(addedSeconds));
-
+            startTime = LocalTime.parse(startTimeString, DateTimeFormatter.ofPattern("HH:mm:ss"));
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Start time format is not valid (HH:mm:ss)");
         }
 
-        //TO-DO: check if the reservation end is before or equal to close
+        int duration = this.restaurant.getReservations().getDuration();
+        this.reservationTime = new ReservationTime(startTime, duration);
 
-        //TO-DO: check if the reservation end is before or equal to close
+        LocalTime openTime = this.restaurant.getHours().getOpen();
         LocalTime closeTime = this.restaurant.getHours().getClose();
-        LocalTime endReservation = this.startTime.plusHours(restaurant.getReservations().getDuration());
-        if (closeTime.isBefore(endReservation)){
+
+        if (openTime.isAfter(this.reservationTime.getStart())){
+            throw new IllegalArgumentException("The reservation must start after the restaurant opens");
+        }
+
+        if (closeTime.isBefore(this.reservationTime.getEnd())){
             throw new IllegalArgumentException("The reservation must end before the restaurant closes");
         }
     }
@@ -86,8 +84,8 @@ public class Reservation {
         return date;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public ReservationTime getReservationTime() {
+        return this.reservationTime;
     }
 
     public Integer getGroupSize() {
@@ -95,7 +93,7 @@ public class Reservation {
     }
 
     public Customer getCustomer() {return customer;}
-    public String getId() {return number.toString();}
+    public String getId() {return number;}
 
     @Override
     public boolean equals(Object o) {
@@ -104,7 +102,7 @@ public class Reservation {
         Reservation that = (Reservation) o;
         return Objects.equals(number, that.number)
                 && Objects.equals(date, that.date)
-                && Objects.equals(startTime, that.startTime)
+                && Objects.equals(reservationTime, that.reservationTime)
                 && Objects.equals(groupSize, that.groupSize)
                 && Objects.equals(customer, that.customer)
                 && Objects.equals(restaurant, that.restaurant);
@@ -112,6 +110,6 @@ public class Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, date, startTime, groupSize, customer, restaurant);
+        return Objects.hash(number, date, reservationTime, groupSize, customer, restaurant);
     }
 }

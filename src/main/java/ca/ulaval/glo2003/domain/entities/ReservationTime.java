@@ -18,9 +18,12 @@ public class ReservationTime {
     }
 
     private LocalTime roundToNext15Minutes(LocalTime time) {
+        int seconds = time.getMinute() * 60 + time.getSecond();
+        int addedSeconds = ((4500 - seconds) % 900);
+
         return time.withSecond(0)
                 .withNano(0)
-                .plusMinutes((75 - time.getMinute()) % 15);
+                .plusSeconds(addedSeconds);
     }
 
     public LocalTime getStart() {

@@ -57,6 +57,7 @@ public class RestaurantResource {
         RestaurantReservationsMapper resReservMap = new RestaurantReservationsMapper();
         Restaurant entity =
                 new Restaurant(
+                        owner,
                         restaurant.name,
                         restaurant.capacity,
                         hoursMapper.fromDto(restaurant.hours),
