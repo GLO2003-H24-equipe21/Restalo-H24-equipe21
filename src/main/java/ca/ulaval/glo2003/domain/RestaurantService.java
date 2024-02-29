@@ -8,8 +8,6 @@ import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
-import ca.ulaval.glo2003.domain.factories.ReservationFactory;
-import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
 
 import java.util.List;
