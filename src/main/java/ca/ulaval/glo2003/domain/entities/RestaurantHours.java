@@ -1,24 +1,15 @@
 package ca.ulaval.glo2003.domain.entities;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Objects;
 
 public class RestaurantHours {
-    private final LocalTime open;
-    private final LocalTime close;
+    private LocalTime open;
+    private LocalTime close;
 
     public RestaurantHours(LocalTime open, LocalTime close) {
-        validateHours(open, close);
         this.open = open;
         this.close = close;
-    }
-
-    private void validateHours(LocalTime open, LocalTime close) {
-        if (close.isBefore(open)) throw new IllegalArgumentException("Incoherent opening hours");
-        if (Duration.between(open, close).toHours() < 1) {
-            throw new IllegalArgumentException("Restaurant must be open at least 1 hour");
-        }
     }
 
     public LocalTime getOpen() {
