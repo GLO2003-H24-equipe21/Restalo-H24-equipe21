@@ -1,12 +1,11 @@
 package ca.ulaval.glo2003.domain.entities;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class Customer {
-    private String name;
-    private String email;
-    private String phoneNumber;
+    private final String name;
+    private final String email;
+    private final String phoneNumber;
 
     public Customer(String name, String email, String phoneNumber) {
         setName(name);
