@@ -65,6 +65,6 @@ public class RestaurantService {
 
         reservationRepository.add(reservation);
 
-        return reservation.getId();
+        return reservation.getNumber();
     }
 }

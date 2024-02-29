@@ -39,7 +39,7 @@ public class RestaurantRepository {
     private boolean matchesRestaurantCloseHour(Restaurant restaurant, LocalTime to) {
         return restaurant.getHours().getClose().isBefore(to);
     }
-
+  
     public Restaurant get(String restaurantId) {
         return null;
     }
