@@ -1,5 +1,7 @@
 package ca.ulaval.glo2003.domain.entities;
 
+import ca.ulaval.glo2003.api.requests.SafeRestaurant;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -95,7 +97,9 @@ public class Reservation {
     }
 
     public Customer getCustomer() {return customer;}
-    public String getId() {return number;}
+    public String getNumber() {return number;}
+
+    public SafeRestaurant getRestaurant() {return new SafeRestaurant(restaurant);}
 
     @Override
     public boolean equals(Object o) {

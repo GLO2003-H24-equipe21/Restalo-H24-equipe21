@@ -116,13 +116,13 @@ public class RestaurantResource {
                         restaurantIdToRestaurant.get(restaurantId));
         addReservation(entity, restaurantId);
         return Response.status(Response.Status.CREATED)
-                .header("Location", String.format("%sreservations/%s", BASE_URI, entity.getId()))
+                .header("Location", String.format("%sreservations/%s", BASE_URI, entity.getNumber()))
                 .build();
     }
 
     private void addReservation(Reservation entity, String restaurantId) {
-        reservationNumberToReservation.put(entity.getId(), entity);
-        reservationNumberToRestaurantID.put(entity.getId(), restaurantId);
+        reservationNumberToReservation.put(entity.getNumber(), entity);
+        reservationNumberToRestaurantID.put(entity.getNumber(), restaurantId);
     }
 
     @GET
