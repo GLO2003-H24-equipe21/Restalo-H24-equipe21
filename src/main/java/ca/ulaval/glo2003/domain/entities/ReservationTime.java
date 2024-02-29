@@ -7,20 +7,14 @@ public class ReservationTime {
     private final LocalTime start;
     private final LocalTime end;
 
-    public ReservationTime(LocalTime start, LocalTime end) {
-        this.start = roundToNext15Minutes(start);
-        this.end = roundToNext15Minutes(end);
-    }
-
-    public ReservationTime(LocalTime start, int durationInMinutes) {
-        this.start = roundToNext15Minutes(start);
-        this.end = this.start.plusMinutes(durationInMinutes);
+    public ReservationTime(LocalTime startTime, int duration) {
+        this.start = roundToNext15Minutes(startTime);
+        this.end = this.start.plusMinutes(duration);
     }
 
     private LocalTime roundToNext15Minutes(LocalTime time) {
-        return time.withSecond(0)
-                .withNano(0)
-                .plusMinutes((75 - time.getMinute()) % 15);
+        return time.withNano(0)
+                .plusSeconds((4500 - (time.toSecondOfDay() % 3600)) % 900);
     }
 
     public LocalTime getStart() {
