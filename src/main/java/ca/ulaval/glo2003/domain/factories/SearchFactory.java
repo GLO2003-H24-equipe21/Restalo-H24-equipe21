@@ -2,7 +2,6 @@ package ca.ulaval.glo2003.domain.factories;
 
 import ca.ulaval.glo2003.domain.entities.Search;
 import ca.ulaval.glo2003.domain.entities.SearchOpened;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;

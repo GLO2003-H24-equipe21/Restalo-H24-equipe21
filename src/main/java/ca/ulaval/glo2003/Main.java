@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003;
 
 import ca.ulaval.glo2003.api.HealthResource;
-import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.RuntimeExceptionMapper;
@@ -22,7 +21,7 @@ public class Main {
                         .register(applicationContext.getRestaurantResource())
                         .register(applicationContext.getReservationResource())
                         .register(applicationContext.getSearchResource())
-                        .register(new ConstraintViolationExceptionMapper())
+                        // .register(new ConstraintViolationExceptionMapper())
                         .register(new NullPointerExceptionMapper())
                         .register(new IllegalArgumentExceptionMapper())
                         .register(new RuntimeExceptionMapper());

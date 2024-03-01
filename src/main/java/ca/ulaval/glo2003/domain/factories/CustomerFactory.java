@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain.factories;
 
 import ca.ulaval.glo2003.domain.entities.Customer;
-
 import java.util.regex.Pattern;
 
 public class CustomerFactory {
@@ -20,7 +19,9 @@ public class CustomerFactory {
     }
 
     private void verifyEmailFormat(String email) {
-        if (!Pattern.compile("^[A-Za-z0-9_.+-]+@[A-Za-z0-9-]+\\.[A-Za-z0-9-.]+$").matcher(email).matches()) {
+        if (!Pattern.compile("^[A-Za-z0-9_.+-]+@[A-Za-z0-9-]+\\.[A-Za-z0-9-.]+$")
+                .matcher(email)
+                .matches()) {
             throw new IllegalArgumentException("Customer email must be valid (x@y.z)");
         }
     }

@@ -9,9 +9,6 @@ public class SearchMapper {
     public Search fromDto(SearchDto searchDto) {
         SearchOpened searchOpened = new SearchOpenedMapper().fromDto(searchDto.searchOpened);
 
-        return new Search(
-                searchDto.name,
-                searchOpened
-        );
+        return new Search(searchDto.name, searchOpened);
     }
 }

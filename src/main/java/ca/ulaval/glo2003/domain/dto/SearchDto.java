@@ -11,7 +11,8 @@ public class SearchDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SearchDto searchDto = (SearchDto) o;
-        return Objects.equals(name, searchDto.name) && Objects.equals(searchOpened, searchDto.searchOpened);
+        return Objects.equals(name, searchDto.name)
+                && Objects.equals(searchOpened, searchDto.searchOpened);
     }
 
     @Override
