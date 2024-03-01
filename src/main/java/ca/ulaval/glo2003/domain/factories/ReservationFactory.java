@@ -4,7 +4,6 @@ import ca.ulaval.glo2003.domain.entities.Customer;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.ReservationTime;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

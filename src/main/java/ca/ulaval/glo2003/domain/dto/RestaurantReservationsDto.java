@@ -17,6 +17,4 @@ public class RestaurantReservationsDto {
     public int hashCode() {
         return Objects.hash(duration);
     }
-
-
 }

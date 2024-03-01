@@ -2,7 +2,6 @@ package ca.ulaval.glo2003.domain.mappers;
 
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
