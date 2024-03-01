@@ -1,21 +1,9 @@
 package ca.ulaval.glo2003.domain.dto;
 
-import java.util.Objects;
+import jakarta.validation.constraints.NotNull;
 
 public class RestaurantHoursDto {
-    public String open;
-    public String close;
+    @NotNull(message = "Restaurant opening time must be provided") public String open;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (RestaurantHoursDto) obj;
-        return Objects.equals(this.open, that.open) && Objects.equals(this.close, that.close);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(open, close);
-    }
+    @NotNull(message = "Restaurant closing time must be provided") public String close;
 }
