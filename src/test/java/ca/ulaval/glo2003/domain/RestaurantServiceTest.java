@@ -76,10 +76,29 @@ class RestaurantServiceTest {
                 restaurantHoursFactory,
                 restaurantReservationsFactory
         );
+
     }
 
     @Test
     void whenCreateRestaurantWithValidValues_thenRestaurantIsCreated() {
+        when(restaurantFactory.create(
+                OWNER_ID,
+                RESTAURANT_NAME,
+                CAPACITY,
+                restaurantHours,
+                restaurantReservations
+        )).thenReturn(restaurant);
+        String restaurantServiceId = restaurantService.createRestaurant(
+                OWNER_ID,
+                RESTAURANT_NAME,
+                CAPACITY,
+                restaurantHoursDto,
+                restaurantReservationsDto
+        );
+        assertEquals(restaurant.getId(), restaurantServiceId);
+    }
+    @Test
+    void whenCreateRestaurantWithValidValues_thenRestaurantIsCreatedAndSaved() {
         when(restaurantFactory.create(
                 OWNER_ID,
                 RESTAURANT_NAME,
@@ -94,17 +113,8 @@ class RestaurantServiceTest {
                 restaurantHoursDto,
                 restaurantReservationsDto
         );
-        verify(restaurantFactory).create(
-                OWNER_ID,
-                RESTAURANT_NAME,
-                CAPACITY,
-                restaurantHours,
-                restaurantReservations
-        );
         verify(restaurantRepository).add(restaurant);
-        assertEquals(OPEN, restaurantHoursDto.open);
-        assertEquals(CLOSE, restaurantHoursDto.close);
-        assertEquals(DURATION, restaurantReservations.getDuration());
+
     }
 
 
