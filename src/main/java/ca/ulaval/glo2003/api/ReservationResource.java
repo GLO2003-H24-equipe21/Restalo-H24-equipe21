@@ -1,5 +1,7 @@
 package ca.ulaval.glo2003.api;
 
+import static ca.ulaval.glo2003.Main.BASE_URI;
+
 import ca.ulaval.glo2003.api.mappers.ReservationResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
 import ca.ulaval.glo2003.api.responses.ReservationResponse;
@@ -9,8 +11,6 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import static ca.ulaval.glo2003.Main.BASE_URI;
 
 public class ReservationResource {
     private final ReservationService reservationService;

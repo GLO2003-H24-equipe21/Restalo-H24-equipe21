@@ -43,6 +43,7 @@ public class Restaurant {
     public String getId() {
         return id;
     }
+
     public RestaurantReservations getReservations() {
         return reservations;
     }

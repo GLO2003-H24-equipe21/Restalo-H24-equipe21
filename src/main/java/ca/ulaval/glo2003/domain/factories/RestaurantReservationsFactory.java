@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain.factories;
 
 import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
-
 import java.util.Objects;
 
 public class RestaurantReservationsFactory {

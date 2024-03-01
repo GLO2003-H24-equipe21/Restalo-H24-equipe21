@@ -11,7 +11,6 @@ import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantReservationsFactory;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

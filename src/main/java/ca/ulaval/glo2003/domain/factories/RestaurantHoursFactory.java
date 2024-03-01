@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain.factories;
 
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
-
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

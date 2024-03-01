@@ -1,2 +1,3 @@
-package ca.ulaval.glo2003.domain.entities;public class ReservationTest {
-}
+package ca.ulaval.glo2003.domain.entities;
+
+public class ReservationTest {}
