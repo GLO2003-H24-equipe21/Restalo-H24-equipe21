@@ -16,6 +16,7 @@ public class RestaurantMapper {
         RestaurantHours hours = new RestaurantHoursMapper().fromDto(dto.hours);
         RestaurantReservations reservations = new RestaurantReservationsMapper().fromDto(dto.reservations);
         return new Restaurant(
+                dto.ownerId,
                 dto.name,
                 dto.capacity,
                 hours,
