@@ -1,24 +1,11 @@
 package ca.ulaval.glo2003.domain.dto;
 
-import java.util.Objects;
+import jakarta.validation.constraints.NotNull;
 
 public class CustomerDto {
-    public String name;
-    public String email;
-    public String phoneNumber;
+    @NotNull(message = "Customer name must be provided") public String name;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (CustomerDto) obj;
-        return Objects.equals(this.name, that.name)
-                && Objects.equals(this.email, that.email)
-                && Objects.equals(this.phoneNumber, that.phoneNumber);
-    }
+    @NotNull(message = "Customer email must be provided") public String email;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, email, phoneNumber);
-    }
+    @NotNull(message = "Customer phone number must be provided") public String phoneNumber;
 }
