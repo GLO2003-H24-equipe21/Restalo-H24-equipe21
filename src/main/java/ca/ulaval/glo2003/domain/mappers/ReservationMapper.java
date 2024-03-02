@@ -9,7 +9,7 @@ public class ReservationMapper {
     public ReservationDto toDto(Reservation reservation) {
         ReservationDto dto = new ReservationDto();
 
-        dto.number = reservation.getId();
+        dto.number = reservation.getNumber();
         dto.date = reservation.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE);
         dto.time = new ReservationTimeMapper().toDto(reservation.getReservationTime());
         dto.groupSize = reservation.getGroupSize();
