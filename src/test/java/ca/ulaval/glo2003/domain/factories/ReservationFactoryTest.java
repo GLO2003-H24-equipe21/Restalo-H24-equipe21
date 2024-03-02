@@ -73,11 +73,4 @@ class ReservationFactoryTest {
         assertThrows(IllegalArgumentException.class,
                 () -> reservationFactory.create("01-2024-09",START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
-
-//    @Test
-//    void pastDateThrowsError() {
-//        assertThrows(IllegalArgumentException.class,
-//                () -> reservationFactory.create("2023-03-20",START_TIME, GROUP_SIZE, customer, RESTAURANT));
-//    }
-
 }
