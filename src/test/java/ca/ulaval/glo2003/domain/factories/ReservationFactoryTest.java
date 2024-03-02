@@ -23,6 +23,13 @@ class ReservationFactoryTest {
 
     private static final String DATE = "2024-03-01";
     private static final String START_TIME = "13:38:59";
+
+    private static final String EARLY_START_TIME = "05:00:00";
+    private static final String LATE_START_TIME = "16:30:00";
+
+    private static final String INVALID_START_TIME = "16:30:00";
+
+    private static final String INVALID_DATE = "01-2024-09";
     private static final Integer GROUP_SIZE = 4;
 
     private static final Restaurant RESTAURANT = new Restaurant("Rudy",
@@ -62,15 +69,29 @@ class ReservationFactoryTest {
                 () -> reservationFactory.create(DATE, START_TIME, 0, customer, RESTAURANT));
     }
 
+
+
+    @Test
+    void givenInvalidStartTime_throwInvalidArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> reservationFactory.create(DATE,INVALID_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+    }
+
+    //waiting for client clarification on whether we should refuse early reservation times;
+//    @Test
+//    void givenStartTimeBeforeOpen_throwInvalidArgumentException() {
+//        assertThrows(IllegalArgumentException.class,
+//                () -> reservationFactory.create(DATE,EARLY_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+//    }
     @Test
     void givenEndTimeAfterClose_throwInvalidArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> reservationFactory.create(DATE,"16:30:00", GROUP_SIZE, customer, RESTAURANT));
+                () -> reservationFactory.create(DATE,LATE_START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
 
     @Test
     void givenInvalidDate_throwInvalidArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> reservationFactory.create("01-2024-09",START_TIME, GROUP_SIZE, customer, RESTAURANT));
+                () -> reservationFactory.create(INVALID_DATE,START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
 }

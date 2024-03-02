@@ -41,6 +41,8 @@ class ReservationServiceTest {
             LocalTime.parse("17:00:00")), new RestaurantReservations(60));
     private static final String START_TIME = "13:38:59";
 
+    private static final String INVALID_NUMBER = "invalid_number";
+
     private static final Customer CUSTOMER = new Customer ("Buggy", "Buggy.Boo@Asetin.com", "1234567890");
 
     ReservationMapper reservationMapper = new ReservationMapper();
@@ -118,10 +120,10 @@ class ReservationServiceTest {
 
     @Test
     void givenNonExistingNumber_thenThrowIllegalArgumentException() {
-        when(reservationRepository.get("invalid_number")).thenReturn(null);
+        when(reservationRepository.get(INVALID_NUMBER)).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class,
-                () -> reservationService.getReservation("invalid_number"));
+                () -> reservationService.getReservation(INVALID_NUMBER));
     }
 
 }
