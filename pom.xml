@@ -76,6 +76,10 @@
             <version>3.4.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-bean-validation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -138,8 +142,8 @@
                     <execution>
                         <goals>
                             <goal>check</goal>
+                            <goal>apply</goal>
                         </goals>
-                        <phase>compile</phase>
                     </execution>
                 </executions>
             </plugin>
