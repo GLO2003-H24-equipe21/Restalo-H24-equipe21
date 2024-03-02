@@ -13,6 +13,9 @@ public class ReservationTime {
     }
 
     private LocalTime roundToNext15Minutes(LocalTime time) {
+        if (time.getNano() != 0) {
+            time = time.plusSeconds(1);
+        }
         return time.withNano(0).plusSeconds((4500 - (time.toSecondOfDay() % 3600)) % 900);
     }
 
