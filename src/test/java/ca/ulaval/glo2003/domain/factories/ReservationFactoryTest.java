@@ -77,12 +77,11 @@ class ReservationFactoryTest {
                 () -> reservationFactory.create(DATE,INVALID_START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
 
-    //waiting for client clarification on whether we should refuse early reservation times;
-//    @Test
-//    void givenStartTimeBeforeOpen_throwInvalidArgumentException() {
-//        assertThrows(IllegalArgumentException.class,
-//                () -> reservationFactory.create(DATE,EARLY_START_TIME, GROUP_SIZE, customer, RESTAURANT));
-//    }
+    @Test
+    void givenStartTimeBeforeOpen_throwInvalidArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> reservationFactory.create(DATE,EARLY_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+    }
     @Test
     void givenEndTimeAfterClose_throwInvalidArgumentException() {
         assertThrows(IllegalArgumentException.class,
