@@ -70,8 +70,6 @@ class ReservationServiceTest {
         reservation = new Reservation(LocalDate.parse(DATE), new ReservationTime(LocalTime.parse(START_TIME), 60), GROUP_SIZE, CUSTOMER, RESTAURANT);
         number = reservation.getNumber();
 
-//        reservationFactory = new ReservationFactory();
-
         restaurantRepository.add(RESTAURANT);
 
         customerFactory = new CustomerFactory();
@@ -87,7 +85,6 @@ class ReservationServiceTest {
     @Test
     void givenValidInputs_thenReservationCreated() {
         when(reservationFactory.create(DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT)).thenReturn(reservation);
-//        when(customerFactory.create(anyString(),anyString(), anyString())).thenReturn(customer);
 
         String reservationNumber = reservationService.createReservation(RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerDto);
 
