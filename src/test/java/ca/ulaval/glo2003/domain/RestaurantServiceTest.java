@@ -4,6 +4,7 @@ import ca.ulaval.glo2003.data.RestaurantRepository;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
+import ca.ulaval.glo2003.domain.dto.SearchOpenedDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
@@ -11,6 +12,7 @@ import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantReservationsFactory;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
+import ca.ulaval.glo2003.domain.mappers.SearchOpenedMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,9 +20,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,12 +36,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class RestaurantServiceTest {
     private static final String OWNER_ID = "1234";
+    private static final String INVALID_OWNER_ID = "ABCD";
     private static final String RESTAURANT_NAME = "Paccini";
     private static final int CAPACITY = 34;
     private static final String OPEN = "10:24:32";
     private static final String CLOSE = "22:24:32";
     private static final int DURATION = 120;
     private static String restaurantId;
+    private static final Restaurant restaurant = new Restaurant(OWNER_ID, RESTAURANT_NAME, CAPACITY, new RestaurantHours(LocalTime.parse(OPEN), LocalTime.parse(CLOSE)), new RestaurantReservations(DURATION));
+    private static List<Restaurant> restaurants;
 
     RestaurantService restaurantService;
     @Mock
@@ -48,12 +59,16 @@ class RestaurantServiceTest {
     RestaurantReservationsFactory restaurantReservationsFactory;
     @Mock
     RestaurantHoursFactory restaurantHoursFactory;
+    @Mock
+    SearchService searchService;
 
-    Restaurant restaurant;
+    Restaurant restaurantMock;
     RestaurantDto restaurantDto;
     RestaurantHoursDto restaurantHoursDto;
     RestaurantReservationsDto restaurantReservationsDto;
     RestaurantMapper restaurantMapper = new RestaurantMapper();
+
+
 
     @BeforeEach
     void setUp() {
@@ -62,7 +77,7 @@ class RestaurantServiceTest {
         restaurantReservations = RestaurantTestUtils.createRestaurantReservation(DURATION);
         restaurantReservationsDto = RestaurantTestUtils.createRestaurantReservationsDTO(DURATION);
 
-        restaurant = new Restaurant(OWNER_ID, RESTAURANT_NAME, CAPACITY, restaurantHours, restaurantReservations);
+        restaurantMock = new Restaurant(OWNER_ID, RESTAURANT_NAME, CAPACITY, restaurantHours, restaurantReservations);
         restaurantId = restaurant.getId();
 
         restaurantDto = new RestaurantDto();
@@ -82,6 +97,11 @@ class RestaurantServiceTest {
                 restaurantReservationsFactory
         );
 
+        restaurantMapper = new RestaurantMapper();
+        searchService = new SearchService(restaurantRepository, null);
+
+        restaurants = restaurantRepository.getByOwnerId(OWNER_ID);
+
     }
 
     @Test
@@ -92,7 +112,7 @@ class RestaurantServiceTest {
                 CAPACITY,
                 restaurantHours,
                 restaurantReservations
-        )).thenReturn(restaurant);
+        )).thenReturn(restaurantMock);
         String restaurantServiceId = restaurantService.createRestaurant(
                 OWNER_ID,
                 RESTAURANT_NAME,
@@ -110,7 +130,7 @@ class RestaurantServiceTest {
                 CAPACITY,
                 restaurantHours,
                 restaurantReservations
-        )).thenReturn(restaurant);
+        )).thenReturn(restaurantMock);
         restaurantService.createRestaurant(
                 OWNER_ID,
                 RESTAURANT_NAME,
@@ -118,7 +138,7 @@ class RestaurantServiceTest {
                 restaurantHoursDto,
                 restaurantReservationsDto
         );
-        verify(restaurantRepository).add(restaurant);
+        verify(restaurantRepository).add(restaurantMock);
     }
 
     @Test
@@ -126,17 +146,49 @@ class RestaurantServiceTest {
         when(restaurantRepository.get(restaurantId)).thenReturn(restaurant);
         RestaurantDto gottenRestaurant = restaurantService.getRestaurant(restaurantId, OWNER_ID);
 
-        Assertions.assertThat(gottenRestaurant.id).isEqualTo(restaurantMapper.toDto(restaurant).id);
-        Assertions.assertThat(gottenRestaurant.name).isEqualTo(restaurantMapper.toDto(restaurant).name);
-        Assertions.assertThat(gottenRestaurant.capacity).isEqualTo(restaurantMapper.toDto(restaurant).capacity);
-        Assertions.assertThat(gottenRestaurant.hours).isEqualTo(restaurantMapper.toDto(restaurant).hours);
-        Assertions.assertThat(gottenRestaurant.reservations).isEqualTo(restaurantMapper.toDto(restaurant).reservations);
+        Assertions.assertThat(gottenRestaurant.id).isEqualTo(restaurantMapper.toDto(restaurantMock).id);
+        Assertions.assertThat(gottenRestaurant.name).isEqualTo(restaurantMapper.toDto(restaurantMock).name);
+        Assertions.assertThat(gottenRestaurant.capacity).isEqualTo(restaurantMapper.toDto(restaurantMock).capacity);
+        Assertions.assertThat(gottenRestaurant.hours).isEqualTo(restaurantMapper.toDto(restaurantMock).hours);
+        Assertions.assertThat(gottenRestaurant.reservations).isEqualTo(restaurantMapper.toDto(restaurantMock).reservations);
     }
     @Test
-    void givenInvalidId_thenThrowNullPointerException() {
+    void givenInvalidId_thenThrowIllegalArgumentException() {
         when(restaurantRepository.get("invalid_number")).thenReturn(null);
-        assertThrows(NullPointerException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> restaurantService.getRestaurant("invalid_number", OWNER_ID));
+    }
+
+    @Test
+    void givenValidOwnerId_thenListRestaurantsReturnsListOfRestaurantDtos() {
+
+        List<Restaurant> mockRestaurants = Arrays.asList(
+                new Restaurant(OWNER_ID, RESTAURANT_NAME, CAPACITY, null, null)
+        );
+        when(restaurantRepository.getByOwnerId(OWNER_ID)).thenReturn(mockRestaurants);
+
+        restaurantService.createRestaurant(
+                OWNER_ID,
+                RESTAURANT_NAME,
+                CAPACITY,
+                restaurantHoursDto,
+                restaurantReservationsDto
+        );
+        List<RestaurantDto> restaurantDtos = restaurantService.listRestaurants(OWNER_ID);
+
+        Assertions.assertThat(mockRestaurants.size()).isEqualTo(restaurantDtos.size());
+
+    }
+
+
+    @Test
+    void givenInvalidOwnerId_thenReturnsEmptyRestaurantList() {
+
+        when(restaurantRepository.getByOwnerId(INVALID_OWNER_ID)).thenReturn(Collections.emptyList());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            restaurantService.listRestaurants(INVALID_OWNER_ID);
+        });
     }
 
 
