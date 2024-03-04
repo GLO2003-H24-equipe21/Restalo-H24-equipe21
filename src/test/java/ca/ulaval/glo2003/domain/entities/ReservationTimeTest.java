@@ -1,27 +1,13 @@
 package ca.ulaval.glo2003.domain.entities;
 
-import ca.ulaval.glo2003.domain.entities.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalTime;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.security.InvalidParameterException;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-
-import static org.mockito.Mockito.when;
-
-import org.assertj.core.api.Assertions;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationTimeTest {
@@ -37,31 +23,29 @@ class ReservationTimeTest {
     private static final String ROUNDED_END = "14:15:00";
 
     @BeforeEach
-    void setUp() {
-
-    }
+    void setUp() {}
 
     @Test
-    void givenValidNormalInputs_thenReservationTimeCreatedProperly () {
+    void givenValidNormalInputs_thenReservationTimeCreatedProperly() {
         ReservationTime reservationTime = new ReservationTime(LocalTime.parse(START), DURATION);
 
         Assertions.assertThat(reservationTime.getStart()).isEqualTo(ROUNDED_START);
         Assertions.assertThat(reservationTime.getEnd()).isEqualTo(ROUNDED_END);
     }
 
-
     @Test
-    void givenValidSecondsInputs_thenReservationTimeCreatedProperly () {
-        ReservationTime reservationTime = new ReservationTime(LocalTime.parse(SECONDS_START), DURATION);
+    void givenValidSecondsInputs_thenReservationTimeCreatedProperly() {
+        ReservationTime reservationTime =
+                new ReservationTime(LocalTime.parse(SECONDS_START), DURATION);
 
         Assertions.assertThat(reservationTime.getStart()).isEqualTo(ROUNDED_START);
         Assertions.assertThat(reservationTime.getEnd()).isEqualTo(ROUNDED_END);
     }
 
-
     @Test
-    void givenValidNanoInputs_thenReservationTimeCreatedProperly () {
-        ReservationTime reservationTime = new ReservationTime(LocalTime.parse(NANO_START), DURATION);
+    void givenValidNanoInputs_thenReservationTimeCreatedProperly() {
+        ReservationTime reservationTime =
+                new ReservationTime(LocalTime.parse(NANO_START), DURATION);
 
         Assertions.assertThat(reservationTime.getStart()).isEqualTo(ROUNDED_START);
         Assertions.assertThat(reservationTime.getEnd()).isEqualTo(ROUNDED_END);

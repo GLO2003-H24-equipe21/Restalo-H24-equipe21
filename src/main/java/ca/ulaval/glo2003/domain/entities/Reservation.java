@@ -27,7 +27,9 @@ public class Reservation {
     }
 
     public String createNumber() {
-        return String.format("%040d", new java.math.BigInteger(UUID.randomUUID().toString().replace("-", ""), 16));
+        return String.format(
+                "%040d",
+                new java.math.BigInteger(UUID.randomUUID().toString().replace("-", ""), 16));
     }
 
     public String getNumber() {

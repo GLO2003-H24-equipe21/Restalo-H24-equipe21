@@ -66,6 +66,7 @@ public class ReservationFactory {
                     "Reservation start time precedes restaurant opening time");
         }
     }
+
     private void verifyReservationEndBeforeRestoClose(
             LocalTime reservationEnd, LocalTime restaurantClose) {
         if (reservationEnd.isAfter(restaurantClose)) {

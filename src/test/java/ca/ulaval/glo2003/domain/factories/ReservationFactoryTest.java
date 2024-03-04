@@ -1,23 +1,16 @@
 package ca.ulaval.glo2003.domain.factories;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import ca.ulaval.glo2003.domain.entities.*;
+import java.time.LocalTime;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.security.InvalidParameterException;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-
-import static org.mockito.Mockito.when;
-
-import org.assertj.core.api.Assertions;
-
-import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ReservationFactoryTest {
 
@@ -32,17 +25,18 @@ class ReservationFactoryTest {
     private static final String INVALID_DATE = "01-2024-09";
     private static final Integer GROUP_SIZE = 4;
 
-    private static final Restaurant RESTAURANT = new Restaurant("Rudy",
-            "Chez Rudy", 100, new RestaurantHours(LocalTime.parse("07:00:00"),
-            LocalTime.parse("17:00:00")), new RestaurantReservations(60));
-    @Mock
-    Customer customer;
-
+    private static final Restaurant RESTAURANT =
+            new Restaurant(
+                    "Rudy",
+                    "Chez Rudy",
+                    100,
+                    new RestaurantHours(LocalTime.parse("07:00:00"), LocalTime.parse("17:00:00")),
+                    new RestaurantReservations(60));
+    @Mock Customer customer;
 
     ReservationFactory reservationFactory;
 
     ReservationTime reservationTime;
-
 
     @BeforeEach
     void setUp() {
@@ -53,8 +47,8 @@ class ReservationFactoryTest {
 
     @Test
     void givenValidInputs_thenReservationCreated() {
-        Reservation reservation = reservationFactory.create(DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT);
-
+        Reservation reservation =
+                reservationFactory.create(DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT);
 
         Assertions.assertThat(reservation.getDate()).isEqualTo(DATE);
         Assertions.assertThat(reservation.getReservationTime()).isEqualTo(reservationTime);
@@ -65,32 +59,44 @@ class ReservationFactoryTest {
 
     @Test
     void givenGroupSizeBelowOne_throwInvalidArgumentException() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(
+                IllegalArgumentException.class,
                 () -> reservationFactory.create(DATE, START_TIME, 0, customer, RESTAURANT));
     }
 
-
-
     @Test
     void givenInvalidStartTime_throwInvalidArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> reservationFactory.create(DATE,INVALID_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        reservationFactory.create(
+                                DATE, INVALID_START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
 
     @Test
     void givenStartTimeBeforeOpen_throwInvalidArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> reservationFactory.create(DATE,EARLY_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        reservationFactory.create(
+                                DATE, EARLY_START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
+
     @Test
     void givenEndTimeAfterClose_throwInvalidArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> reservationFactory.create(DATE,LATE_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        reservationFactory.create(
+                                DATE, LATE_START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
 
     @Test
     void givenInvalidDate_throwInvalidArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> reservationFactory.create(INVALID_DATE,START_TIME, GROUP_SIZE, customer, RESTAURANT));
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        reservationFactory.create(
+                                INVALID_DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT));
     }
 }
