@@ -124,9 +124,9 @@ class RestaurantServiceTest {
                 RESTAURANT_NAME,
                 CAPACITY,
                 restaurantHoursDto,
-                restaurantReservationsDto
+                restaurantReservationsMapper.toDto(restaurantReservations)
         );
-        assertEquals(restaurantId, restaurantServiceId);
+        assertEquals(restaurantMock.getId(), restaurantServiceId);
     }
     @Test
     void whenCreateRestaurantWithValidValues_thenRestaurantIsCreatedAndSaved() {
@@ -194,10 +194,9 @@ class RestaurantServiceTest {
     void givenInvalidOwnerId_thenReturnsEmptyRestaurantList() {
 
         when(restaurantRepository.getByOwnerId(INVALID_OWNER_ID)).thenReturn(Collections.emptyList());
+        List<RestaurantDto> restaurantDtos = restaurantService.listRestaurants(INVALID_OWNER_ID);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            restaurantService.listRestaurants(INVALID_OWNER_ID);
-        });
+        assertTrue(restaurantDtos.isEmpty());
     }
 
 
