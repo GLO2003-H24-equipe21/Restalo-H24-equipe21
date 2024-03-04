@@ -11,7 +11,9 @@ import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantReservationsFactory;
+import ca.ulaval.glo2003.domain.mappers.RestaurantHoursMapper;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
+import ca.ulaval.glo2003.domain.mappers.RestaurantReservationsMapper;
 import ca.ulaval.glo2003.domain.mappers.SearchOpenedMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,6 +69,10 @@ class RestaurantServiceTest {
     RestaurantHoursDto restaurantHoursDto;
     RestaurantReservationsDto restaurantReservationsDto;
     RestaurantMapper restaurantMapper = new RestaurantMapper();
+
+    RestaurantHoursMapper restaurantHoursMapper = new RestaurantHoursMapper();
+
+    RestaurantReservationsMapper restaurantReservationsMapper = new RestaurantReservationsMapper();
 
 
 
@@ -146,11 +152,12 @@ class RestaurantServiceTest {
         when(restaurantRepository.get(restaurantId)).thenReturn(restaurant);
         RestaurantDto gottenRestaurant = restaurantService.getRestaurant(restaurantId, OWNER_ID);
 
-        Assertions.assertThat(gottenRestaurant.id).isEqualTo(restaurantMapper.toDto(restaurantMock).id);
-        Assertions.assertThat(gottenRestaurant.name).isEqualTo(restaurantMapper.toDto(restaurantMock).name);
-        Assertions.assertThat(gottenRestaurant.capacity).isEqualTo(restaurantMapper.toDto(restaurantMock).capacity);
-        Assertions.assertThat(gottenRestaurant.hours).isEqualTo(restaurantMapper.toDto(restaurantMock).hours);
-        Assertions.assertThat(gottenRestaurant.reservations).isEqualTo(restaurantMapper.toDto(restaurantMock).reservations);
+        Assertions.assertThat(gottenRestaurant.id).isEqualTo(restaurantMapper.toDto(restaurant).id);
+        Assertions.assertThat(gottenRestaurant.name).isEqualTo(restaurantMapper.toDto(restaurant).name);
+        Assertions.assertThat(gottenRestaurant.capacity).isEqualTo(restaurantMapper.toDto(restaurant).capacity);
+        Assertions.assertThat(gottenRestaurant.hours.close).isEqualTo(restaurantMapper.toDto(restaurant).hours.close);
+        Assertions.assertThat(gottenRestaurant.hours.open).isEqualTo(restaurantMapper.toDto(restaurant).hours.open);
+        Assertions.assertThat(gottenRestaurant.reservations.duration).isEqualTo(restaurantMapper.toDto(restaurant).reservations.duration);
     }
     @Test
     void givenInvalidId_thenThrowIllegalArgumentException() {
@@ -163,10 +170,12 @@ class RestaurantServiceTest {
     void givenValidOwnerId_thenListRestaurantsReturnsListOfRestaurantDtos() {
 
         List<Restaurant> mockRestaurants = Arrays.asList(
-                new Restaurant(OWNER_ID, RESTAURANT_NAME, CAPACITY, null, null)
+                new Restaurant(OWNER_ID, RESTAURANT_NAME, CAPACITY, restaurantHours, restaurantReservations)
         );
         when(restaurantRepository.getByOwnerId(OWNER_ID)).thenReturn(mockRestaurants);
-
+        when(restaurantFactory.create(OWNER_ID, RESTAURANT_NAME, CAPACITY,
+                restaurantHoursMapper.fromDto(restaurantHoursDto),
+                restaurantReservationsMapper.fromDto(restaurantReservationsDto))).thenReturn(restaurant);
         restaurantService.createRestaurant(
                 OWNER_ID,
                 RESTAURANT_NAME,
