@@ -13,7 +13,7 @@ public class ReservationRepository {
     }
 
     public void add(Reservation reservation) {
-        reservationIdToReservation.put(reservation.getId(), reservation);
+        reservationIdToReservation.put(reservation.getNumber(), reservation);
     }
 
     public Reservation get(String reservationId) {
