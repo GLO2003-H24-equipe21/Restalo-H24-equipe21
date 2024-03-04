@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Reservation {
-    private final UUID id;
+    private final String number;
     private final LocalDate date;
     private final ReservationTime reservationTime;
     private final Integer groupSize;
@@ -18,7 +18,7 @@ public class Reservation {
             Integer groupSize,
             Customer customer,
             Restaurant restaurant) {
-        this.id = UUID.randomUUID();
+        this.number = createNumber();
         this.date = date;
         this.reservationTime = reservationTime;
         this.groupSize = groupSize;
@@ -26,8 +26,12 @@ public class Reservation {
         this.restaurant = restaurant;
     }
 
-    public String getId() {
-        return id.toString();
+    public String createNumber() {
+        return String.format("%040d", new java.math.BigInteger(UUID.randomUUID().toString().replace("-", ""), 16));
+    }
+
+    public String getNumber() {
+        return number;
     }
 
     public LocalDate getDate() {
@@ -55,7 +59,7 @@ public class Reservation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return Objects.equals(id, that.id)
+        return Objects.equals(number, that.number)
                 && Objects.equals(date, that.date)
                 && Objects.equals(reservationTime, that.reservationTime)
                 && Objects.equals(groupSize, that.groupSize)
@@ -65,6 +69,6 @@ public class Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, reservationTime, groupSize, customer, restaurant);
+        return Objects.hash(number, date, reservationTime, groupSize, customer, restaurant);
     }
 }
