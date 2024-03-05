@@ -11,6 +11,8 @@ import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantReservationsFactory;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
+import jakarta.ws.rs.NotFoundException;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -56,10 +58,10 @@ public class RestaurantService {
     public RestaurantDto getRestaurant(String restaurantId, String ownerId) {
         Restaurant restaurant = restaurantRepository.get(restaurantId);
         if (restaurant == null) {
-            throw new IllegalArgumentException("the restaurant does not exist.");
+            throw new NotFoundException("the restaurant does not exist.");
         }
         if (!restaurant.getOwnerId().equals(ownerId)) {
-            throw new IllegalArgumentException("Invalid ownerId");
+            throw new NotFoundException("Invalid ownerId");
         }
         return restaurantMapper.toDto(restaurant);
     }

@@ -1,9 +1,8 @@
 package ca.ulaval.glo2003;
 
 import ca.ulaval.glo2003.api.HealthResource;
-import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
-import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
-import ca.ulaval.glo2003.api.exceptions.RuntimeExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.*;
+
 import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -21,10 +20,11 @@ public class Main {
                         .register(applicationContext.getRestaurantResource())
                         .register(applicationContext.getReservationResource())
                         .register(applicationContext.getSearchResource())
-                        // .register(new ConstraintViolationExceptionMapper())
+                         .register(new ConstraintViolationExceptionMapper())
                         .register(new NullPointerExceptionMapper())
                         .register(new IllegalArgumentExceptionMapper())
-                        .register(new RuntimeExceptionMapper());
+                        .register(new RuntimeExceptionMapper())
+                        .register(new NotFoundExceptionMapper());
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
