@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 public class CreateRestaurantRequest {
-    @NotNull(message = "Restaurant name must be provided.") public String name;
+    @NotNull(message = "Restaurant name must be provided") public String name;
 
     @NotNull(message = "Restaurant capacity must be provided") public Integer capacity;
 

@@ -19,16 +19,18 @@ public class RestaurantHoursFactory {
     private LocalTime parseOpenHour(String open) {
         try {
             return LocalTime.parse(open, dateTimeFormatter);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Open time format is not valid (HH:mm:ss)");
+        } catch (DateTimeParseException exception) {
+            throw new IllegalArgumentException(
+                    "Restaurant open time format is not valid (HH:mm:ss)");
         }
     }
 
     private LocalTime parseCloseHour(String close) {
         try {
             return LocalTime.parse(close, dateTimeFormatter);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Open time format is not valid (HH:mm:ss)");
+        } catch (DateTimeParseException exception) {
+            throw new IllegalArgumentException(
+                    "Restaurant close time format is not valid (HH:mm:ss)");
         }
     }
 
@@ -40,7 +42,8 @@ public class RestaurantHoursFactory {
     }
 
     private void verifyOpenBeforeClose(LocalTime open, LocalTime close) {
-        if (close.isBefore(open)) throw new IllegalArgumentException("Incoherent opening hours");
+        if (close.isBefore(open))
+            throw new IllegalArgumentException("Restaurant opening hours are incoherent");
     }
 
     private void verifyTimeIntervalAtLeastOne(LocalTime open, LocalTime close) {

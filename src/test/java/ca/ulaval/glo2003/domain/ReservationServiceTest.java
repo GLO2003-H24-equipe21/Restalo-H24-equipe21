@@ -12,6 +12,7 @@ import ca.ulaval.glo2003.domain.entities.*;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import ca.ulaval.glo2003.domain.mappers.ReservationMapper;
+import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import org.assertj.core.api.Assertions;
@@ -52,7 +53,6 @@ class ReservationServiceTest {
     @Mock ReservationFactory reservationFactory;
 
     RestaurantRepository restaurantRepository = new RestaurantRepository();
-    ;
 
     CustomerFactory customerFactory;
 
@@ -109,7 +109,6 @@ class ReservationServiceTest {
                         RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerDto);
 
         verify(reservationRepository).add(reservation);
-        ;
     }
 
     @Test
@@ -133,11 +132,10 @@ class ReservationServiceTest {
     }
 
     @Test
-    void givenNonExistingNumber_thenThrowIllegalArgumentException() {
+    void givenNonExistingNumber_thenThrowNotFoundException() {
         when(reservationRepository.get(INVALID_NUMBER)).thenReturn(null);
 
         assertThrows(
-                IllegalArgumentException.class,
-                () -> reservationService.getReservation(INVALID_NUMBER));
+                NotFoundException.class, () -> reservationService.getReservation(INVALID_NUMBER));
     }
 }

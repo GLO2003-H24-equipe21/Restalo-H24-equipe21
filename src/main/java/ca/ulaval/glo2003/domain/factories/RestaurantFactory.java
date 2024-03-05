@@ -18,10 +18,11 @@ public class RestaurantFactory {
     }
 
     private void verifyNameNotEmpty(String name) {
-        if (name.isEmpty()) throw new IllegalArgumentException("Name must not be empty");
+        if (name.isEmpty()) throw new IllegalArgumentException("Restaurant name must not be empty");
     }
 
     private void verifyCapacityAtLeastOne(Integer capacity) {
-        if (capacity < 1) throw new IllegalArgumentException("Minimal capacity must be one");
+        if (capacity < 1)
+            throw new IllegalArgumentException("Restaurant minimal capacity must be one");
     }
 }

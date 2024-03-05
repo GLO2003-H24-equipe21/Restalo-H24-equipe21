@@ -6,9 +6,9 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 
 public class NullPointerExceptionMapper implements ExceptionMapper<NullPointerException> {
     @Override
-    public Response toResponse(NullPointerException e) {
+    public Response toResponse(NullPointerException exception) {
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new ErrorResponse("MISSING_PARAMETER", e.getMessage()))
+                .entity(new ErrorResponse("MISSING_PARAMETER", exception.getMessage()))
                 .build();
     }
 }

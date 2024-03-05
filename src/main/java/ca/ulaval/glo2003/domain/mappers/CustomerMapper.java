@@ -7,9 +7,11 @@ public class CustomerMapper {
 
     public CustomerDto toDto(Customer customer) {
         CustomerDto dto = new CustomerDto();
+
         dto.name = customer.getName();
         dto.email = customer.getEmail();
         dto.phoneNumber = customer.getPhoneNumber();
+
         return dto;
     }
 }

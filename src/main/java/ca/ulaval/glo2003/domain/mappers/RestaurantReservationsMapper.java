@@ -12,9 +12,8 @@ public class RestaurantReservationsMapper {
     }
 
     public RestaurantReservations fromDto(RestaurantReservationsDto dto) {
-        if (dto == null) {
-            return new RestaurantReservations(60);
-        }
+        if (Objects.isNull(dto)) return new RestaurantReservations(60);
+
         return new RestaurantReservations(Objects.requireNonNullElse(dto.duration, 60));
     }
 }

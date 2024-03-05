@@ -50,16 +50,16 @@ public class ReservationFactory {
             Restaurant restaurant) {
         ReservationTime reservationTime =
                 new ReservationTime(startTime, restaurant.getReservations().getDuration());
-        verifyReservationStartsBeforeOpen(
+        verifyReservationStartsBeforeRestaurantOpen(
                 reservationTime.getStart(), restaurant.getHours().getOpen());
-        verifyReservationEndBeforeRestoClose(
+        verifyReservationEndBeforeRestaurantClose(
                 reservationTime.getEnd(), restaurant.getHours().getClose());
         verifyGroupSizeAtLeastOne(groupSize);
 
         return new Reservation(date, reservationTime, groupSize, customer, restaurant);
     }
 
-    private void verifyReservationStartsBeforeOpen(
+    private void verifyReservationStartsBeforeRestaurantOpen(
             LocalTime reservationStart, LocalTime restaurantOpen) {
         if (reservationStart.isBefore(restaurantOpen)) {
             throw new IllegalArgumentException(
@@ -67,7 +67,7 @@ public class ReservationFactory {
         }
     }
 
-    private void verifyReservationEndBeforeRestoClose(
+    private void verifyReservationEndBeforeRestaurantClose(
             LocalTime reservationEnd, LocalTime restaurantClose) {
         if (reservationEnd.isAfter(restaurantClose)) {
             throw new IllegalArgumentException(

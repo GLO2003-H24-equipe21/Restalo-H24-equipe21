@@ -1,57 +1,56 @@
 package ca.ulaval.glo2003.domain.factories;
 
-import static org.assertj.core.api.Assertions.*;
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ca.ulaval.glo2003.domain.entities.Customer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CustomerFactoryTest {
+    private static final String VALID_NAME = "Johnny Cash";
+    private static final String VALID_EMAIL = "johnny.cash@example.com";
+    private static final String VALID_PHONE_NUMBER = "1234567890";
 
-    private final CustomerFactory factory = new CustomerFactory();
+    private static final String EMPTY_NAME = "";
+    private static final String INVALID_EMAIL = "invalid_email";
+    private static final String INVALID_PHONE_NUMBER = "123";
 
-    @Test
-    void create_shouldCreateCustomer_whenAllInputsAreValid() {
-        String name = "Johnny Cash";
-        String email = "johnny.cash@example.com";
-        String phoneNumber = "1234567890";
+    CustomerFactory customerFactory;
 
-        Customer customer = factory.create(name, email, phoneNumber);
-
-        assertThat(customer.getName()).isEqualTo(name);
-        assertThat(customer.getEmail()).isEqualTo(email);
-        assertThat(customer.getPhoneNumber()).isEqualTo(phoneNumber);
+    @BeforeEach
+    void setUp() {
+        customerFactory = new CustomerFactory();
     }
 
     @Test
-    void create_shouldThrowIllegalArgumentException_whenNameIsEmpty() {
-        String name = "";
-        String email = "johnny.cash@example.com";
-        String phoneNumber = "1234567890";
+    void givenValidInputs_whenCreate_thenCustomerCreated() {
+        Customer customer = new Customer(VALID_NAME, VALID_EMAIL, VALID_PHONE_NUMBER);
 
-        assertThatThrownBy(() -> factory.create(name, email, phoneNumber))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("name must not be empty");
+        Customer gottenCustomer =
+                customerFactory.create(VALID_NAME, VALID_EMAIL, VALID_PHONE_NUMBER);
+
+        assertThat(gottenCustomer).isEqualTo(customer);
     }
 
     @Test
-    void create_shouldThrowIllegalArgumentException_whenEmailIsInvalid() {
-        String name = "Johnny Cash";
-        String email = "invalid_email";
-        String phoneNumber = "1234567890";
-
-        assertThatThrownBy(() -> factory.create(name, email, phoneNumber))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("email must be valid");
+    void givenEmptyName_whenCreate_throwsIllegalArgumentException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> customerFactory.create(EMPTY_NAME, VALID_EMAIL, VALID_PHONE_NUMBER));
     }
 
     @Test
-    void create_shouldThrowIllegalArgumentException_whenPhoneNumberIsInvalid() {
-        String name = "Johnny Cash";
-        String email = "johnny.cash@example.com";
-        String phoneNumber = "123";
+    void givenInvalidEmail_whenCreate_throwsIllegalArgumentException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> customerFactory.create(VALID_NAME, INVALID_EMAIL, VALID_PHONE_NUMBER));
+    }
 
-        assertThatThrownBy(() -> factory.create(name, email, phoneNumber))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("phone number must be 10 numbers");
+    @Test
+    void givenInvalidPhoneNumber_whenCreate_throwsIllegalArgumentException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> customerFactory.create(VALID_NAME, VALID_EMAIL, INVALID_PHONE_NUMBER));
     }
 }

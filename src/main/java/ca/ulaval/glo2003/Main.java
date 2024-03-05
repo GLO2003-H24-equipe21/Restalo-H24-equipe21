@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003;
 
 import ca.ulaval.glo2003.api.HealthResource;
+import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.RuntimeExceptionMapper;
@@ -15,18 +16,18 @@ public class Main {
     public static HttpServer startServer() {
         ApplicationContext applicationContext = new ApplicationContext();
 
-        final ResourceConfig rc =
+        final ResourceConfig resourceConfig =
                 new ResourceConfig()
                         .register(new HealthResource())
                         .register(applicationContext.getRestaurantResource())
                         .register(applicationContext.getReservationResource())
                         .register(applicationContext.getSearchResource())
-                        // .register(new ConstraintViolationExceptionMapper())
+                        .register(new ConstraintViolationExceptionMapper())
                         .register(new NullPointerExceptionMapper())
                         .register(new IllegalArgumentExceptionMapper())
                         .register(new RuntimeExceptionMapper());
 
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,8 @@
 package ca.ulaval.glo2003.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.data.RestaurantRepository;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
@@ -16,6 +17,7 @@ import ca.ulaval.glo2003.domain.factories.RestaurantReservationsFactory;
 import ca.ulaval.glo2003.domain.mappers.RestaurantHoursMapper;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
 import ca.ulaval.glo2003.domain.mappers.RestaurantReservationsMapper;
+import jakarta.ws.rs.NotFoundException;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -105,7 +107,7 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void whenCreateRestaurantWithValidValues_thenRestaurantIsCreated() {
+    void givenValidInputs_whenCreate_thenRestaurantCreated() {
         when(restaurantFactory.create(
                         OWNER_ID,
                         RESTAURANT_NAME,
@@ -113,6 +115,7 @@ class RestaurantServiceTest {
                         restaurantHours,
                         restaurantReservations))
                 .thenReturn(restaurantMock);
+
         String restaurantServiceId =
                 restaurantService.createRestaurant(
                         OWNER_ID,
@@ -120,6 +123,7 @@ class RestaurantServiceTest {
                         CAPACITY,
                         restaurantHoursDto,
                         restaurantReservationsMapper.toDto(restaurantReservations));
+
         assertEquals(restaurantMock.getId(), restaurantServiceId);
     }
 
@@ -132,14 +136,17 @@ class RestaurantServiceTest {
                         restaurantHours,
                         restaurantReservations))
                 .thenReturn(restaurantMock);
+
         restaurantService.createRestaurant(
                 OWNER_ID, RESTAURANT_NAME, CAPACITY, restaurantHoursDto, restaurantReservationsDto);
+
         verify(restaurantRepository).add(restaurantMock);
     }
 
     @Test
     void givenExistingId_thenFindsRestaurant() {
         when(restaurantRepository.get(restaurantId)).thenReturn(restaurant);
+
         RestaurantDto gottenRestaurant = restaurantService.getRestaurant(restaurantId, OWNER_ID);
 
         Assertions.assertThat(gottenRestaurant.id).isEqualTo(restaurantMapper.toDto(restaurant).id);
@@ -156,16 +163,16 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void givenInvalidId_thenThrowIllegalArgumentException() {
+    void givenInvalidId_thenThrowNotFoundException() {
         when(restaurantRepository.get("invalid_number")).thenReturn(null);
+
         assertThrows(
-                IllegalArgumentException.class,
+                NotFoundException.class,
                 () -> restaurantService.getRestaurant("invalid_number", OWNER_ID));
     }
 
     @Test
     void givenValidOwnerId_thenListRestaurantsReturnsListOfRestaurantDtos() {
-
         List<Restaurant> mockRestaurants =
                 Arrays.asList(
                         new Restaurant(
@@ -182,6 +189,7 @@ class RestaurantServiceTest {
                         restaurantHoursMapper.fromDto(restaurantHoursDto),
                         restaurantReservationsMapper.fromDto(restaurantReservationsDto)))
                 .thenReturn(restaurant);
+
         restaurantService.createRestaurant(
                 OWNER_ID, RESTAURANT_NAME, CAPACITY, restaurantHoursDto, restaurantReservationsDto);
         List<RestaurantDto> restaurantDtos = restaurantService.listRestaurants(OWNER_ID);
