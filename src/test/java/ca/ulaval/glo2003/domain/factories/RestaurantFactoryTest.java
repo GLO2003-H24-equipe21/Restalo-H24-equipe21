@@ -38,7 +38,7 @@ class RestaurantFactoryTest {
     }
 
     @Test
-    void canCreateRestaurantWithValidValues() {
+    void givenValidInputs_whenCreate_thenRestaurantCreated() {
         Restaurant restaurant =
                 restaurantFactory.create(
                         OWNER_ID,
@@ -46,6 +46,7 @@ class RestaurantFactoryTest {
                         CAPACITY,
                         restaurantHours,
                         restaurantReservations);
+
         Assertions.assertThat(restaurant).isNotNull();
         Assertions.assertThat(restaurant.getOwnerId()).isEqualTo(OWNER_ID);
         Assertions.assertThat(restaurant.getName()).isEqualTo(RESTAURANT_NAME);
@@ -55,8 +56,9 @@ class RestaurantFactoryTest {
     }
 
     @Test
-    void EmptyName_createRestaurantShouldThrow() {
+    void givenEmptyName_whenCreate_throwsIllegalArgumentException() {
         String emptyName = "";
+
         assertThrows(
                 IllegalArgumentException.class,
                 () ->
@@ -69,8 +71,9 @@ class RestaurantFactoryTest {
     }
 
     @Test
-    void CapacityBelowOne_createRestaurantShouldThrow() {
+    void givenCapacityLessThan1_whenCreate_throwsIllegalArgumentException() {
         int belowOneCapacity = -2;
+
         assertThrows(
                 IllegalArgumentException.class,
                 () ->

@@ -9,8 +9,10 @@ public class ReservationTimeMapper {
 
     public ReservationTimeDto toDto(ReservationTime reservationTime) {
         ReservationTimeDto dto = new ReservationTimeDto();
+
         dto.start = reservationTime.getStart().format(dateTimeFormatter);
         dto.end = reservationTime.getEnd().format(dateTimeFormatter);
+
         return dto;
     }
 }

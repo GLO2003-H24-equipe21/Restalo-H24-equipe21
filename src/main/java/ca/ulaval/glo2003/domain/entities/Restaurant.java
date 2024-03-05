@@ -1,5 +1,6 @@
 package ca.ulaval.glo2003.domain.entities;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Restaurant {
@@ -46,5 +47,23 @@ public class Restaurant {
 
     public RestaurantReservations getReservations() {
         return reservations;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Restaurant that = (Restaurant) o;
+        return Objects.equals(ownerId, that.ownerId)
+                && Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(capacity, that.capacity)
+                && Objects.equals(hours, that.hours)
+                && Objects.equals(reservations, that.reservations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ownerId, id, name, capacity, hours, reservations);
     }
 }

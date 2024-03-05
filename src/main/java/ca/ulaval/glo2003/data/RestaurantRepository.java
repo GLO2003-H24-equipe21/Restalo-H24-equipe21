@@ -1,9 +1,13 @@
 package ca.ulaval.glo2003.data;
 
 import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.Search;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class RestaurantRepository {
@@ -34,11 +38,11 @@ public class RestaurantRepository {
                 .filter(
                         restaurant ->
                                 matchesRestaurantOpenHour(
-                                        restaurant, search.getSearchOpened().getFrom()))
+                                        restaurant.getHours(), search.getSearchOpened().getFrom()))
                 .filter(
                         restaurant ->
                                 matchesRestaurantCloseHour(
-                                        restaurant, search.getSearchOpened().getTo()))
+                                        restaurant.getHours(), search.getSearchOpened().getTo()))
                 .collect(Collectors.toList());
     }
 
@@ -51,15 +55,14 @@ public class RestaurantRepository {
                 .contains(name.toLowerCase().replaceAll("\\s", ""));
     }
 
-    private boolean matchesRestaurantOpenHour(Restaurant restaurant, LocalTime from) {
+    private boolean matchesRestaurantOpenHour(RestaurantHours restaurantHours, LocalTime from) {
         if (Objects.isNull(from)) return true;
-        return !from.isBefore(restaurant.getHours().getOpen())
-                && from.isBefore(restaurant.getHours().getClose());
+        return !from.isBefore(restaurantHours.getOpen())
+                && from.isBefore(restaurantHours.getClose());
     }
 
-    private boolean matchesRestaurantCloseHour(Restaurant restaurant, LocalTime to) {
+    private boolean matchesRestaurantCloseHour(RestaurantHours restaurantHours, LocalTime to) {
         if (Objects.isNull(to)) return true;
-        return !to.isAfter(restaurant.getHours().getClose())
-                && to.isAfter(restaurant.getHours().getOpen());
+        return !to.isAfter(restaurantHours.getClose()) && to.isAfter(restaurantHours.getOpen());
     }
 }

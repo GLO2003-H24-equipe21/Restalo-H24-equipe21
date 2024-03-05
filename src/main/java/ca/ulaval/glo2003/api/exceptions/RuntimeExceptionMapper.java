@@ -6,9 +6,9 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 
 public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
     @Override
-    public Response toResponse(RuntimeException e) {
+    public Response toResponse(RuntimeException exception) {
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new ErrorResponse("UNEXPECTED_ERROR", e.getMessage()))
+                .entity(new ErrorResponse("UNEXPECTED_ERROR", exception.getMessage()))
                 .build();
     }
 }
