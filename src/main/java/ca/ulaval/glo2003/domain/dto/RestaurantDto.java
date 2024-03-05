@@ -10,6 +10,7 @@ public class RestaurantDto {
     public RestaurantHoursDto hours;
     public RestaurantReservationsDto reservations;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
