@@ -19,6 +19,11 @@ public class RestaurantFixture {
         return this;
     }
 
+    public RestaurantFixture withInvalidOwnerId(String InvalidOwnerId) {
+        this.ownerId = InvalidOwnerId;
+        return this;
+    }
+
     public RestaurantFixture withName(String name) {
         this.name = name;
         return this;
