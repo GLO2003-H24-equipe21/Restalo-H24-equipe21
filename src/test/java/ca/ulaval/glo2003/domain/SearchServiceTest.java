@@ -1,5 +1,8 @@
 package ca.ulaval.glo2003.domain;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.when;
+
 import ca.ulaval.glo2003.data.RestaurantRepository;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.SearchOpenedDto;
@@ -8,19 +11,14 @@ import ca.ulaval.glo2003.domain.entities.RestaurantTestUtils;
 import ca.ulaval.glo2003.domain.entities.Search;
 import ca.ulaval.glo2003.domain.entities.SearchOpened;
 import ca.ulaval.glo2003.domain.factories.SearchFactory;
+import java.time.LocalTime;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalTime;
-import java.util.Collections;
-import java.util.List;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SearchServiceTest {
@@ -30,11 +28,9 @@ class SearchServiceTest {
 
     SearchService searchService;
 
-    @Mock
-    RestaurantRepository restaurantRepository;
+    @Mock RestaurantRepository restaurantRepository;
 
-    @Mock
-    SearchFactory searchFactory;
+    @Mock SearchFactory searchFactory;
 
     SearchOpened searchOpened;
     SearchOpenedDto searchOpenedDto;
@@ -55,7 +51,6 @@ class SearchServiceTest {
         searchNonNull = new Search(RESTAURANT_NAME, searchOpened);
         searchNull = new Search(null, new SearchOpened(null, null));
 
-
         restaurants = RestaurantTestUtils.createRestaurants(5);
         restaurantDtos = RestaurantTestUtils.createRestaurantDtos(restaurants);
 
@@ -64,10 +59,12 @@ class SearchServiceTest {
 
     @Test
     public void givenNonNullInputs_whenSearchRestaurants_thenReturnsRestaurantDtoList() {
-        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO)).thenReturn(searchNonNull);
+        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO))
+                .thenReturn(searchNonNull);
         when(restaurantRepository.searchRestaurants(searchNonNull)).thenReturn(restaurants);
 
-        List<RestaurantDto> gottenRestaurants = searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
+        List<RestaurantDto> gottenRestaurants =
+                searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
 
         assertThat(gottenRestaurants).isEqualTo(restaurantDtos);
     }
@@ -77,17 +74,21 @@ class SearchServiceTest {
         when(searchFactory.create(RESTAURANT_NAME, null, null)).thenReturn(searchNull);
         when(restaurantRepository.searchRestaurants(searchNull)).thenReturn(restaurants);
 
-        List<RestaurantDto> gottenRestaurants = searchService.searchRestaurants(RESTAURANT_NAME, null);
+        List<RestaurantDto> gottenRestaurants =
+                searchService.searchRestaurants(RESTAURANT_NAME, null);
 
         assertThat(gottenRestaurants).isEqualTo(restaurantDtos);
     }
 
     @Test
     public void givenEmptyRepository_whenSearchRestaurants_thenReturnsEmptyDtoList() {
-        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO)).thenReturn(searchNonNull);
-        when(restaurantRepository.searchRestaurants(searchNonNull)).thenReturn(Collections.emptyList());
+        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO))
+                .thenReturn(searchNonNull);
+        when(restaurantRepository.searchRestaurants(searchNonNull))
+                .thenReturn(Collections.emptyList());
 
-        List<RestaurantDto> gottenRestaurants = searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
+        List<RestaurantDto> gottenRestaurants =
+                searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
 
         assertThat(gottenRestaurants).isEqualTo(Collections.emptyList());
     }

@@ -1,13 +1,12 @@
 package ca.ulaval.glo2003.data;
 
-import ca.ulaval.glo2003.domain.entities.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
 
+import ca.ulaval.glo2003.domain.entities.*;
 import java.time.LocalTime;
 import java.util.List;
-
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class RestaurantRepositoryTest {
     RestaurantRepository repository;
@@ -22,9 +21,12 @@ class RestaurantRepositoryTest {
     void setup() {
         repository = new RestaurantRepository();
         restaurant1 = new RestaurantFixture().withOwnerId(OWNER_ID).create();
-        restaurant2 = new RestaurantFixture().withName("Mc Donald's")
-                .withRestaurantHours(LocalTime.parse("05:00:00"), LocalTime.parse("10:00:00"))
-                .create();
+        restaurant2 =
+                new RestaurantFixture()
+                        .withName("Mc Donald's")
+                        .withRestaurantHours(
+                                LocalTime.parse("05:00:00"), LocalTime.parse("10:00:00"))
+                        .create();
         restaurantId = restaurant1.getId();
     }
 
@@ -78,7 +80,10 @@ class RestaurantRepositoryTest {
     public void givenNoMatchSearch_whenSearch_thenReturnsEmptyList() {
         repository.add(restaurant1);
         repository.add(restaurant2);
-        Search search = new Search(null, new SearchOpened(LocalTime.parse("06:00:00"), LocalTime.parse("18:00:00")));
+        Search search =
+                new Search(
+                        null,
+                        new SearchOpened(LocalTime.parse("06:00:00"), LocalTime.parse("18:00:00")));
 
         List<Restaurant> gottenRestaurants = repository.searchRestaurants(search);
 
@@ -130,10 +135,14 @@ class RestaurantRepositoryTest {
     }
 
     @Test
-    public void whenSearchOpenedFromIs12AndOpenedToIs20_thenReturnsRestaurantsOpenedBetween12And20() {
+    public void
+            whenSearchOpenedFromIs12AndOpenedToIs20_thenReturnsRestaurantsOpenedBetween12And20() {
         repository.add(restaurant1);
         repository.add(restaurant2);
-        Search search = new Search(null, new SearchOpened(LocalTime.parse("12:00:00"), LocalTime.parse("20:00:00")));
+        Search search =
+                new Search(
+                        null,
+                        new SearchOpened(LocalTime.parse("12:00:00"), LocalTime.parse("20:00:00")));
 
         List<Restaurant> gottenRestaurants = repository.searchRestaurants(search);
 

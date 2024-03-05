@@ -53,13 +53,13 @@ public class RestaurantRepository {
 
     private boolean matchesRestaurantOpenHour(Restaurant restaurant, LocalTime from) {
         if (Objects.isNull(from)) return true;
-        return !from.isBefore(restaurant.getHours().getOpen()) &&
-                from.isBefore(restaurant.getHours().getClose());
+        return !from.isBefore(restaurant.getHours().getOpen())
+                && from.isBefore(restaurant.getHours().getClose());
     }
 
     private boolean matchesRestaurantCloseHour(Restaurant restaurant, LocalTime to) {
         if (Objects.isNull(to)) return true;
-        return !to.isAfter(restaurant.getHours().getClose()) &&
-                to.isAfter(restaurant.getHours().getOpen());
+        return !to.isAfter(restaurant.getHours().getClose())
+                && to.isAfter(restaurant.getHours().getOpen());
     }
 }

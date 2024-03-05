@@ -1,11 +1,11 @@
 package ca.ulaval.glo2003.data;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.ReservationFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static com.google.common.truth.Truth.assertThat;
 
 class ReservationRepositoryTest {
     ReservationRepository repository;

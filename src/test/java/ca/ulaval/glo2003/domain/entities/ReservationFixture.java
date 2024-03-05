@@ -11,12 +11,6 @@ public class ReservationFixture {
     private Restaurant restaurant = new RestaurantFixture().create();
 
     public Reservation create() {
-        return new Reservation(
-                date,
-                reservationTime,
-                groupSize,
-                customer,
-                restaurant
-        );
+        return new Reservation(date, reservationTime, groupSize, customer, restaurant);
     }
 }

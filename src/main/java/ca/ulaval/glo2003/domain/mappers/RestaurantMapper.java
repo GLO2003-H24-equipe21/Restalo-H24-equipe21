@@ -4,10 +4,7 @@ import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
-
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-
 
 public class RestaurantMapper {
     RestaurantReservationsMapper restaurantReservationsMapper = new RestaurantReservationsMapper();

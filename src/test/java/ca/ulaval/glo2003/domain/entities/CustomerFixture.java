@@ -6,11 +6,7 @@ public class CustomerFixture {
     private String phoneNumber = "1234567890";
 
     public Customer create() {
-        return new Customer(
-                name,
-                email,
-                phoneNumber
-        );
+        return new Customer(name, email, phoneNumber);
     }
 
     public CustomerFixture withName(String name) {
