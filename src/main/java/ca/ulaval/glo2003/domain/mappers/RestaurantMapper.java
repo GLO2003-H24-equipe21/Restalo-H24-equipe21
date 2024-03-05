@@ -7,6 +7,8 @@ import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
 import java.util.Objects;
 
 public class RestaurantMapper {
+    RestaurantReservationsMapper restaurantReservationsMapper = new RestaurantReservationsMapper();
+    RestaurantHoursMapper restaurantHoursMapper = new RestaurantHoursMapper();
 
     public Restaurant fromDto(RestaurantDto dto) {
         Objects.requireNonNull(dto.name, "Name must be provided");
@@ -19,6 +21,13 @@ public class RestaurantMapper {
     }
 
     public RestaurantDto toDto(Restaurant restaurant) {
-        return null;
+        RestaurantDto dto = new RestaurantDto();
+        dto.ownerId = restaurant.getOwnerId();
+        dto.id = restaurant.getId();
+        dto.name = restaurant.getName();
+        dto.capacity = restaurant.getCapacity();
+        dto.hours = restaurantHoursMapper.toDto(restaurant.getHours());
+        dto.reservations = restaurantReservationsMapper.toDto(restaurant.getReservations());
+        return dto;
     }
 }

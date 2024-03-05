@@ -15,9 +15,6 @@ public class RestaurantRepository {
     }
 
     public Restaurant get(String restaurantId) {
-        if (!restaurantIdToRestaurant.containsKey(restaurantId)) {
-            throw new IllegalArgumentException("EXCEPTION A CHANGER");
-        }
         return restaurantIdToRestaurant.get(restaurantId);
     }
 
@@ -46,9 +43,7 @@ public class RestaurantRepository {
     }
 
     private boolean matchesRestaurantName(Restaurant restaurant, String name) {
-        if (name.equals("*")) {
-            return true;
-        }
+        if (Objects.isNull(name)) return true;
         return restaurant
                 .getName()
                 .toLowerCase()
@@ -57,10 +52,14 @@ public class RestaurantRepository {
     }
 
     private boolean matchesRestaurantOpenHour(Restaurant restaurant, LocalTime from) {
-        return restaurant.getHours().getOpen().isAfter(from);
+        if (Objects.isNull(from)) return true;
+        return !from.isBefore(restaurant.getHours().getOpen())
+                && from.isBefore(restaurant.getHours().getClose());
     }
 
     private boolean matchesRestaurantCloseHour(Restaurant restaurant, LocalTime to) {
-        return restaurant.getHours().getClose().isBefore(to);
+        if (Objects.isNull(to)) return true;
+        return !to.isAfter(restaurant.getHours().getClose())
+                && to.isAfter(restaurant.getHours().getOpen());
     }
 }

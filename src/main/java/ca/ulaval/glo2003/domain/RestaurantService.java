@@ -55,8 +55,11 @@ public class RestaurantService {
 
     public RestaurantDto getRestaurant(String restaurantId, String ownerId) {
         Restaurant restaurant = restaurantRepository.get(restaurantId);
+        if (restaurant == null) {
+            throw new IllegalArgumentException("the restaurant does not exist.");
+        }
         if (!restaurant.getOwnerId().equals(ownerId)) {
-            throw new IllegalArgumentException("EXCEPTION A CHANGER");
+            throw new IllegalArgumentException("Invalid ownerId");
         }
         return restaurantMapper.toDto(restaurant);
     }

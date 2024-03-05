@@ -13,13 +13,10 @@ public class ReservationRepository {
     }
 
     public void add(Reservation reservation) {
-        reservationIdToReservation.put(reservation.getId(), reservation);
+        reservationIdToReservation.put(reservation.getNumber(), reservation);
     }
 
     public Reservation get(String reservationId) {
-        if (!reservationIdToReservation.containsKey(reservationId)) {
-            throw new IllegalArgumentException("EXCEPTION A CHANGER");
-        }
         return reservationIdToReservation.get(reservationId);
     }
 }

@@ -46,12 +46,14 @@ public class ReservationService {
 
         reservationRepository.add(reservation);
 
-        return reservation.getId();
+        return reservation.getNumber();
     }
 
     public ReservationDto getReservation(String number) {
         Reservation reservation = reservationRepository.get(number);
-
+        if (reservation == null) {
+            throw new IllegalArgumentException("the reservation does not exist");
+        }
         return reservationMapper.toDto(reservation);
     }
 }
