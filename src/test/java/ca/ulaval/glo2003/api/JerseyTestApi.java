@@ -4,8 +4,7 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.Application;
 import org.glassfish.jersey.test.JerseyTest;
 
-//import org.glassfish.jersey.test.inmemory.InMemoryTestContainerFactory;
-
+// import org.glassfish.jersey.test.inmemory.InMemoryTestContainerFactory;
 
 public class JerseyTestApi {
     private final Application application;
@@ -20,12 +19,13 @@ public class JerseyTestApi {
     public void start() {
         if (api != null) return;
 
-        api = new JerseyTest() {
-            @Override
-            public Application configure() {
-                return JerseyTestApi.this.application;
-            }
-        };
+        api =
+                new JerseyTest() {
+                    @Override
+                    public Application configure() {
+                        return JerseyTestApi.this.application;
+                    }
+                };
 
         try {
             api.setUp();
