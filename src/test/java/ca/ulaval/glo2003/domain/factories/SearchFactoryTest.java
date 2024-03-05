@@ -31,36 +31,36 @@ class SearchFactoryTest {
     }
 
     @Test
-    void givenNullName_whenCreate_thenNameIsWildcard() {
+    void givenNullName_whenCreate_thenNameIsNull() {
         String name = null;
         String openedFrom = "10:00:00";
         String openedTo = "20:00:00";
 
         Search search = searchFactory.create(name, openedFrom, openedTo);
 
-        assertThat(search.getName()).isEqualTo("*");
+        assertThat(search.getName()).isEqualTo(null);
     }
 
     @Test
-    void givenNullOpenedFrom_whenCreate_thenOpenedFromIsMidnight() {
+    void givenNullOpenedFrom_whenCreate_thenOpenedFromIsNull() {
         String name = "Mc Donald's";
         String openedFrom = null;
         String openedTo = "20:00:00";
 
         Search search = searchFactory.create(name, openedFrom, openedTo);
 
-        assertThat(search.getSearchOpened().getFrom()).isEqualTo(LocalTime.of(0, 0, 0));
+        assertThat(search.getSearchOpened().getFrom()).isEqualTo(null);
     }
 
     @Test
-    void givenNullOpenedTo_whenCreate_thenOpenedFromIsMidnightMinusOneSecond() {
+    void givenNullOpenedTo_whenCreate_thenOpenedFromIsNull() {
         String name = "Mc Donald's";
         String openedFrom = "09:00:00";
         String openedTo = null;
 
         Search search = searchFactory.create(name, openedFrom, openedTo);
 
-        assertThat(search.getSearchOpened().getTo()).isEqualTo(LocalTime.of(23, 59, 59));
+        assertThat(search.getSearchOpened().getTo()).isEqualTo(null);
     }
 
     @Test

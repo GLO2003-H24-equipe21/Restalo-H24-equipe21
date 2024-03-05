@@ -25,8 +25,8 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class SearchServiceTest {
     private static final String RESTAURANT_NAME = "restaurant";
-    private static final String OPENED_FROM = "00:00:00";
-    private static final String OPENED_TO = "23:59:59";
+    private static final String OPENED_FROM = "10:00:00";
+    private static final String OPENED_TO = "18:30:00";
 
     SearchService searchService;
 
@@ -39,7 +39,8 @@ class SearchServiceTest {
     SearchOpened searchOpened;
     SearchOpenedDto searchOpenedDto;
 
-    Search search;
+    Search searchNonNull;
+    Search searchNull;
 
     List<Restaurant> restaurants;
     List<RestaurantDto> restaurantDtos;
@@ -51,7 +52,9 @@ class SearchServiceTest {
         searchOpenedDto.from = OPENED_FROM;
         searchOpenedDto.to = OPENED_TO;
 
-        search = new Search(RESTAURANT_NAME, searchOpened);
+        searchNonNull = new Search(RESTAURANT_NAME, searchOpened);
+        searchNull = new Search(null, new SearchOpened(null, null));
+
 
         restaurants = RestaurantTestUtils.createRestaurants(5);
         restaurantDtos = RestaurantTestUtils.createRestaurantDtos(restaurants);
@@ -61,8 +64,8 @@ class SearchServiceTest {
 
     @Test
     public void givenNonNullInputs_whenSearchRestaurants_thenReturnsRestaurantDtoList() {
-        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO)).thenReturn(search);
-        when(restaurantRepository.searchRestaurants(search)).thenReturn(restaurants);
+        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO)).thenReturn(searchNonNull);
+        when(restaurantRepository.searchRestaurants(searchNonNull)).thenReturn(restaurants);
 
         List<RestaurantDto> gottenRestaurants = searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
 
@@ -71,8 +74,8 @@ class SearchServiceTest {
 
     @Test
     public void givenNullSearchOpenedDto_whenSearchRestaurants_thenReturnsRestaurantDtoList() {
-        when(searchFactory.create(RESTAURANT_NAME, null, null)).thenReturn(search);
-        when(restaurantRepository.searchRestaurants(search)).thenReturn(restaurants);
+        when(searchFactory.create(RESTAURANT_NAME, null, null)).thenReturn(searchNull);
+        when(restaurantRepository.searchRestaurants(searchNull)).thenReturn(restaurants);
 
         List<RestaurantDto> gottenRestaurants = searchService.searchRestaurants(RESTAURANT_NAME, null);
 
@@ -81,8 +84,8 @@ class SearchServiceTest {
 
     @Test
     public void givenEmptyRepository_whenSearchRestaurants_thenReturnsEmptyDtoList() {
-        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO)).thenReturn(search);
-        when(restaurantRepository.searchRestaurants(search)).thenReturn(Collections.emptyList());
+        when(searchFactory.create(RESTAURANT_NAME, OPENED_FROM, OPENED_TO)).thenReturn(searchNonNull);
+        when(restaurantRepository.searchRestaurants(searchNonNull)).thenReturn(Collections.emptyList());
 
         List<RestaurantDto> gottenRestaurants = searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
 

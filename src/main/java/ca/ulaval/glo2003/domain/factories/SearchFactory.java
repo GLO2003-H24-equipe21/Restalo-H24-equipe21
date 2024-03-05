@@ -11,15 +11,10 @@ public class SearchFactory {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
 
     public Search create(String name, String openedFrom, String openedTo) {
-        String nameNotNull = parseName(name);
         LocalTime openedFromNotNull = parseOpenedFrom(openedFrom);
         LocalTime openedToNotNull = parseOpenedTo(openedTo);
 
-        return new Search(nameNotNull, new SearchOpened(openedFromNotNull, openedToNotNull));
-    }
-
-    private String parseName(String name) {
-        return Objects.requireNonNullElse(name, "*");
+        return new Search(name, new SearchOpened(openedFromNotNull, openedToNotNull));
     }
 
     private LocalTime parseOpenedFrom(String openedFrom) {
@@ -31,7 +26,7 @@ public class SearchFactory {
                         "Search 'from' time format is not valid (HH:mm:ss)");
             }
         }
-        return LocalTime.of(0, 0, 0);
+        return null;
     }
 
     private LocalTime parseOpenedTo(String openedTo) {
@@ -43,6 +38,6 @@ public class SearchFactory {
                         "Search 'to' time format is not valid (HH:mm:ss)");
             }
         }
-        return LocalTime.of(23, 59, 59);
+        return null;
     }
 }
