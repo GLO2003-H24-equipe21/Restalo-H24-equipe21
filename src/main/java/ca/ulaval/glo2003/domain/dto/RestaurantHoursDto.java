@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain.dto;
 
 import jakarta.validation.constraints.NotNull;
-
 import java.util.Objects;
 
 public class RestaurantHoursDto {

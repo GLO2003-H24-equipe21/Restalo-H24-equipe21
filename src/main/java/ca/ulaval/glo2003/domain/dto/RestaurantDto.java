@@ -10,13 +10,17 @@ public class RestaurantDto {
     public RestaurantHoursDto hours;
     public RestaurantReservationsDto reservations;
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RestaurantDto that = (RestaurantDto) o;
-        return Objects.equals(ownerId, that.ownerId) && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(capacity, that.capacity) && Objects.equals(hours, that.hours) && Objects.equals(reservations, that.reservations);
+        return Objects.equals(ownerId, that.ownerId)
+                && Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(capacity, that.capacity)
+                && Objects.equals(hours, that.hours)
+                && Objects.equals(reservations, that.reservations);
     }
 
     @Override

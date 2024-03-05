@@ -17,5 +17,4 @@ public class RestaurantReservationsMapper {
         }
         return new RestaurantReservations(Objects.requireNonNullElse(dto.duration, 60));
     }
-
 }

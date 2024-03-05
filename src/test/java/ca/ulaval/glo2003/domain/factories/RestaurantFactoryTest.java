@@ -1,5 +1,8 @@
 package ca.ulaval.glo2003.domain.factories;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.lenient;
+
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
@@ -9,9 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantFactoryTest {
@@ -23,31 +23,29 @@ class RestaurantFactoryTest {
     private static final int DURATION = 120;
 
     RestaurantFactory restaurantFactory;
-    @Mock
-    RestaurantReservations restaurantReservations;
-    @Mock
-    RestaurantHours restaurantHours;
-    @Mock
-    RestaurantReservationsFactory restaurantReservationsFactory;
-    @Mock
-    RestaurantHoursFactory restaurantHoursFactory;
+    @Mock RestaurantReservations restaurantReservations;
+    @Mock RestaurantHours restaurantHours;
+    @Mock RestaurantReservationsFactory restaurantReservationsFactory;
+    @Mock RestaurantHoursFactory restaurantHoursFactory;
 
     @BeforeEach
     void setUp() {
         restaurantFactory = new RestaurantFactory();
         lenient().when(restaurantHoursFactory.create(OPEN, CLOSE)).thenReturn(restaurantHours);
-        lenient().when(restaurantReservationsFactory.create(DURATION)).thenReturn(restaurantReservations);
+        lenient()
+                .when(restaurantReservationsFactory.create(DURATION))
+                .thenReturn(restaurantReservations);
     }
 
     @Test
     void canCreateRestaurantWithValidValues() {
-        Restaurant restaurant = restaurantFactory.create(
-                OWNER_ID,
-                RESTAURANT_NAME,
-                CAPACITY,
-                restaurantHours,
-                restaurantReservations
-        );
+        Restaurant restaurant =
+                restaurantFactory.create(
+                        OWNER_ID,
+                        RESTAURANT_NAME,
+                        CAPACITY,
+                        restaurantHours,
+                        restaurantReservations);
         Assertions.assertThat(restaurant).isNotNull();
         Assertions.assertThat(restaurant.getOwnerId()).isEqualTo(OWNER_ID);
         Assertions.assertThat(restaurant.getName()).isEqualTo(RESTAURANT_NAME);
@@ -59,25 +57,28 @@ class RestaurantFactoryTest {
     @Test
     void EmptyName_createRestaurantShouldThrow() {
         String emptyName = "";
-        assertThrows(IllegalArgumentException.class, () -> restaurantFactory.create(
-                OWNER_ID,
-                emptyName,
-                CAPACITY,
-                restaurantHours,
-                restaurantReservations
-        ));
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        restaurantFactory.create(
+                                OWNER_ID,
+                                emptyName,
+                                CAPACITY,
+                                restaurantHours,
+                                restaurantReservations));
     }
+
     @Test
     void CapacityBelowOne_createRestaurantShouldThrow() {
         int belowOneCapacity = -2;
-        assertThrows(IllegalArgumentException.class, () -> restaurantFactory.create(
-                OWNER_ID,
-                RESTAURANT_NAME,
-                belowOneCapacity,
-                restaurantHours,
-                restaurantReservations
-        ));
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        restaurantFactory.create(
+                                OWNER_ID,
+                                RESTAURANT_NAME,
+                                belowOneCapacity,
+                                restaurantHours,
+                                restaurantReservations));
     }
-
-
 }
