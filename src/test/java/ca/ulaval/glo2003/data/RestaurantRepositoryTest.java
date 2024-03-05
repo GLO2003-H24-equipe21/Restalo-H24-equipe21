@@ -29,7 +29,7 @@ class RestaurantRepositoryTest {
     }
 
     @Test
-    public void givenRepository_whenGet_thenReturnsRestaurant() {
+    public void givenNonEmptyRepository_whenGet_thenReturnsRestaurant() {
         repository.add(restaurant1);
 
         Restaurant gottenRestaurant = repository.get(restaurantId);

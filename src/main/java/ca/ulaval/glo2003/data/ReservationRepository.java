@@ -17,9 +17,6 @@ public class ReservationRepository {
     }
 
     public Reservation get(String reservationId) {
-        if (!reservationIdToReservation.containsKey(reservationId)) {
-            throw new IllegalArgumentException("EXCEPTION A CHANGER");
-        }
         return reservationIdToReservation.get(reservationId);
     }
 }
