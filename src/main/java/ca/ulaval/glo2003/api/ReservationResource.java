@@ -1,7 +1,5 @@
 package ca.ulaval.glo2003.api;
 
-import static ca.ulaval.glo2003.Main.BASE_URI;
-
 import ca.ulaval.glo2003.api.mappers.ReservationResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
 import ca.ulaval.glo2003.api.responses.ReservationResponse;
@@ -9,9 +7,12 @@ import ca.ulaval.glo2003.domain.ReservationService;
 import ca.ulaval.glo2003.domain.dto.ReservationDto;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
+@Path("")
 public class ReservationResource {
     private final ReservationService reservationService;
     private final ReservationResponseMapper reservationResponseMapper;
@@ -25,6 +26,7 @@ public class ReservationResource {
     @Path("restaurants/{id}/reservations")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createReservation(
+            @Context UriInfo uriInfo,
             @PathParam("id") String restaurantId,
             @Valid CreateReservationRequest reservationRequest) {
         String reservationNumber =
@@ -36,7 +38,9 @@ public class ReservationResource {
                         reservationRequest.customer);
 
         return Response.status(Response.Status.CREATED)
-                .header("Location", String.format("%sreservations/%s", BASE_URI, reservationNumber))
+                .header(
+                        "Location",
+                        String.format("%sreservations/%s", uriInfo.getBaseUri(), reservationNumber))
                 .build();
     }
 

@@ -22,12 +22,14 @@ public class RestaurantMapper {
 
     public RestaurantDto toDto(Restaurant restaurant) {
         RestaurantDto dto = new RestaurantDto();
+
         dto.ownerId = restaurant.getOwnerId();
         dto.id = restaurant.getId();
         dto.name = restaurant.getName();
         dto.capacity = restaurant.getCapacity();
         dto.hours = restaurantHoursMapper.toDto(restaurant.getHours());
         dto.reservations = restaurantReservationsMapper.toDto(restaurant.getReservations());
+
         return dto;
     }
 }

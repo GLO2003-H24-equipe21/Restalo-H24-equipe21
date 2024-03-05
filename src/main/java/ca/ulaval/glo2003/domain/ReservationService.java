@@ -10,6 +10,8 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import ca.ulaval.glo2003.domain.mappers.ReservationMapper;
+import jakarta.ws.rs.NotFoundException;
+import java.util.Objects;
 
 public class ReservationService {
 
@@ -51,9 +53,11 @@ public class ReservationService {
 
     public ReservationDto getReservation(String number) {
         Reservation reservation = reservationRepository.get(number);
-        if (reservation == null) {
-            throw new IllegalArgumentException("the reservation does not exist");
+
+        if (Objects.isNull(reservation)) {
+            throw new NotFoundException("Reservation does not exist");
         }
+
         return reservationMapper.toDto(reservation);
     }
 }

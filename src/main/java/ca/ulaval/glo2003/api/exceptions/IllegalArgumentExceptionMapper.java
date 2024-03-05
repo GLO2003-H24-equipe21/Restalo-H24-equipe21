@@ -7,9 +7,9 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 public class IllegalArgumentExceptionMapper implements ExceptionMapper<IllegalArgumentException> {
 
     @Override
-    public Response toResponse(IllegalArgumentException e) {
+    public Response toResponse(IllegalArgumentException exception) {
         return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new ErrorResponse("INVALID_PARAMETER", e.getMessage()))
+                .entity(new ErrorResponse("INVALID_PARAMETER", exception.getMessage()))
                 .build();
     }
 }

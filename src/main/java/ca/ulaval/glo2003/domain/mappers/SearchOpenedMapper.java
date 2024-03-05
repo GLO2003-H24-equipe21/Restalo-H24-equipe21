@@ -9,8 +9,10 @@ public class SearchOpenedMapper {
 
     public SearchOpenedDto toDto(SearchOpened searchOpened) {
         SearchOpenedDto dto = new SearchOpenedDto();
+
         dto.from = searchOpened.getFrom().format(dateTimeFormatter);
         dto.to = searchOpened.getTo().format(dateTimeFormatter);
+
         return dto;
     }
 }

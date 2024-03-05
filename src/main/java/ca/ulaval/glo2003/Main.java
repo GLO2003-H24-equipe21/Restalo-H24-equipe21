@@ -14,7 +14,7 @@ public class Main {
     public static HttpServer startServer() {
         ApplicationContext applicationContext = new ApplicationContext();
 
-        final ResourceConfig rc =
+        final ResourceConfig resourceConfig =
                 new ResourceConfig()
                         .register(new HealthResource())
                         .register(applicationContext.getRestaurantResource())
@@ -26,7 +26,7 @@ public class Main {
                         .register(new RuntimeExceptionMapper())
                         .register(new NotFoundExceptionMapper());
 
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
     }
 
     public static void main(String[] args) {
