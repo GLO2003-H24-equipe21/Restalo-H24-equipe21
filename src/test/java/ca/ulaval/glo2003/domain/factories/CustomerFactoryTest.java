@@ -1,8 +1,9 @@
 package ca.ulaval.glo2003.domain.factories;
 
+import static org.assertj.core.api.Assertions.*;
+
 import ca.ulaval.glo2003.domain.entities.Customer;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.*;
 
 class CustomerFactoryTest {
 

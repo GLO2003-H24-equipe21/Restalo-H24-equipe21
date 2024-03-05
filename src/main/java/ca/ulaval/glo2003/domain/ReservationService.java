@@ -51,12 +51,9 @@ public class ReservationService {
 
     public ReservationDto getReservation(String number) {
         Reservation reservation = reservationRepository.get(number);
-        if (reservation == null)
-        {
+        if (reservation == null) {
             throw new IllegalArgumentException("the reservation does not exist");
         }
         return reservationMapper.toDto(reservation);
     }
-
-
 }
