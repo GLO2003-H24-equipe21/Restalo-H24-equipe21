@@ -74,7 +74,8 @@ Issue #3
 ### Pull requests
 
 Pull request #1
-![PR_1](tp2Pictures/PR_1.png)
+![PR_1](tp2Pictures/PR_1_1.png)
+![PR_2](tp2Pictures/PR_1_2.png)
 
 Pull request #2
 ![PR_2](tp2Pictures/PR_2_1.png)
