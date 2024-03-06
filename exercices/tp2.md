@@ -93,63 +93,63 @@ than that._" - Robert C. Martin
 
 ### Créer un restaurant
 
-![createRestaurant](pictures_tp2/createRestaurant.png)
+![createRestaurant](pictures_tp2/architecture/createRestaurant.png)
 
 ### Obtenir un restaurant
 
-![getRestaurant](pictures_tp2/getRestaurant.png)
+![getRestaurant](pictures_tp2/architecture/getRestaurant.png)
 
 ### Lister des restaurant
 
-![listRestaurants](pictures_tp2/listRestaurants.png)
+![listRestaurants](pictures_tp2/architecture/listRestaurants.png)
 
 ### Rechercher des restaurants
 
-![searchRestaurant](pictures_tp2/searchRestaurant.png)
+![searchRestaurant](pictures_tp2/architecture/searchRestaurant.png)
 
 ### Créer une réservation
 
-![createReservation](pictures_tp2/createReservation.png)
+![createReservation](pictures_tp2/architecture/createReservation.png)
 
 ### Obtenir une réservation
 
-![getReservation](pictures_tp2/getReservation.png)
+![getReservation](pictures_tp2/architecture/getReservation.png)
 
 ## Planification du travail
 
 ### GitHub Project
 
-![Project](tp2Pictures/Kanban.png)
+![Project](pictures_tp2/planif/Kanban.png)
 
 ### Milestone
 
-![Milestone](tp2Pictures/milestone.png)
+![Milestone](pictures_tp2/planif/milestone.png)
 
 ### Issues
 
 Issue #1
-![Issue_1](tp2Pictures/Issues_1.png)
+![Issue_1](pictures_tp2/planif/Issues_1.png)
 
 Issue #2
-![Issue_2](tp2Pictures/Issues_2.png)
+![Issue_2](pictures_tp2/planif/Issues_2.png)
 
 Issue #3
-![Issue_3](tp2Pictures/Issues_3.png)
+![Issue_3](pictures_tp2/planif/Issues_3.png)
 
 ### Pull requests
 
 Pull request #1
-![PR_1](tp2Pictures/PR_1_1.png)
-![PR_2](tp2Pictures/PR_1_2.png)
+![PR_1](pictures_tp2/planif/PR_1_1.png)
+![PR_2](pictures_tp2/planif/PR_1_2.png)
 
 Pull request #2
-![PR_2](tp2Pictures/PR_2_1.png)
-![PR_2](tp2Pictures/PR_2_2.png)
+![PR_2](pictures_tp2/planif/PR_2_1.png)
+![PR_2](pictures_tp2/planif/PR_2_2.png)
 
 Pull request #3
-![PR_3](tp2Pictures/PR_3_1.png)
-![PR_3](tp2Pictures/PR_3_2.png)
+![PR_3](pictures_tp2/planif/PR_3_1.png)
+![PR_3](pictures_tp2/planif/PR_3_2.png)
 
 ### Arbre de commits
 
-![Arbre](tp2Pictures/arbre.png)
+![Arbre](pictures_tp2/planif/arbre.png)
