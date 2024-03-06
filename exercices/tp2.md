@@ -119,11 +119,37 @@ than that._" - Robert C. Martin
 
 ### GitHub Project
 
+![Project](tp2Pictures/Kanban.png)
+
 ### Milestone
+
+![Milestone](tp2Pictures/milestone.png)
 
 ### Issues
 
+Issue #1
+![Issue_1](tp2Pictures/Issues_1.png)
+
+Issue #2
+![Issue_2](tp2Pictures/Issues_2.png)
+
+Issue #3
+![Issue_3](tp2Pictures/Issues_3.png)
+
 ### Pull requests
+
+Pull request #1
+![PR_1](tp2Pictures/PR_1_1.png)
+![PR_2](tp2Pictures/PR_1_2.png)
+
+Pull request #2
+![PR_2](tp2Pictures/PR_2_1.png)
+![PR_2](tp2Pictures/PR_2_2.png)
+
+Pull request #3
+![PR_3](tp2Pictures/PR_3_1.png)
+![PR_3](tp2Pictures/PR_3_2.png)
 
 ### Arbre de commits
 
+![Arbre](tp2Pictures/arbre.png)
