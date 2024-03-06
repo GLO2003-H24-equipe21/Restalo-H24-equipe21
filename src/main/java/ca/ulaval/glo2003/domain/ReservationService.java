@@ -40,6 +40,9 @@ public class ReservationService {
             Integer groupSize,
             CustomerDto customerDto) {
         Restaurant restaurant = restaurantRepository.get(restaurantId);
+        if (Objects.isNull(restaurant)) {
+            throw new NotFoundException("Restaurant does not exist");
+        }
         Customer customer =
                 customerFactory.create(
                         customerDto.name, customerDto.email, customerDto.phoneNumber);
