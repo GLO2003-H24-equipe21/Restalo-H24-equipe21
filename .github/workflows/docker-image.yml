@@ -8,11 +8,11 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
-permissions: write-all
+
 jobs:
-
+  
   build-and-push-image:
-
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
