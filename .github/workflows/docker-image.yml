@@ -18,5 +18,5 @@ jobs:
     - name: Build and push the Docker image
       run: |
         docker login --username charleslav --password ${{ secrets.GH_PAT }} ghcr.io
-        docker build . --tag ghcr.io/glo2003-h24-equipe21/restalo-h24-equipe21/restalo-h24-equipe21:latest
-        docker push ghcr.io/glo2003-h24-equipe21/restalo-h24-equipe21/restalo-h24-equipe21:latest
+        docker build . --tag ghcr.io/glo2003-h24-equipe21/restalo-h24-equipe21:latest
+        docker push ghcr.io/glo2003-h24-equipe21/restalo-h24-equipe21:latest
