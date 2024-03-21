@@ -13,9 +13,9 @@ import ca.ulaval.glo2003.domain.RestaurantService;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
+import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import ca.ulaval.glo2003.domain.factories.RestaurantReservationsFactory;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.*;
@@ -53,8 +53,8 @@ class RestaurantResourceIntegratedTest {
 
     static RestaurantFactory restaurantFactory = new RestaurantFactory();
     static RestaurantHoursFactory restaurantHoursFactory = new RestaurantHoursFactory();
-    static RestaurantReservationsFactory restaurantReservationsFactory =
-            new RestaurantReservationsFactory();
+    static RestaurantConfigurationFactory restaurantConfigurationFactory =
+            new RestaurantConfigurationFactory();
 
     private static JerseyTestApi api;
 
@@ -63,7 +63,7 @@ class RestaurantResourceIntegratedTest {
                     restaurantRepository,
                     restaurantFactory,
                     restaurantHoursFactory,
-                    restaurantReservationsFactory);
+                    restaurantConfigurationFactory);
 
     private static final RestaurantResponse restaurantResponse =
             new RestaurantResponseFixture().create(RESTAURANT.getId());

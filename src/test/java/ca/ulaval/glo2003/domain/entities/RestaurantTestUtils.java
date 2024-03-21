@@ -1,8 +1,8 @@
 package ca.ulaval.glo2003.domain.entities;
 
+import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,7 +20,7 @@ public class RestaurantTestUtils {
                                         5,
                                         new RestaurantHours(
                                                 LocalTime.of(10, 0, 0), LocalTime.of(22, 0, 0)),
-                                        new RestaurantReservations(75)))
+                                        new RestaurantConfiguration(75)))
                 .collect(Collectors.toList());
     }
 
@@ -40,8 +40,8 @@ public class RestaurantTestUtils {
                                             .getHours()
                                             .getClose()
                                             .format(DateTimeFormatter.ISO_LOCAL_TIME);
-                            RestaurantReservationsDto reservationsDto =
-                                    new RestaurantReservationsDto();
+                            RestaurantConfigurationDto reservationsDto =
+                                    new RestaurantConfigurationDto();
                             reservationsDto.duration = restaurant.getReservations().getDuration();
 
                             restaurantDto.id = restaurant.getId();

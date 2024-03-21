@@ -9,14 +9,14 @@ public class Restaurant {
     private final String name;
     private final Integer capacity;
     private final RestaurantHours hours;
-    private final RestaurantReservations reservations;
+    private final RestaurantConfiguration reservations;
 
     public Restaurant(
             String ownerId,
             String name,
             Integer capacity,
             RestaurantHours hours,
-            RestaurantReservations reservations) {
+            RestaurantConfiguration reservations) {
         this.ownerId = ownerId;
         this.id = UUID.randomUUID().toString();
         this.name = name;
@@ -45,7 +45,7 @@ public class Restaurant {
         return id;
     }
 
-    public RestaurantReservations getReservations() {
+    public RestaurantConfiguration getReservations() {
         return reservations;
     }
 

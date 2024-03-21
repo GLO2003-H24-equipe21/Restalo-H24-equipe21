@@ -1,15 +1,15 @@
 package ca.ulaval.glo2003.domain;
 
 import ca.ulaval.glo2003.data.RestaurantRepository;
+import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
-import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
+import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import ca.ulaval.glo2003.domain.factories.RestaurantReservationsFactory;
 import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
 import jakarta.ws.rs.NotFoundException;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantHoursFactory restaurantHoursFactory;
-    private final RestaurantReservationsFactory restaurantReservationsFactory;
+    private final RestaurantConfigurationFactory restaurantConfigurationFactory;
     private final RestaurantFactory restaurantFactory;
     private final RestaurantMapper restaurantMapper;
 
@@ -27,11 +27,11 @@ public class RestaurantService {
             RestaurantRepository restaurantRepository,
             RestaurantFactory restaurantFactory,
             RestaurantHoursFactory restaurantHoursFactory,
-            RestaurantReservationsFactory restaurantReservationsFactory) {
+            RestaurantConfigurationFactory restaurantConfigurationFactory) {
         this.restaurantRepository = restaurantRepository;
         this.restaurantFactory = restaurantFactory;
         this.restaurantHoursFactory = restaurantHoursFactory;
-        this.restaurantReservationsFactory = restaurantReservationsFactory;
+        this.restaurantConfigurationFactory = restaurantConfigurationFactory;
         restaurantMapper = new RestaurantMapper();
     }
 
@@ -40,11 +40,12 @@ public class RestaurantService {
             String name,
             Integer capacity,
             RestaurantHoursDto hoursDto,
-            RestaurantReservationsDto reservationsDto) {
+            RestaurantConfigurationDto reservationsDto) {
         RestaurantHours hours = restaurantHoursFactory.create(hoursDto.open, hoursDto.close);
-        RestaurantReservations reservations =
-                restaurantReservationsFactory.create(
-                        Objects.requireNonNullElse(reservationsDto, new RestaurantReservationsDto())
+        RestaurantConfiguration reservations =
+                restaurantConfigurationFactory.create(
+                        Objects.requireNonNullElse(
+                                        reservationsDto, new RestaurantConfigurationDto())
                                 .duration);
         Restaurant restaurant =
                 restaurantFactory.create(ownerId, name, capacity, hours, reservations);

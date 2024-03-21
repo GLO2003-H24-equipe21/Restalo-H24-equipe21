@@ -22,15 +22,15 @@ public class ApplicationContext {
     public RestaurantResource getRestaurantResource() {
         RestaurantFactory restaurantFactory = new RestaurantFactory();
         RestaurantHoursFactory restaurantHoursFactory = new RestaurantHoursFactory();
-        RestaurantReservationsFactory restaurantReservationsFactory =
-                new RestaurantReservationsFactory();
+        RestaurantConfigurationFactory restaurantConfigurationFactory =
+                new RestaurantConfigurationFactory();
 
         RestaurantService restaurantService =
                 new RestaurantService(
                         restaurantRepository,
                         restaurantFactory,
                         restaurantHoursFactory,
-                        restaurantReservationsFactory);
+                        restaurantConfigurationFactory);
 
         return new RestaurantResource(restaurantService);
     }

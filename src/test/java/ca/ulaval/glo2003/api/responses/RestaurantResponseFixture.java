@@ -1,11 +1,11 @@
 package ca.ulaval.glo2003.api.responses;
 
+import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
+import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
-import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
+import ca.ulaval.glo2003.domain.mappers.RestaurantConfigurationMapper;
 import ca.ulaval.glo2003.domain.mappers.RestaurantHoursMapper;
-import ca.ulaval.glo2003.domain.mappers.RestaurantReservationsMapper;
 import java.time.LocalTime;
 
 public class RestaurantResponseFixture {
@@ -19,10 +19,10 @@ public class RestaurantResponseFixture {
             restaurantHoursMapper.toDto(
                     new RestaurantHours(LocalTime.parse("10:00:00"), LocalTime.parse("23:30:00")));
 
-    private final RestaurantReservationsMapper restaurantReservationsMapper =
-            new RestaurantReservationsMapper();
-    private RestaurantReservationsDto reservations =
-            restaurantReservationsMapper.toDto(new RestaurantReservations(60));
+    private final RestaurantConfigurationMapper restaurantConfigurationMapper =
+            new RestaurantConfigurationMapper();
+    private RestaurantConfigurationDto reservations =
+            restaurantConfigurationMapper.toDto(new RestaurantConfiguration(60));
 
     public RestaurantResponse create(String restaurantId) {
         RestaurantResponse restaurantResponse = new RestaurantResponse();

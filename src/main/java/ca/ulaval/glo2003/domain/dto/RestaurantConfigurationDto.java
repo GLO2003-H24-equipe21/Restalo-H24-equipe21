@@ -2,14 +2,14 @@ package ca.ulaval.glo2003.domain.dto;
 
 import java.util.Objects;
 
-public class RestaurantReservationsDto {
+public class RestaurantConfigurationDto {
     public Integer duration;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RestaurantReservationsDto that = (RestaurantReservationsDto) o;
+        RestaurantConfigurationDto that = (RestaurantConfigurationDto) o;
         return Objects.equals(duration, that.duration);
     }
 

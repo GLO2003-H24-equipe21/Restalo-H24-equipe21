@@ -1,7 +1,7 @@
 package ca.ulaval.glo2003.api.requests;
 
+import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
@@ -13,5 +13,5 @@ public class CreateRestaurantRequest {
     @Valid
     @NotNull(message = "Restaurant hours must be provided") public RestaurantHoursDto hours;
 
-    public RestaurantReservationsDto reservations;
+    public RestaurantConfigurationDto reservations;
 }

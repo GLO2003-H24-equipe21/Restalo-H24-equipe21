@@ -8,7 +8,7 @@ public class RestaurantDto {
     public String name;
     public Integer capacity;
     public RestaurantHoursDto hours;
-    public RestaurantReservationsDto reservations;
+    public RestaurantConfigurationDto reservations;
 
     @Override
     public boolean equals(Object o) {

@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.lenient;
 
 import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
-import ca.ulaval.glo2003.domain.entities.RestaurantReservations;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,9 +23,9 @@ class RestaurantFactoryTest {
     private static final int DURATION = 120;
 
     RestaurantFactory restaurantFactory;
-    @Mock RestaurantReservations restaurantReservations;
+    @Mock RestaurantConfiguration restaurantConfiguration;
     @Mock RestaurantHours restaurantHours;
-    @Mock RestaurantReservationsFactory restaurantReservationsFactory;
+    @Mock RestaurantConfigurationFactory restaurantConfigurationFactory;
     @Mock RestaurantHoursFactory restaurantHoursFactory;
 
     @BeforeEach
@@ -33,8 +33,8 @@ class RestaurantFactoryTest {
         restaurantFactory = new RestaurantFactory();
         lenient().when(restaurantHoursFactory.create(OPEN, CLOSE)).thenReturn(restaurantHours);
         lenient()
-                .when(restaurantReservationsFactory.create(DURATION))
-                .thenReturn(restaurantReservations);
+                .when(restaurantConfigurationFactory.create(DURATION))
+                .thenReturn(restaurantConfiguration);
     }
 
     @Test
@@ -45,14 +45,14 @@ class RestaurantFactoryTest {
                         RESTAURANT_NAME,
                         CAPACITY,
                         restaurantHours,
-                        restaurantReservations);
+                        restaurantConfiguration);
 
         Assertions.assertThat(restaurant).isNotNull();
         Assertions.assertThat(restaurant.getOwnerId()).isEqualTo(OWNER_ID);
         Assertions.assertThat(restaurant.getName()).isEqualTo(RESTAURANT_NAME);
         Assertions.assertThat(restaurant.getCapacity()).isEqualTo(CAPACITY);
         Assertions.assertThat(restaurant.getHours()).isEqualTo(restaurantHours);
-        Assertions.assertThat(restaurant.getReservations()).isEqualTo(restaurantReservations);
+        Assertions.assertThat(restaurant.getReservations()).isEqualTo(restaurantConfiguration);
     }
 
     @Test
@@ -67,7 +67,7 @@ class RestaurantFactoryTest {
                                 emptyName,
                                 CAPACITY,
                                 restaurantHours,
-                                restaurantReservations));
+                                restaurantConfiguration));
     }
 
     @Test
@@ -82,6 +82,6 @@ class RestaurantFactoryTest {
                                 RESTAURANT_NAME,
                                 belowOneCapacity,
                                 restaurantHours,
-                                restaurantReservations));
+                                restaurantConfiguration));
     }
 }

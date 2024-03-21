@@ -1,7 +1,7 @@
 package ca.ulaval.glo2003.api.responses;
 
+import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantReservationsDto;
 import java.util.Objects;
 
 public class RestaurantResponse {
@@ -9,7 +9,7 @@ public class RestaurantResponse {
     public String name;
     public Integer capacity;
     public RestaurantHoursDto hours;
-    public RestaurantReservationsDto reservations;
+    public RestaurantConfigurationDto reservations;
 
     @Override
     public boolean equals(Object o) {

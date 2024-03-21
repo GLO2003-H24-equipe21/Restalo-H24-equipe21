@@ -31,7 +31,7 @@ class ReservationFactoryTest {
                     "Chez Rudy",
                     100,
                     new RestaurantHours(LocalTime.parse("07:00:00"), LocalTime.parse("17:00:00")),
-                    new RestaurantReservations(60));
+                    new RestaurantConfiguration(60));
     @Mock Customer customer;
 
     ReservationFactory reservationFactory;

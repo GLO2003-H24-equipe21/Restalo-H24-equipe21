@@ -8,7 +8,7 @@ public class RestaurantFixture {
     private Integer capacity = 14;
     private RestaurantHours hours =
             new RestaurantHours(LocalTime.parse("10:00:00"), LocalTime.parse("23:30:00"));
-    private RestaurantReservations reservations = new RestaurantReservations(60);
+    private RestaurantConfiguration reservations = new RestaurantConfiguration(60);
 
     public Restaurant create() {
         return new Restaurant(ownerId, name, capacity, hours, reservations);
