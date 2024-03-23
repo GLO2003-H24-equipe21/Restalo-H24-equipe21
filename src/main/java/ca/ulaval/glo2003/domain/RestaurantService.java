@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003.domain;
 
 import ca.ulaval.glo2003.data.RestaurantRepository;
+import ca.ulaval.glo2003.domain.dto.AvailabilityDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
@@ -72,5 +73,15 @@ public class RestaurantService {
         List<Restaurant> restaurants = restaurantRepository.getByOwnerId(ownerId);
 
         return restaurants.stream().map(restaurantMapper::toDto).collect(Collectors.toList());
+    }
+
+    // TODO
+    public void deleteRestaurant(String restaurantId, String ownerId) {
+        restaurantRepository.delete(restaurantId, ownerId);
+    }
+
+    // TODO
+    public List<AvailabilityDto> searchAvailabilities(String restaurantId, String date) {
+        return null;
     }
 }

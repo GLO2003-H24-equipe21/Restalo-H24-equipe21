@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import java.util.List;
+import java.util.Objects;
 
 @Path("")
 public class ReservationResource {
@@ -53,5 +55,31 @@ public class ReservationResource {
         ReservationResponse reservationResponse = reservationResponseMapper.fromDto(reservationDto);
 
         return Response.status(Response.Status.OK).entity(reservationResponse).build();
+    }
+
+    // TODO
+    @DELETE
+    @Path("reservations/{number}")
+    public Response deleteReservation(@PathParam("number") String number) {
+        reservationService.deleteReservation(number);
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    // TODO
+    @GET
+    @Path("restaurants/{id}/reservations")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchReservations(
+            @HeaderParam("ownerId") String ownerId,
+            @PathParam("id") String restaurantId,
+            @QueryParam("date") String date,
+            @QueryParam("customerName") String customerName) {
+        Objects.requireNonNull(ownerId, "Owner id must be provided");
+
+        List<ReservationDto> reservationsDto =
+                reservationService.searchReservations(restaurantId, ownerId, date, customerName);
+
+        return Response.status(200).build();
     }
 }

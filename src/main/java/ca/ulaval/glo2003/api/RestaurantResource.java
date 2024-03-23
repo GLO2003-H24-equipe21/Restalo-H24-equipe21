@@ -4,6 +4,7 @@ import ca.ulaval.glo2003.api.mappers.RestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.responses.RestaurantResponse;
 import ca.ulaval.glo2003.domain.RestaurantService;
+import ca.ulaval.glo2003.domain.dto.AvailabilityDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -71,5 +72,29 @@ public class RestaurantResource {
         List<RestaurantDto> restaurants = restaurantService.listRestaurants(ownerId);
 
         return Response.status(Response.Status.OK).entity(restaurants).build();
+    }
+
+    // TODO
+    @DELETE
+    @Path("restaurants/{id}")
+    public Response deleteRestaurant(
+            @PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId) {
+        restaurantService.deleteRestaurant(restaurantId, ownerId);
+
+        return Response.status(Response.Status.NO_CONTENT).build();
+    }
+
+    // TODO
+    @GET
+    @Path("restaurants/{id}/availabilities")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchAvailabilities(
+            @PathParam("id") String restaurantId, @QueryParam("date") String date) {
+        Objects.requireNonNull(date, "Date query param must be provided");
+
+        List<AvailabilityDto> availabilities =
+                restaurantService.searchAvailabilities(restaurantId, date);
+
+        return Response.status(200).build();
     }
 }

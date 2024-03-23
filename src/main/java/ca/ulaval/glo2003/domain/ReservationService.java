@@ -11,6 +11,7 @@ import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import ca.ulaval.glo2003.domain.mappers.ReservationMapper;
 import jakarta.ws.rs.NotFoundException;
+import java.util.List;
 import java.util.Objects;
 
 public class ReservationService {
@@ -62,5 +63,16 @@ public class ReservationService {
         }
 
         return reservationMapper.toDto(reservation);
+    }
+
+    // TODO
+    public void deleteReservation(String number) {
+        reservationRepository.delete(number);
+    }
+
+    // TODO
+    public List<ReservationDto> searchReservations(
+            String restaurantId, String ownerId, String date, String customerName) {
+        return null;
     }
 }

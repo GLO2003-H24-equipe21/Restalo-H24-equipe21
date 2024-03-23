@@ -65,4 +65,7 @@ public class RestaurantRepository {
         if (Objects.isNull(to)) return true;
         return !to.isAfter(restaurantHours.getClose()) && to.isAfter(restaurantHours.getOpen());
     }
+
+    // TODO
+    public void delete(String restaurantId, String ownerId) {}
 }
