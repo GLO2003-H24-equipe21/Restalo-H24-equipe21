@@ -67,5 +67,7 @@ public class RestaurantRepository {
     }
 
     // TODO
-    public void delete(String restaurantId, String ownerId) {}
+    public void delete(String restaurantId) {
+        restaurantIdToRestaurant.remove(restaurantId);
+    }
 }

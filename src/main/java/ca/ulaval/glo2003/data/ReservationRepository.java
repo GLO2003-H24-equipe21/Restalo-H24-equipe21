@@ -22,7 +22,10 @@ public class ReservationRepository {
     }
 
     // TODO
-    public void delete(String reservationId) {}
+    public void delete(String reservationId) {
+
+
+    }
 
     // TODO
     public List<Reservation> searchReservations(

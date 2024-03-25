@@ -77,7 +77,17 @@ public class RestaurantService {
 
     // TODO
     public void deleteRestaurant(String restaurantId, String ownerId) {
-        restaurantRepository.delete(restaurantId, ownerId);
+        Restaurant restaurant = restaurantRepository.get(restaurantId);
+
+        if (Objects.isNull(restaurant)) {
+            throw new NotFoundException("le restaurant n'existe pas");
+        }
+
+        if (!restaurant.getOwnerId().equals(ownerId)) {
+            throw new NotFoundException("le restaurant n'appartient pas au restaurateur");
+        }
+
+        restaurantRepository.delete(restaurantId);
     }
 
     // TODO
