@@ -1,5 +1,6 @@
-package ca.ulaval.glo2003.data;
+package ca.ulaval.glo2003.data.inmemory;
 
+import ca.ulaval.glo2003.domain.RestaurantRepository;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.Search;
@@ -10,11 +11,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class RestaurantRepository {
+public class RestaurantRepositoryInMemory implements RestaurantRepository {
 
     private final Map<String, Restaurant> restaurantIdToRestaurant;
 
-    public RestaurantRepository() {
+    public RestaurantRepositoryInMemory() {
         restaurantIdToRestaurant = new HashMap<>();
     }
 

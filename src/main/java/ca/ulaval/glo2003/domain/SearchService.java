@@ -1,6 +1,5 @@
 package ca.ulaval.glo2003.domain;
 
-import ca.ulaval.glo2003.data.RestaurantRepository;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.SearchOpenedDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;

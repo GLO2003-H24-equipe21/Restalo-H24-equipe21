@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import ca.ulaval.glo2003.data.RestaurantRepository;
+import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
@@ -50,7 +50,8 @@ class RestaurantServiceTest {
 
     RestaurantService restaurantService;
     @Mock RestaurantFactory restaurantFactory;
-    @Mock RestaurantRepository restaurantRepository;
+    @Mock
+    RestaurantRepositoryInMemory restaurantRepository;
     @Mock RestaurantConfiguration restaurantConfiguration;
     @Mock RestaurantHours restaurantHours;
     @Mock RestaurantConfigurationFactory restaurantConfigurationFactory;

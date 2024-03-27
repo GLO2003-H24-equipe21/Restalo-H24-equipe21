@@ -3,7 +3,7 @@ package ca.ulaval.glo2003.domain;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import ca.ulaval.glo2003.data.RestaurantRepository;
+import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.dto.SearchOpenedDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
@@ -28,7 +28,8 @@ class SearchServiceTest {
 
     SearchService searchService;
 
-    @Mock RestaurantRepository restaurantRepository;
+    @Mock
+    RestaurantRepositoryInMemory restaurantRepository;
 
     @Mock SearchFactory searchFactory;
 

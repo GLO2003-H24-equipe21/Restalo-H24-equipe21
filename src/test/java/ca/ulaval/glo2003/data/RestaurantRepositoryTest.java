@@ -2,6 +2,7 @@ package ca.ulaval.glo2003.data;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.*;
 import java.time.LocalTime;
 import java.util.List;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RestaurantRepositoryTest {
-    RestaurantRepository repository;
+    RestaurantRepositoryInMemory repository;
 
     Restaurant restaurant1, restaurant2;
     String restaurantId;
@@ -19,7 +20,7 @@ class RestaurantRepositoryTest {
 
     @BeforeEach
     void setup() {
-        repository = new RestaurantRepository();
+        repository = new RestaurantRepositoryInMemory();
         restaurant1 = new RestaurantFixture().withOwnerId(OWNER_ID).create();
         restaurant2 =
                 new RestaurantFixture()

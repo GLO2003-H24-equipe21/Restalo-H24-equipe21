@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
-import ca.ulaval.glo2003.data.ReservationRepository;
-import ca.ulaval.glo2003.data.RestaurantRepository;
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
+import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.dto.CustomerDto;
 import ca.ulaval.glo2003.domain.dto.ReservationDto;
 import ca.ulaval.glo2003.domain.entities.*;
@@ -48,11 +48,12 @@ class ReservationServiceTest {
 
     CustomerDto customerDto = new CustomerDto();
 
-    @Mock ReservationRepository reservationRepository;
+    @Mock
+    ReservationRepositoryInMemory reservationRepository;
 
     @Mock ReservationFactory reservationFactory;
 
-    RestaurantRepository restaurantRepository = new RestaurantRepository();
+    RestaurantRepositoryInMemory restaurantRepository = new RestaurantRepositoryInMemory();
 
     CustomerFactory customerFactory;
 
