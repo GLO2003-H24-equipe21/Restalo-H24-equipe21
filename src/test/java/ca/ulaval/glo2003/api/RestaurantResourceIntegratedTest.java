@@ -8,7 +8,7 @@ import ca.ulaval.glo2003.api.requests.RestaurantRequestFixture;
 import ca.ulaval.glo2003.api.responses.ErrorResponse;
 import ca.ulaval.glo2003.api.responses.RestaurantResponse;
 import ca.ulaval.glo2003.api.responses.RestaurantResponseFixture;
-import ca.ulaval.glo2003.data.RestaurantRepository;
+import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.RestaurantService;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
@@ -49,7 +49,7 @@ class RestaurantResourceIntegratedTest {
     private static final String INVALID_RESTAURANT_ID = "32JFD323";
 
     private static final RestaurantMapper RESTAURANT_MAPPER = new RestaurantMapper();
-    static RestaurantRepository restaurantRepository = new RestaurantRepository();
+    static RestaurantRepositoryInMemory restaurantRepository = new RestaurantRepositoryInMemory();
 
     static RestaurantFactory restaurantFactory = new RestaurantFactory();
     static RestaurantHoursFactory restaurantHoursFactory = new RestaurantHoursFactory();

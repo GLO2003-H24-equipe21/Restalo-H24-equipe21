@@ -3,11 +3,12 @@ package ca.ulaval.glo2003;
 import ca.ulaval.glo2003.api.ReservationResource;
 import ca.ulaval.glo2003.api.RestaurantResource;
 import ca.ulaval.glo2003.api.SearchResource;
-import ca.ulaval.glo2003.data.ReservationRepository;
-import ca.ulaval.glo2003.data.RestaurantRepository;
-import ca.ulaval.glo2003.domain.ReservationService;
-import ca.ulaval.glo2003.domain.RestaurantService;
-import ca.ulaval.glo2003.domain.SearchService;
+import ca.ulaval.glo2003.data.DatastoreProvider;
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
+import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
+import ca.ulaval.glo2003.data.mongo.ReservationRepositoryMongo;
+import ca.ulaval.glo2003.data.mongo.RestaurantRepositoryMongo;
+import ca.ulaval.glo2003.domain.*;
 import ca.ulaval.glo2003.domain.factories.*;
 
 public class ApplicationContext {
@@ -15,8 +16,18 @@ public class ApplicationContext {
     private final ReservationRepository reservationRepository;
 
     public ApplicationContext() {
-        restaurantRepository = new RestaurantRepository();
-        reservationRepository = new ReservationRepository();
+        String persistenceProperty = System.getProperty("persistence", "inmemory");
+        if (persistenceProperty.equals("inmemory")) {
+            restaurantRepository = new RestaurantRepositoryInMemory();
+            reservationRepository = new ReservationRepositoryInMemory();
+        } else if (persistenceProperty.equals("mongo")) {
+            DatastoreProvider datastoreProvider = new DatastoreProvider();
+            restaurantRepository = new RestaurantRepositoryMongo(datastoreProvider.provide());
+            reservationRepository = new ReservationRepositoryMongo(datastoreProvider.provide());
+        } else {
+            throw new IllegalArgumentException(
+                    "The 'persistence' system property should be 'inmemory' or 'mongo'");
+        }
     }
 
     public RestaurantResource getRestaurantResource() {

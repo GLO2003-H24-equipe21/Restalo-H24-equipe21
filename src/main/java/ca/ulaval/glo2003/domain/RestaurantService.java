@@ -1,6 +1,5 @@
 package ca.ulaval.glo2003.domain;
 
-import ca.ulaval.glo2003.data.RestaurantRepository;
 import ca.ulaval.glo2003.domain.dto.AvailabilityDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
 import ca.ulaval.glo2003.domain.dto.RestaurantDto;

@@ -2,13 +2,14 @@ package ca.ulaval.glo2003.data;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.ReservationFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ReservationRepositoryTest {
-    ReservationRepository repository;
+    ReservationRepositoryInMemory repository;
 
     Reservation reservation;
     String reservationNumber;
@@ -18,7 +19,7 @@ class ReservationRepositoryTest {
         reservation = new ReservationFixture().create();
         reservationNumber = reservation.getNumber();
 
-        repository = new ReservationRepository();
+        repository = new ReservationRepositoryInMemory();
     }
 
     @Test
