@@ -48,8 +48,7 @@ class ReservationServiceTest {
 
     CustomerDto customerDto = new CustomerDto();
 
-    @Mock
-    ReservationRepositoryInMemory reservationRepository;
+    @Mock ReservationRepositoryInMemory reservationRepository;
 
     @Mock ReservationFactory reservationFactory;
 

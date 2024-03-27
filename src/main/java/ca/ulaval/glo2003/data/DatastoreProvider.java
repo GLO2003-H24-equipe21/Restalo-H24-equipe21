@@ -1,6 +1,5 @@
 package ca.ulaval.glo2003.data;
 
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;

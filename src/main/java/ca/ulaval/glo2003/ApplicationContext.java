@@ -20,12 +20,13 @@ public class ApplicationContext {
         if (persistenceProperty.equals("inmemory")) {
             restaurantRepository = new RestaurantRepositoryInMemory();
             reservationRepository = new ReservationRepositoryInMemory();
-        } else if (persistenceProperty.equals("mongo")){
+        } else if (persistenceProperty.equals("mongo")) {
             DatastoreProvider datastoreProvider = new DatastoreProvider();
             restaurantRepository = new RestaurantRepositoryMongo(datastoreProvider.provide());
             reservationRepository = new ReservationRepositoryMongo(datastoreProvider.provide());
         } else {
-            throw new IllegalArgumentException("The 'persistence' system property should be 'inmemory' or 'mongo'");
+            throw new IllegalArgumentException(
+                    "The 'persistence' system property should be 'inmemory' or 'mongo'");
         }
     }
 

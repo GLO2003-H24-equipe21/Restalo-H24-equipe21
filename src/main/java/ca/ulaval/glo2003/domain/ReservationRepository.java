@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain;
 
 import ca.ulaval.glo2003.domain.entities.Reservation;
-
 import java.util.List;
 
 public interface ReservationRepository {

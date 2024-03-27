@@ -4,7 +4,6 @@ import ca.ulaval.glo2003.domain.RestaurantRepository;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.Search;
 import dev.morphia.Datastore;
-
 import java.util.List;
 
 public class RestaurantRepositoryMongo implements RestaurantRepository {
@@ -20,9 +19,7 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     }
 
     @Override
-    public void add(Restaurant restaurant) {
-
-    }
+    public void add(Restaurant restaurant) {}
 
     @Override
     public List<Restaurant> getByOwnerId(String ownerId) {
@@ -35,7 +32,5 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     }
 
     @Override
-    public void delete(String restaurantId, String ownerId) {
-
-    }
+    public void delete(String restaurantId, String ownerId) {}
 }

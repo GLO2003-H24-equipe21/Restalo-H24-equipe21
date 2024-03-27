@@ -3,7 +3,6 @@ package ca.ulaval.glo2003.data.mongo;
 import ca.ulaval.glo2003.domain.ReservationRepository;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import dev.morphia.Datastore;
-
 import java.util.List;
 
 public class ReservationRepositoryMongo implements ReservationRepository {
@@ -14,9 +13,7 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     }
 
     @Override
-    public void add(Reservation reservation) {
-
-    }
+    public void add(Reservation reservation) {}
 
     @Override
     public Reservation get(String reservationId) {
@@ -24,12 +21,11 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     }
 
     @Override
-    public void delete(String reservationId) {
-
-    }
+    public void delete(String reservationId) {}
 
     @Override
-    public List<Reservation> searchReservations(String restaurantId, String ownerId, String date, String customerName) {
+    public List<Reservation> searchReservations(
+            String restaurantId, String ownerId, String date, String customerName) {
         return null;
     }
 }

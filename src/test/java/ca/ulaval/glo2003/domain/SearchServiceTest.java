@@ -28,8 +28,7 @@ class SearchServiceTest {
 
     SearchService searchService;
 
-    @Mock
-    RestaurantRepositoryInMemory restaurantRepository;
+    @Mock RestaurantRepositoryInMemory restaurantRepository;
 
     @Mock SearchFactory searchFactory;
 

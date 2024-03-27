@@ -50,8 +50,7 @@ class RestaurantServiceTest {
 
     RestaurantService restaurantService;
     @Mock RestaurantFactory restaurantFactory;
-    @Mock
-    RestaurantRepositoryInMemory restaurantRepository;
+    @Mock RestaurantRepositoryInMemory restaurantRepository;
     @Mock RestaurantConfiguration restaurantConfiguration;
     @Mock RestaurantHours restaurantHours;
     @Mock RestaurantConfigurationFactory restaurantConfigurationFactory;
