@@ -13,6 +13,7 @@ import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,7 +106,7 @@ class ReservationServiceTest {
 
     @Test
     void givenExistingNumber_thenFindsReservation() {
-        when(reservationRepository.get(number)).thenReturn(reservation);
+        when(reservationRepository.get(number)).thenReturn(Optional.ofNullable(reservation));
 
         Reservation gottenReservation = reservationService.getReservation(number);
 
@@ -114,7 +115,7 @@ class ReservationServiceTest {
 
     @Test
     void givenNonExistingNumber_thenThrowNotFoundException() {
-        when(reservationRepository.get(INVALID_NUMBER)).thenReturn(null);
+        when(reservationRepository.get(INVALID_NUMBER)).thenReturn(Optional.empty());
 
         assertThrows(
                 NotFoundException.class, () -> reservationService.getReservation(INVALID_NUMBER));

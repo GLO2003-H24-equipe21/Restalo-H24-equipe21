@@ -8,7 +8,6 @@ import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.util.List;
-import java.util.Objects;
 
 public class ReservationService {
 
@@ -34,10 +33,10 @@ public class ReservationService {
             String startTime,
             Integer groupSize,
             CustomerPojo customerRequest) {
-        Restaurant restaurant = restaurantRepository.get(restaurantId);
-        if (Objects.isNull(restaurant)) {
-            throw new NotFoundException("Restaurant does not exist");
-        }
+        Restaurant restaurant =
+                restaurantRepository
+                        .get(restaurantId)
+                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
         Customer customer =
                 customerFactory.create(
                         customerRequest.name, customerRequest.email, customerRequest.phoneNumber);
@@ -50,13 +49,9 @@ public class ReservationService {
     }
 
     public Reservation getReservation(String number) {
-        Reservation reservation = reservationRepository.get(number);
-
-        if (Objects.isNull(reservation)) {
-            throw new NotFoundException("Reservation does not exist");
-        }
-
-        return reservation;
+        return reservationRepository
+                .get(number)
+                .orElseThrow(() -> new NotFoundException("Reservation does not exist"));
     }
 
     // TODO

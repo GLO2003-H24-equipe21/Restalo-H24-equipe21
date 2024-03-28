@@ -4,6 +4,7 @@ import ca.ulaval.glo2003.domain.ReservationRepository;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import dev.morphia.Datastore;
 import java.util.List;
+import java.util.Optional;
 
 public class ReservationRepositoryMongo implements ReservationRepository {
     private final Datastore datastore;
@@ -16,8 +17,8 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     public void add(Reservation reservation) {}
 
     @Override
-    public Reservation get(String reservationId) {
-        return null;
+    public Optional<Reservation> get(String reservationId) {
+        return Optional.empty();
     }
 
     @Override

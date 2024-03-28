@@ -5,10 +5,7 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.Search;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RestaurantRepositoryInMemory implements RestaurantRepository {
@@ -19,8 +16,8 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
         restaurantIdToRestaurant = new HashMap<>();
     }
 
-    public Restaurant get(String restaurantId) {
-        return restaurantIdToRestaurant.get(restaurantId);
+    public Optional<Restaurant> get(String restaurantId) {
+        return Optional.ofNullable(restaurantIdToRestaurant.get(restaurantId));
     }
 
     public void add(Restaurant restaurant) {

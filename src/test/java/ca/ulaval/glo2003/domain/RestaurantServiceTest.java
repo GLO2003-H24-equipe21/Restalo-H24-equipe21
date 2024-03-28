@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -131,7 +132,7 @@ class RestaurantServiceTest {
 
     @Test
     void givenExistingId_thenFindsRestaurant() {
-        when(restaurantRepository.get(restaurantId)).thenReturn(restaurant);
+        when(restaurantRepository.get(restaurantId)).thenReturn(Optional.of(restaurant));
 
         Restaurant gottenRestaurant = restaurantService.getRestaurant(restaurantId, OWNER_ID);
 
@@ -140,7 +141,7 @@ class RestaurantServiceTest {
 
     @Test
     void givenInvalidId_thenThrowNotFoundException() {
-        when(restaurantRepository.get("invalid_number")).thenReturn(null);
+        when(restaurantRepository.get("invalid_number")).thenReturn(Optional.empty());
 
         assertThrows(
                 NotFoundException.class,

@@ -51,11 +51,11 @@ public class RestaurantService {
     }
 
     public Restaurant getRestaurant(String restaurantId, String ownerId) {
-        Restaurant restaurant = restaurantRepository.get(restaurantId);
+        Restaurant restaurant =
+                restaurantRepository
+                        .get(restaurantId)
+                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
 
-        if (Objects.isNull(restaurant)) {
-            throw new NotFoundException("Restaurant does not exist.");
-        }
         if (!restaurant.getOwnerId().equals(ownerId)) {
             throw new NotFoundException("Restaurant owner id is invalid");
         }

@@ -5,6 +5,7 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.Search;
 import dev.morphia.Datastore;
 import java.util.List;
+import java.util.Optional;
 
 public class RestaurantRepositoryMongo implements RestaurantRepository {
     private final Datastore datastore;
@@ -14,8 +15,8 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     }
 
     @Override
-    public Restaurant get(String restaurantId) {
-        return null;
+    public Optional<Restaurant> get(String restaurantId) {
+        return Optional.empty();
     }
 
     @Override
