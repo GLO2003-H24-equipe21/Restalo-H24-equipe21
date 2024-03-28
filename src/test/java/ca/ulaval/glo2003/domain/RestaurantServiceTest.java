@@ -15,10 +15,7 @@ import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantServiceTest {
+    private static final UUID RESTAURANT_ID = UUID.randomUUID();
     private static final String OWNER_ID = "1234";
     private static final String INVALID_OWNER_ID = "ABCD";
     private static final String RESTAURANT_NAME = "Paccini";
@@ -38,6 +36,7 @@ class RestaurantServiceTest {
     private static String restaurantId;
     private static final Restaurant restaurant =
             new Restaurant(
+                    RESTAURANT_ID,
                     OWNER_ID,
                     RESTAURANT_NAME,
                     CAPACITY,
@@ -67,6 +66,7 @@ class RestaurantServiceTest {
 
         restaurantMock =
                 new Restaurant(
+                        RESTAURANT_ID,
                         OWNER_ID,
                         RESTAURANT_NAME,
                         CAPACITY,
@@ -153,6 +153,7 @@ class RestaurantServiceTest {
         List<Restaurant> mockRestaurants =
                 Arrays.asList(
                         new Restaurant(
+                                RESTAURANT_ID,
                                 OWNER_ID,
                                 RESTAURANT_NAME,
                                 CAPACITY,

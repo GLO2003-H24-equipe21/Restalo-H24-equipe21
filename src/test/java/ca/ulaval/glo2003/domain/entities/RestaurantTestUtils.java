@@ -2,6 +2,7 @@ package ca.ulaval.glo2003.domain.entities;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,6 +12,7 @@ public class RestaurantTestUtils {
                 .mapToObj(
                         i ->
                                 new Restaurant(
+                                        UUID.randomUUID(),
                                         String.format("owner %d", i),
                                         String.format("restaurant %d", i),
                                         5,

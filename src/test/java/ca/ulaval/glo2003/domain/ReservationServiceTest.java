@@ -14,6 +14,7 @@ import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
+import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,13 +24,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
-
+    private static final String NUMBER = "12345678912345678910";
     private static final String DATE = "2024-03-01";
 
     private static final Integer GROUP_SIZE = 4;
 
     private static final Restaurant RESTAURANT =
             new Restaurant(
+                    UUID.randomUUID(),
                     "Rudy",
                     "Chez Rudy",
                     100,
@@ -62,6 +64,7 @@ class ReservationServiceTest {
     void setUp() {
         reservation =
                 new Reservation(
+                        NUMBER,
                         LocalDate.parse(DATE),
                         new ReservationTime(LocalTime.parse(START_TIME), 60),
                         GROUP_SIZE,

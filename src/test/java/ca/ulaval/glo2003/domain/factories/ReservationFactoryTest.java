@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ca.ulaval.glo2003.domain.entities.*;
 import java.time.LocalTime;
+import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ class ReservationFactoryTest {
 
     private static final Restaurant RESTAURANT =
             new Restaurant(
+                    UUID.randomUUID(),
                     "Rudy",
                     "Chez Rudy",
                     100,

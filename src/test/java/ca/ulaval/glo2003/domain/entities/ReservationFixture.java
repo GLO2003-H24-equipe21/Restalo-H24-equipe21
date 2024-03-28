@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class ReservationFixture {
+    private String number = "123456789123456789";
     private LocalDate date = LocalDate.now().plusDays(2);
     private ReservationTime reservationTime = new ReservationTime(LocalTime.parse("12:00:00"), 60);
     private Integer groupSize = 3;
@@ -11,6 +12,6 @@ public class ReservationFixture {
     private Restaurant restaurant = new RestaurantFixture().create();
 
     public Reservation create() {
-        return new Reservation(date, reservationTime, groupSize, customer, restaurant);
+        return new Reservation(number, date, reservationTime, groupSize, customer, restaurant);
     }
 }
