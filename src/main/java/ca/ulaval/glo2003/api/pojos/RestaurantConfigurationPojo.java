@@ -1,15 +1,21 @@
-package ca.ulaval.glo2003.domain.dto;
+package ca.ulaval.glo2003.api.pojos;
 
 import java.util.Objects;
 
-public class RestaurantConfigurationDto {
+public class RestaurantConfigurationPojo {
     public Integer duration;
+
+    public RestaurantConfigurationPojo() {}
+
+    public RestaurantConfigurationPojo(Integer duration) {
+        this.duration = duration;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RestaurantConfigurationDto that = (RestaurantConfigurationDto) o;
+        RestaurantConfigurationPojo that = (RestaurantConfigurationPojo) o;
         return Objects.equals(duration, that.duration);
     }
 

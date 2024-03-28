@@ -2,7 +2,6 @@ package ca.ulaval.glo2003.domain.entities;
 
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.UUID;
 
 public class Reservation {
     private final String number;
@@ -13,23 +12,18 @@ public class Reservation {
     private final Restaurant restaurant;
 
     public Reservation(
+            String number,
             LocalDate date,
             ReservationTime reservationTime,
             Integer groupSize,
             Customer customer,
             Restaurant restaurant) {
-        this.number = createNumber();
+        this.number = number;
         this.date = date;
         this.reservationTime = reservationTime;
         this.groupSize = groupSize;
         this.customer = customer;
         this.restaurant = restaurant;
-    }
-
-    public String createNumber() {
-        return String.format(
-                "%040d",
-                new java.math.BigInteger(UUID.randomUUID().toString().replace("-", ""), 16));
     }
 
     public String getNumber() {

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.UUID;
 
 public class ReservationFactory {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
@@ -56,7 +57,8 @@ public class ReservationFactory {
                 reservationTime.getEnd(), restaurant.getHours().getClose());
         verifyGroupSizeAtLeastOne(groupSize);
 
-        return new Reservation(date, reservationTime, groupSize, customer, restaurant);
+        return new Reservation(
+                createNumber(), date, reservationTime, groupSize, customer, restaurant);
     }
 
     private void verifyReservationStartsBeforeRestaurantOpen(
@@ -79,5 +81,11 @@ public class ReservationFactory {
         if (groupSize < 1) {
             throw new IllegalArgumentException("Reservation group size must be at least one");
         }
+    }
+
+    private String createNumber() {
+        return String.format(
+                "%040d",
+                new java.math.BigInteger(UUID.randomUUID().toString().replace("-", ""), 16));
     }
 }

@@ -1,8 +1,10 @@
 package ca.ulaval.glo2003.domain.entities;
 
 import java.time.LocalTime;
+import java.util.UUID;
 
 public class RestaurantFixture {
+    private UUID restaurantId = UUID.randomUUID();
     private String ownerId = "owner";
     private String name = "restaurant";
     private Integer capacity = 14;
@@ -11,7 +13,7 @@ public class RestaurantFixture {
     private RestaurantConfiguration reservations = new RestaurantConfiguration(60);
 
     public Restaurant create() {
-        return new Restaurant(ownerId, name, capacity, hours, reservations);
+        return new Restaurant(restaurantId, ownerId, name, capacity, hours, reservations);
     }
 
     public RestaurantFixture withOwnerId(String ownerId) {

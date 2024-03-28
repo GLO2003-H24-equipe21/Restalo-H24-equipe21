@@ -1,6 +1,6 @@
 package ca.ulaval.glo2003.api.requests;
 
-import ca.ulaval.glo2003.domain.dto.CustomerDto;
+import ca.ulaval.glo2003.api.pojos.CustomerPojo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,5 +12,5 @@ public class CreateReservationRequest {
     @NotNull(message = "Reservation group size must be provided") public Integer groupSize;
 
     @Valid
-    @NotNull(message = "Reservation customer must be provided") public CustomerDto customer;
+    @NotNull(message = "Reservation customer must be provided") public CustomerPojo customer;
 }

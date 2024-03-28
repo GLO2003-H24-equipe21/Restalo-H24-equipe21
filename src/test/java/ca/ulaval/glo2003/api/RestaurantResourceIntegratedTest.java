@@ -3,20 +3,19 @@ package ca.ulaval.glo2003.api;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.ulaval.glo2003.api.exceptions.*;
+import ca.ulaval.glo2003.api.mappers.OwnerRestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.requests.RestaurantRequestFixture;
 import ca.ulaval.glo2003.api.responses.ErrorResponse;
-import ca.ulaval.glo2003.api.responses.RestaurantResponse;
+import ca.ulaval.glo2003.api.responses.OwnerRestaurantResponse;
 import ca.ulaval.glo2003.api.responses.RestaurantResponseFixture;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.RestaurantService;
-import ca.ulaval.glo2003.domain.dto.RestaurantDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
 import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.*;
 import java.util.ArrayList;
@@ -48,7 +47,8 @@ class RestaurantResourceIntegratedTest {
     private static final String INVALID_OWNER_ID = "ABCD";
     private static final String INVALID_RESTAURANT_ID = "32JFD323";
 
-    private static final RestaurantMapper RESTAURANT_MAPPER = new RestaurantMapper();
+    private static final OwnerRestaurantResponseMapper RESTAURANT_MAPPER =
+            new OwnerRestaurantResponseMapper();
     static RestaurantRepositoryInMemory restaurantRepository = new RestaurantRepositoryInMemory();
 
     static RestaurantFactory restaurantFactory = new RestaurantFactory();
@@ -65,10 +65,10 @@ class RestaurantResourceIntegratedTest {
                     restaurantHoursFactory,
                     restaurantConfigurationFactory);
 
-    private static final RestaurantResponse restaurantResponse =
+    private static final OwnerRestaurantResponse restaurantResponse =
             new RestaurantResponseFixture().create(RESTAURANT.getId());
 
-    private static ArrayList<RestaurantDto> restaurants;
+    private static List<OwnerRestaurantResponse> restaurants;
 
     protected static Application configure() {
         return new ResourceConfig()
@@ -89,10 +89,10 @@ class RestaurantResourceIntegratedTest {
         restaurantRepository.add(RESTAURANT2);
         restaurantRepository.add(OTHER_RESTAURANT);
 
-        restaurants = new ArrayList<RestaurantDto>();
+        restaurants = new ArrayList<>();
 
-        restaurants.add(RESTAURANT_MAPPER.toDto(RESTAURANT));
-        restaurants.add(RESTAURANT_MAPPER.toDto(RESTAURANT2));
+        restaurants.add(RESTAURANT_MAPPER.from(RESTAURANT));
+        restaurants.add(RESTAURANT_MAPPER.from(RESTAURANT2));
     }
 
     @Test
@@ -103,7 +103,7 @@ class RestaurantResourceIntegratedTest {
                         .header("Owner", OWNER_ID)
                         .post(Entity.entity(restaurantRequest, MediaType.APPLICATION_JSON));
         Assertions.assertThat(response.getStatus()).isEqualTo(201);
-
+        System.out.println("test");
         String[] headers = response.getHeaderString(HttpHeaders.LOCATION).split("restaurants/", 2);
 
         Assertions.assertThat(headers[1]).isNotEmpty();
@@ -160,8 +160,8 @@ class RestaurantResourceIntegratedTest {
                         .get();
         Assertions.assertThat(response.getStatus()).isEqualTo(200);
 
-        RestaurantResponse receivedRestaurantResponse =
-                response.readEntity(RestaurantResponse.class);
+        OwnerRestaurantResponse receivedRestaurantResponse =
+                response.readEntity(OwnerRestaurantResponse.class);
         Assertions.assertThat(receivedRestaurantResponse).isEqualTo(restaurantResponse);
     }
 
@@ -200,14 +200,13 @@ class RestaurantResourceIntegratedTest {
     void givenValidParameters_whenGetRestaurantList_Returns200AndOwnerRestaurantList() {
         Response response = api.path("/restaurants/").request().header("Owner", OWNER_ID).get();
 
-        ArrayList<RestaurantDto> entities =
-                response.readEntity(new GenericType<ArrayList<RestaurantDto>>() {});
+        List<OwnerRestaurantResponse> entities = response.readEntity(new GenericType<>() {});
 
         Assertions.assertThat(response.getStatus()).isEqualTo(200);
         Assertions.assertThat(entities.size())
                 .isEqualTo(restaurantService.listRestaurants(OWNER_ID).size());
-        for (RestaurantDto expectedRestaurant : restaurantService.listRestaurants(OWNER_ID)) {
-            assertThat(entities).contains(expectedRestaurant);
+        for (Restaurant expectedRestaurant : restaurantService.listRestaurants(OWNER_ID)) {
+            assertThat(entities).contains(RESTAURANT_MAPPER.from(expectedRestaurant));
         }
     }
 

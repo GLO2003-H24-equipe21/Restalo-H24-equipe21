@@ -1,20 +1,20 @@
 package ca.ulaval.glo2003.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ca.ulaval.glo2003.api.pojos.CustomerPojo;
 import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
-import ca.ulaval.glo2003.domain.dto.CustomerDto;
-import ca.ulaval.glo2003.domain.dto.ReservationDto;
 import ca.ulaval.glo2003.domain.entities.*;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
-import ca.ulaval.glo2003.domain.mappers.ReservationMapper;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
+import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,13 +24,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
-
+    private static final String NUMBER = "12345678912345678910";
     private static final String DATE = "2024-03-01";
 
     private static final Integer GROUP_SIZE = 4;
 
     private static final Restaurant RESTAURANT =
             new Restaurant(
+                    UUID.randomUUID(),
                     "Rudy",
                     "Chez Rudy",
                     100,
@@ -43,10 +44,9 @@ class ReservationServiceTest {
     private static final Customer CUSTOMER =
             new Customer("Buggy", "Buggy.Boo@Asetin.com", "1234567890");
 
-    ReservationMapper reservationMapper = new ReservationMapper();
     ReservationService reservationService;
 
-    CustomerDto customerDto = new CustomerDto();
+    CustomerPojo customerPojo = new CustomerPojo("Buggy", "Buggy.Boo@Asetin.com", "1234567890");
 
     @Mock ReservationRepositoryInMemory reservationRepository;
 
@@ -64,6 +64,7 @@ class ReservationServiceTest {
     void setUp() {
         reservation =
                 new Reservation(
+                        NUMBER,
                         LocalDate.parse(DATE),
                         new ReservationTime(LocalTime.parse(START_TIME), 60),
                         GROUP_SIZE,
@@ -74,10 +75,6 @@ class ReservationServiceTest {
         restaurantRepository.add(RESTAURANT);
 
         customerFactory = new CustomerFactory();
-
-        customerDto.name = "Buggy";
-        customerDto.email = "Buggy.Boo@Asetin.com";
-        customerDto.phoneNumber = "1234567890";
 
         reservationService =
                 new ReservationService(
@@ -94,7 +91,7 @@ class ReservationServiceTest {
 
         String reservationNumber =
                 reservationService.createReservation(
-                        RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerDto);
+                        RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerPojo);
 
         Assertions.assertThat(reservationNumber).isEqualTo(number);
     }
@@ -104,36 +101,24 @@ class ReservationServiceTest {
         when(reservationFactory.create(DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT))
                 .thenReturn(reservation);
 
-        String reservationNumber =
-                reservationService.createReservation(
-                        RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerDto);
+        reservationService.createReservation(
+                RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerPojo);
 
         verify(reservationRepository).add(reservation);
     }
 
     @Test
     void givenExistingNumber_thenFindsReservation() {
-        when(reservationRepository.get(number)).thenReturn(reservation);
+        when(reservationRepository.get(number)).thenReturn(Optional.ofNullable(reservation));
 
-        ReservationDto gottenReservation = reservationService.getReservation(number);
+        Reservation gottenReservation = reservationService.getReservation(number);
 
-        Assertions.assertThat(gottenReservation.date)
-                .isEqualTo(reservationMapper.toDto(reservation).date);
-        Assertions.assertThat(gottenReservation.time.start)
-                .isEqualTo(reservationMapper.toDto(reservation).time.start);
-        Assertions.assertThat(gottenReservation.time.end)
-                .isEqualTo(reservationMapper.toDto(reservation).time.end);
-        Assertions.assertThat(gottenReservation.groupSize)
-                .isEqualTo(reservationMapper.toDto(reservation).groupSize);
-        Assertions.assertThat(gottenReservation.restaurant)
-                .isEqualTo(reservationMapper.toDto(reservation).restaurant);
-        Assertions.assertThat(gottenReservation.number)
-                .isEqualTo(reservationMapper.toDto(reservation).number);
+        Assertions.assertThat(gottenReservation).isEqualTo(reservation);
     }
 
     @Test
     void givenNonExistingNumber_thenThrowNotFoundException() {
-        when(reservationRepository.get(INVALID_NUMBER)).thenReturn(null);
+        when(reservationRepository.get(INVALID_NUMBER)).thenReturn(Optional.empty());
 
         assertThrows(
                 NotFoundException.class, () -> reservationService.getReservation(INVALID_NUMBER));

@@ -5,24 +5,29 @@ import java.util.UUID;
 
 public class Restaurant {
     private final String ownerId;
-    private final String id;
+    private final UUID id;
     private final String name;
     private final Integer capacity;
     private final RestaurantHours hours;
     private final RestaurantConfiguration reservations;
 
     public Restaurant(
+            UUID id,
             String ownerId,
             String name,
             Integer capacity,
             RestaurantHours hours,
             RestaurantConfiguration reservations) {
+        this.id = id;
         this.ownerId = ownerId;
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.capacity = capacity;
         this.hours = hours;
         this.reservations = reservations;
+    }
+
+    public String getId() {
+        return id.toString();
     }
 
     public String getOwnerId() {
@@ -39,10 +44,6 @@ public class Restaurant {
 
     public RestaurantHours getHours() {
         return hours;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public RestaurantConfiguration getReservations() {

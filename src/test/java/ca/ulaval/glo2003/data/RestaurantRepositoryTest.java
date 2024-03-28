@@ -6,6 +6,7 @@ import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.*;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,16 +36,17 @@ class RestaurantRepositoryTest {
     public void givenNonEmptyRepository_whenGet_thenReturnsRestaurant() {
         repository.add(restaurant1);
 
-        Restaurant gottenRestaurant = repository.get(restaurantId);
+        Optional<Restaurant> gottenRestaurant = repository.get(restaurantId);
 
-        assertThat(gottenRestaurant).isEqualTo(restaurant1);
+        assertThat(gottenRestaurant.isPresent()).isTrue();
+        assertThat(gottenRestaurant.get()).isEqualTo(restaurant1);
     }
 
     @Test
     public void givenEmptyRepository_whenGet_thenReturnsNull() {
-        Restaurant restaurant = repository.get(restaurantId);
+        Optional<Restaurant> restaurant = repository.get(restaurantId);
 
-        assertThat(restaurant).isEqualTo(null);
+        assertThat(restaurant.isEmpty()).isTrue();
     }
 
     @Test

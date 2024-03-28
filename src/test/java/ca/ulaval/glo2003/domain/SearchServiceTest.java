@@ -3,9 +3,8 @@ package ca.ulaval.glo2003.domain;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
+import ca.ulaval.glo2003.api.pojos.SearchOpenedPojo;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
-import ca.ulaval.glo2003.domain.dto.RestaurantDto;
-import ca.ulaval.glo2003.domain.dto.SearchOpenedDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantTestUtils;
 import ca.ulaval.glo2003.domain.entities.Search;
@@ -33,26 +32,22 @@ class SearchServiceTest {
     @Mock SearchFactory searchFactory;
 
     SearchOpened searchOpened;
-    SearchOpenedDto searchOpenedDto;
+    SearchOpenedPojo searchOpenedPojo;
 
     Search searchNonNull;
     Search searchNull;
 
     List<Restaurant> restaurants;
-    List<RestaurantDto> restaurantDtos;
 
     @BeforeEach
     void setup() {
         searchOpened = new SearchOpened(LocalTime.parse(OPENED_FROM), LocalTime.parse(OPENED_TO));
-        searchOpenedDto = new SearchOpenedDto();
-        searchOpenedDto.from = OPENED_FROM;
-        searchOpenedDto.to = OPENED_TO;
+        searchOpenedPojo = new SearchOpenedPojo(OPENED_FROM, OPENED_TO);
 
         searchNonNull = new Search(RESTAURANT_NAME, searchOpened);
         searchNull = new Search(null, new SearchOpened(null, null));
 
         restaurants = RestaurantTestUtils.createRestaurants(5);
-        restaurantDtos = RestaurantTestUtils.createRestaurantDtos(restaurants);
 
         searchService = new SearchService(restaurantRepository, searchFactory);
     }
@@ -63,10 +58,10 @@ class SearchServiceTest {
                 .thenReturn(searchNonNull);
         when(restaurantRepository.searchRestaurants(searchNonNull)).thenReturn(restaurants);
 
-        List<RestaurantDto> gottenRestaurants =
-                searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
+        List<Restaurant> gottenRestaurants =
+                searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedPojo);
 
-        assertThat(gottenRestaurants).isEqualTo(restaurantDtos);
+        assertThat(gottenRestaurants).isEqualTo(restaurants);
     }
 
     @Test
@@ -74,10 +69,9 @@ class SearchServiceTest {
         when(searchFactory.create(RESTAURANT_NAME, null, null)).thenReturn(searchNull);
         when(restaurantRepository.searchRestaurants(searchNull)).thenReturn(restaurants);
 
-        List<RestaurantDto> gottenRestaurants =
-                searchService.searchRestaurants(RESTAURANT_NAME, null);
+        List<Restaurant> gottenRestaurants = searchService.searchRestaurants(RESTAURANT_NAME, null);
 
-        assertThat(gottenRestaurants).isEqualTo(restaurantDtos);
+        assertThat(gottenRestaurants).isEqualTo(restaurants);
     }
 
     @Test
@@ -87,8 +81,8 @@ class SearchServiceTest {
         when(restaurantRepository.searchRestaurants(searchNonNull))
                 .thenReturn(Collections.emptyList());
 
-        List<RestaurantDto> gottenRestaurants =
-                searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedDto);
+        List<Restaurant> gottenRestaurants =
+                searchService.searchRestaurants(RESTAURANT_NAME, searchOpenedPojo);
 
         assertThat(gottenRestaurants).isEqualTo(Collections.emptyList());
     }

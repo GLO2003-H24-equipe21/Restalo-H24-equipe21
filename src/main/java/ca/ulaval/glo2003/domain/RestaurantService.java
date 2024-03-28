@@ -1,27 +1,23 @@
 package ca.ulaval.glo2003.domain;
 
-import ca.ulaval.glo2003.domain.dto.AvailabilityDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
+import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
+import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
+import ca.ulaval.glo2003.domain.entities.Availability;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
 import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final RestaurantHoursFactory restaurantHoursFactory;
     private final RestaurantConfigurationFactory restaurantConfigurationFactory;
     private final RestaurantFactory restaurantFactory;
-    private final RestaurantMapper restaurantMapper;
 
     public RestaurantService(
             RestaurantRepository restaurantRepository,
@@ -32,20 +28,19 @@ public class RestaurantService {
         this.restaurantFactory = restaurantFactory;
         this.restaurantHoursFactory = restaurantHoursFactory;
         this.restaurantConfigurationFactory = restaurantConfigurationFactory;
-        restaurantMapper = new RestaurantMapper();
     }
 
     public String createRestaurant(
             String ownerId,
             String name,
             Integer capacity,
-            RestaurantHoursDto hoursDto,
-            RestaurantConfigurationDto reservationsDto) {
-        RestaurantHours hours = restaurantHoursFactory.create(hoursDto.open, hoursDto.close);
+            RestaurantHoursPojo hoursPojo,
+            RestaurantConfigurationPojo configurationPojo) {
+        RestaurantHours hours = restaurantHoursFactory.create(hoursPojo.open, hoursPojo.close);
         RestaurantConfiguration reservations =
                 restaurantConfigurationFactory.create(
                         Objects.requireNonNullElse(
-                                        reservationsDto, new RestaurantConfigurationDto())
+                                        configurationPojo, new RestaurantConfigurationPojo(null))
                                 .duration);
         Restaurant restaurant =
                 restaurantFactory.create(ownerId, name, capacity, hours, reservations);
@@ -55,23 +50,21 @@ public class RestaurantService {
         return restaurant.getId();
     }
 
-    public RestaurantDto getRestaurant(String restaurantId, String ownerId) {
-        Restaurant restaurant = restaurantRepository.get(restaurantId);
+    public Restaurant getRestaurant(String restaurantId, String ownerId) {
+        Restaurant restaurant =
+                restaurantRepository
+                        .get(restaurantId)
+                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
 
-        if (Objects.isNull(restaurant)) {
-            throw new NotFoundException("Restaurant does not exist.");
-        }
         if (!restaurant.getOwnerId().equals(ownerId)) {
             throw new NotFoundException("Restaurant owner id is invalid");
         }
 
-        return restaurantMapper.toDto(restaurant);
+        return restaurant;
     }
 
-    public List<RestaurantDto> listRestaurants(String ownerId) {
-        List<Restaurant> restaurants = restaurantRepository.getByOwnerId(ownerId);
-
-        return restaurants.stream().map(restaurantMapper::toDto).collect(Collectors.toList());
+    public List<Restaurant> listRestaurants(String ownerId) {
+        return restaurantRepository.getByOwnerId(ownerId);
     }
 
     // TODO
@@ -80,7 +73,7 @@ public class RestaurantService {
     }
 
     // TODO
-    public List<AvailabilityDto> searchAvailabilities(String restaurantId, String date) {
+    public List<Availability> searchAvailabilities(String restaurantId, String date) {
         return null;
     }
 }

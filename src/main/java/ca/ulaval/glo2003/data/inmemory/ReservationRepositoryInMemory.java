@@ -5,6 +5,7 @@ import ca.ulaval.glo2003.domain.entities.Reservation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ReservationRepositoryInMemory implements ReservationRepository {
 
@@ -20,8 +21,8 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
     }
 
     @Override
-    public Reservation get(String reservationId) {
-        return reservationIdToReservation.get(reservationId);
+    public Optional<Reservation> get(String reservationId) {
+        return Optional.ofNullable(reservationIdToReservation.get(reservationId));
     }
 
     // TODO
