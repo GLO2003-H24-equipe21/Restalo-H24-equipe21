@@ -1,11 +1,11 @@
 package ca.ulaval.glo2003.api;
 
-import ca.ulaval.glo2003.api.mappers.RestaurantResponseMapper;
+import ca.ulaval.glo2003.api.mappers.OwnerRestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
-import ca.ulaval.glo2003.api.responses.RestaurantResponse;
+import ca.ulaval.glo2003.api.responses.OwnerRestaurantResponse;
 import ca.ulaval.glo2003.domain.RestaurantService;
-import ca.ulaval.glo2003.domain.dto.AvailabilityDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantDto;
+import ca.ulaval.glo2003.domain.entities.Availability;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -14,16 +14,17 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Path("")
 public class RestaurantResource {
 
     private final RestaurantService restaurantService;
-    private final RestaurantResponseMapper restaurantResponseMapper;
+    private final OwnerRestaurantResponseMapper restaurantResponseMapper;
 
     public RestaurantResource(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
-        restaurantResponseMapper = new RestaurantResponseMapper();
+        restaurantResponseMapper = new OwnerRestaurantResponseMapper();
     }
 
     @GET
@@ -33,8 +34,8 @@ public class RestaurantResource {
             @PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId) {
         Objects.requireNonNull(ownerId, "Owner id must be provided");
 
-        RestaurantDto restaurantDto = restaurantService.getRestaurant(restaurantId, ownerId);
-        RestaurantResponse restaurantResponse = restaurantResponseMapper.fromDto(restaurantDto);
+        Restaurant restaurant = restaurantService.getRestaurant(restaurantId, ownerId);
+        OwnerRestaurantResponse restaurantResponse = restaurantResponseMapper.from(restaurant);
 
         return Response.status(Response.Status.OK).entity(restaurantResponse).build();
     }
@@ -69,9 +70,14 @@ public class RestaurantResource {
     public Response listRestaurants(@HeaderParam("Owner") String ownerId) {
         Objects.requireNonNull(ownerId, "Owner id must be provided");
 
-        List<RestaurantDto> restaurants = restaurantService.listRestaurants(ownerId);
+        List<Restaurant> restaurants = restaurantService.listRestaurants(ownerId);
 
-        return Response.status(Response.Status.OK).entity(restaurants).build();
+        return Response.status(Response.Status.OK)
+                .entity(
+                        restaurants.stream()
+                                .map(restaurantResponseMapper::from)
+                                .collect(Collectors.toList()))
+                .build();
     }
 
     // TODO
@@ -92,7 +98,7 @@ public class RestaurantResource {
             @PathParam("id") String restaurantId, @QueryParam("date") String date) {
         Objects.requireNonNull(date, "Date query param must be provided");
 
-        List<AvailabilityDto> availabilities =
+        List<Availability> availabilities =
                 restaurantService.searchAvailabilities(restaurantId, date);
 
         return Response.status(200).build();

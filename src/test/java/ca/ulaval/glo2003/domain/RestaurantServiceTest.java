@@ -4,19 +4,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
+import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
-import ca.ulaval.glo2003.domain.dto.RestaurantConfigurationDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantDto;
-import ca.ulaval.glo2003.domain.dto.RestaurantHoursDto;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import ca.ulaval.glo2003.domain.mappers.RestaurantConfigurationMapper;
-import ca.ulaval.glo2003.domain.mappers.RestaurantHoursMapper;
-import ca.ulaval.glo2003.domain.mappers.RestaurantMapper;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -58,22 +54,15 @@ class RestaurantServiceTest {
     @Mock SearchService searchService;
 
     Restaurant restaurantMock;
-    RestaurantDto restaurantDto;
-    RestaurantHoursDto restaurantHoursDto;
-    RestaurantConfigurationDto restaurantConfigurationDto;
-    RestaurantMapper restaurantMapper = new RestaurantMapper();
-
-    RestaurantHoursMapper restaurantHoursMapper = new RestaurantHoursMapper();
-
-    RestaurantConfigurationMapper restaurantConfigurationMapper =
-            new RestaurantConfigurationMapper();
+    RestaurantHoursPojo restaurantHoursPojo;
+    RestaurantConfigurationPojo restaurantConfigurationPojo;
 
     @BeforeEach
     void setUp() {
         restaurantHours = RestaurantTestUtils.createRestaurantHours(OPEN, CLOSE);
-        restaurantHoursDto = RestaurantTestUtils.createRestaurantHoursDTO(OPEN, CLOSE);
+        restaurantHoursPojo = new RestaurantHoursPojo(OPEN, CLOSE);
         restaurantConfiguration = RestaurantTestUtils.createRestaurantReservation(DURATION);
-        restaurantConfigurationDto = RestaurantTestUtils.createRestaurantReservationsDTO(DURATION);
+        restaurantConfigurationPojo = new RestaurantConfigurationPojo(DURATION);
 
         restaurantMock =
                 new Restaurant(
@@ -83,13 +72,6 @@ class RestaurantServiceTest {
                         restaurantHours,
                         restaurantConfiguration);
         restaurantId = restaurant.getId();
-
-        restaurantDto = new RestaurantDto();
-        restaurantDto.ownerId = OWNER_ID;
-        restaurantDto.name = RESTAURANT_NAME;
-        restaurantDto.capacity = CAPACITY;
-        restaurantDto.hours = restaurantHoursDto;
-        restaurantDto.reservations = restaurantConfigurationDto;
 
         restaurantHoursFactory = new RestaurantHoursFactory();
         restaurantConfigurationFactory = new RestaurantConfigurationFactory();
@@ -101,7 +83,6 @@ class RestaurantServiceTest {
                         restaurantHoursFactory,
                         restaurantConfigurationFactory);
 
-        restaurantMapper = new RestaurantMapper();
         searchService = new SearchService(restaurantRepository, null);
 
         restaurants = restaurantRepository.getByOwnerId(OWNER_ID);
@@ -122,8 +103,8 @@ class RestaurantServiceTest {
                         OWNER_ID,
                         RESTAURANT_NAME,
                         CAPACITY,
-                        restaurantHoursDto,
-                        restaurantConfigurationMapper.toDto(restaurantConfiguration));
+                        restaurantHoursPojo,
+                        restaurantConfigurationPojo);
 
         assertEquals(restaurantMock.getId(), restaurantServiceId);
     }
@@ -142,8 +123,8 @@ class RestaurantServiceTest {
                 OWNER_ID,
                 RESTAURANT_NAME,
                 CAPACITY,
-                restaurantHoursDto,
-                restaurantConfigurationDto);
+                restaurantHoursPojo,
+                restaurantConfigurationPojo);
 
         verify(restaurantRepository).add(restaurantMock);
     }
@@ -152,19 +133,9 @@ class RestaurantServiceTest {
     void givenExistingId_thenFindsRestaurant() {
         when(restaurantRepository.get(restaurantId)).thenReturn(restaurant);
 
-        RestaurantDto gottenRestaurant = restaurantService.getRestaurant(restaurantId, OWNER_ID);
+        Restaurant gottenRestaurant = restaurantService.getRestaurant(restaurantId, OWNER_ID);
 
-        Assertions.assertThat(gottenRestaurant.id).isEqualTo(restaurantMapper.toDto(restaurant).id);
-        Assertions.assertThat(gottenRestaurant.name)
-                .isEqualTo(restaurantMapper.toDto(restaurant).name);
-        Assertions.assertThat(gottenRestaurant.capacity)
-                .isEqualTo(restaurantMapper.toDto(restaurant).capacity);
-        Assertions.assertThat(gottenRestaurant.hours.close)
-                .isEqualTo(restaurantMapper.toDto(restaurant).hours.close);
-        Assertions.assertThat(gottenRestaurant.hours.open)
-                .isEqualTo(restaurantMapper.toDto(restaurant).hours.open);
-        Assertions.assertThat(gottenRestaurant.reservations.duration)
-                .isEqualTo(restaurantMapper.toDto(restaurant).reservations.duration);
+        Assertions.assertThat(gottenRestaurant).isEqualTo(restaurant);
     }
 
     @Test
@@ -191,19 +162,19 @@ class RestaurantServiceTest {
                         OWNER_ID,
                         RESTAURANT_NAME,
                         CAPACITY,
-                        restaurantHoursMapper.fromDto(restaurantHoursDto),
-                        restaurantConfigurationMapper.fromDto(restaurantConfigurationDto)))
+                        restaurantHours,
+                        restaurantConfiguration))
                 .thenReturn(restaurant);
 
         restaurantService.createRestaurant(
                 OWNER_ID,
                 RESTAURANT_NAME,
                 CAPACITY,
-                restaurantHoursDto,
-                restaurantConfigurationDto);
-        List<RestaurantDto> restaurantDtos = restaurantService.listRestaurants(OWNER_ID);
+                restaurantHoursPojo,
+                restaurantConfigurationPojo);
+        List<Restaurant> restaurants = restaurantService.listRestaurants(OWNER_ID);
 
-        Assertions.assertThat(mockRestaurants.size()).isEqualTo(restaurantDtos.size());
+        Assertions.assertThat(mockRestaurants.size()).isEqualTo(restaurants.size());
     }
 
     @Test
@@ -211,8 +182,8 @@ class RestaurantServiceTest {
 
         when(restaurantRepository.getByOwnerId(INVALID_OWNER_ID))
                 .thenReturn(Collections.emptyList());
-        List<RestaurantDto> restaurantDtos = restaurantService.listRestaurants(INVALID_OWNER_ID);
+        List<Restaurant> restaurants = restaurantService.listRestaurants(INVALID_OWNER_ID);
 
-        assertTrue(restaurantDtos.isEmpty());
+        assertTrue(restaurants.isEmpty());
     }
 }

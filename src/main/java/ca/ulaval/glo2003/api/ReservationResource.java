@@ -4,7 +4,7 @@ import ca.ulaval.glo2003.api.mappers.ReservationResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
 import ca.ulaval.glo2003.api.responses.ReservationResponse;
 import ca.ulaval.glo2003.domain.ReservationService;
-import ca.ulaval.glo2003.domain.dto.ReservationDto;
+import ca.ulaval.glo2003.domain.entities.Reservation;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -50,9 +50,9 @@ public class ReservationResource {
     @Path("reservations/{number}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReservation(@PathParam("number") String number) {
-        ReservationDto reservationDto = reservationService.getReservation(number);
+        Reservation reservation = reservationService.getReservation(number);
 
-        ReservationResponse reservationResponse = reservationResponseMapper.fromDto(reservationDto);
+        ReservationResponse reservationResponse = reservationResponseMapper.from(reservation);
 
         return Response.status(Response.Status.OK).entity(reservationResponse).build();
     }
@@ -77,7 +77,7 @@ public class ReservationResource {
             @QueryParam("customerName") String customerName) {
         Objects.requireNonNull(ownerId, "Owner id must be provided");
 
-        List<ReservationDto> reservationsDto =
+        List<Reservation> reservations =
                 reservationService.searchReservations(restaurantId, ownerId, date, customerName);
 
         return Response.status(200).build();
