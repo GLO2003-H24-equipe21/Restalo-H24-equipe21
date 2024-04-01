@@ -11,6 +11,7 @@ import jakarta.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ReservationService {
 
@@ -62,7 +63,6 @@ public class ReservationService {
         reservationRepository.delete(number);
     }
 
-    // TODO
     public List<Reservation> searchReservations(
             String restaurantId, String ownerId, String date, String customerName) {
         Restaurant restaurant =
@@ -74,12 +74,9 @@ public class ReservationService {
             throw new NotFoundException("Restaurant owner id is invalid");
         }
 
-        List<Reservation> matchingReservations = new ArrayList<>();
-        for (Reservation reservation : reservationRepository.searchReservations(restaurantId, ownerId, date, customerName)) {
-            if (reservation.getRestaurant().getId().equals(restaurantId)) {
-                matchingReservations.add(reservation);
-            }
-        }
-        return matchingReservations;
+        return reservationRepository.searchReservations(restaurantId, ownerId, date, customerName)
+                .stream()
+                .filter(reservation -> reservation.getRestaurant().getId().equals(restaurantId))
+                .collect(Collectors.toList());
     }
 }
