@@ -3,8 +3,6 @@ package ca.ulaval.glo2003.data.inmemory;
 import ca.ulaval.glo2003.domain.ReservationRepository;
 import ca.ulaval.glo2003.domain.entities.Customer;
 import ca.ulaval.glo2003.domain.entities.Reservation;
-import ca.ulaval.glo2003.domain.entities.Restaurant;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,8 +40,7 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
 
     private boolean matchesCustomerName(Customer customer, String CustomerName) {
         if (Objects.isNull(CustomerName)) return true;
-        return customer
-                .getName()
+        return customer.getName()
                 .toLowerCase()
                 .replaceAll("\\s", "")
                 .contains(CustomerName.toLowerCase().replaceAll("\\s", ""));
@@ -51,8 +48,6 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
 
     private boolean matchesDate(Reservation reservation, String date) {
         if (Objects.isNull(date)) return true;
-        return reservation
-                .getDate().toString()
-                .matches(date);
+        return reservation.getDate().toString().matches(date);
     }
 }

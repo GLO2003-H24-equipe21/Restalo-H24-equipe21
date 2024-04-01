@@ -4,7 +4,6 @@ import ca.ulaval.glo2003.api.pojos.CustomerPojo;
 import ca.ulaval.glo2003.api.pojos.ReservationTimePojo;
 import ca.ulaval.glo2003.api.responses.ReservationSearchResponse;
 import ca.ulaval.glo2003.domain.entities.Reservation;
-
 import java.time.format.DateTimeFormatter;
 
 public class ReservationSearchResponseMapper {

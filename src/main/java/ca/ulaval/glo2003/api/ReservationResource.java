@@ -20,6 +20,7 @@ public class ReservationResource {
     private final ReservationService reservationService;
     private final ReservationResponseMapper reservationResponseMapper;
     private final ReservationSearchResponseMapper reservationSearchResponseMapper;
+
     public ReservationResource(ReservationService reservationService) {
         this.reservationService = reservationService;
         reservationResponseMapper = new ReservationResponseMapper();

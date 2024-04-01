@@ -7,10 +7,7 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ReservationService {
@@ -74,7 +71,8 @@ public class ReservationService {
             throw new NotFoundException("Restaurant owner id is invalid");
         }
 
-        return reservationRepository.searchReservations(restaurantId, ownerId, date, customerName)
+        return reservationRepository
+                .searchReservations(restaurantId, ownerId, date, customerName)
                 .stream()
                 .filter(reservation -> reservation.getRestaurant().getId().equals(restaurantId))
                 .collect(Collectors.toList());
