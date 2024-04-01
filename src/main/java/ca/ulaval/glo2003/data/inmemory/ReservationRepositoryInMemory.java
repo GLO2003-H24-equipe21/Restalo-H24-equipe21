@@ -1,11 +1,12 @@
 package ca.ulaval.glo2003.data.inmemory;
 
 import ca.ulaval.glo2003.domain.ReservationRepository;
+import ca.ulaval.glo2003.domain.entities.Customer;
 import ca.ulaval.glo2003.domain.entities.Reservation;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReservationRepositoryInMemory implements ReservationRepository {
 
@@ -33,6 +34,25 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
     @Override
     public List<Reservation> searchReservations(
             String restaurantId, String ownerId, String date, String customerName) {
-        return null;
+        return reservationIdToReservation.values().stream()
+                .filter(customer -> matchesCustomerName(customer.getCustomer(), customerName))
+                .filter(reservation -> matchesDate(reservation, date))
+                .collect(Collectors.toList());
+    }
+
+    private boolean matchesCustomerName(Customer customer, String CustomerName) {
+        if (Objects.isNull(CustomerName)) return true;
+        return customer
+                .getName()
+                .toLowerCase()
+                .replaceAll("\\s", "")
+                .contains(CustomerName.toLowerCase().replaceAll("\\s", ""));
+    }
+
+    private boolean matchesDate(Reservation reservation, String date) {
+        if (Objects.isNull(date)) return true;
+        return reservation
+                .getDate().toString()
+                .matches(date);
     }
 }
