@@ -13,6 +13,7 @@ import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -31,12 +32,13 @@ class ReservationServiceTest {
 
     private static final Restaurant RESTAURANT =
             new Restaurant(
-                    UUID.randomUUID(),
+                    UUID.randomUUID().toString(),
                     "Rudy",
                     "Chez Rudy",
                     100,
                     new RestaurantHours(LocalTime.parse("07:00:00"), LocalTime.parse("17:00:00")),
-                    new RestaurantConfiguration(60));
+                    new RestaurantConfiguration(60),
+                    new HashMap<>());
     private static final String START_TIME = "13:38:59";
 
     private static final String INVALID_NUMBER = "invalid_number";

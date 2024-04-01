@@ -50,7 +50,7 @@ public class ReservationFactory {
             Customer customer,
             Restaurant restaurant) {
         ReservationTime reservationTime =
-                new ReservationTime(startTime, restaurant.getReservations().getDuration());
+                new ReservationTime(startTime, restaurant.getConfiguration().getDuration());
         verifyReservationStartsBeforeRestaurantOpen(
                 reservationTime.getStart(), restaurant.getHours().getOpen());
         verifyReservationEndBeforeRestaurantClose(

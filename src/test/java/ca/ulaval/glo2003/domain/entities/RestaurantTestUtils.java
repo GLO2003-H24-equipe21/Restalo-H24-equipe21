@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003.domain.entities;
 
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -12,13 +13,14 @@ public class RestaurantTestUtils {
                 .mapToObj(
                         i ->
                                 new Restaurant(
-                                        UUID.randomUUID(),
+                                        UUID.randomUUID().toString(),
                                         String.format("owner %d", i),
                                         String.format("restaurant %d", i),
                                         5,
                                         new RestaurantHours(
                                                 LocalTime.of(10, 0, 0), LocalTime.of(22, 0, 0)),
-                                        new RestaurantConfiguration(75)))
+                                        new RestaurantConfiguration(75),
+                                        new HashMap<>()))
                 .collect(Collectors.toList());
     }
 }

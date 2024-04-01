@@ -25,7 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantServiceTest {
-    private static final UUID RESTAURANT_ID = UUID.randomUUID();
+    private static final String RESTAURANT_ID = UUID.randomUUID().toString();
     private static final String OWNER_ID = "1234";
     private static final String INVALID_OWNER_ID = "ABCD";
     private static final String RESTAURANT_NAME = "Paccini";
@@ -41,7 +41,8 @@ class RestaurantServiceTest {
                     RESTAURANT_NAME,
                     CAPACITY,
                     new RestaurantHours(LocalTime.parse(OPEN), LocalTime.parse(CLOSE)),
-                    new RestaurantConfiguration(DURATION));
+                    new RestaurantConfiguration(DURATION),
+                    new HashMap<>());
     private static List<Restaurant> restaurants;
 
     RestaurantService restaurantService;
@@ -71,7 +72,8 @@ class RestaurantServiceTest {
                         RESTAURANT_NAME,
                         CAPACITY,
                         restaurantHours,
-                        restaurantConfiguration);
+                        restaurantConfiguration,
+                        new HashMap<>());
         restaurantId = restaurant.getId();
 
         restaurantHoursFactory = new RestaurantHoursFactory();
@@ -158,7 +160,8 @@ class RestaurantServiceTest {
                                 RESTAURANT_NAME,
                                 CAPACITY,
                                 restaurantHours,
-                                restaurantConfiguration));
+                                restaurantConfiguration,
+                                new HashMap<>()));
         when(restaurantRepository.getByOwnerId(OWNER_ID)).thenReturn(mockRestaurants);
         when(restaurantFactory.create(
                         OWNER_ID,

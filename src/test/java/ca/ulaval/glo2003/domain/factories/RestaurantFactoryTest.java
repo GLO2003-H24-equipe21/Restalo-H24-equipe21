@@ -52,7 +52,7 @@ class RestaurantFactoryTest {
         Assertions.assertThat(restaurant.getName()).isEqualTo(RESTAURANT_NAME);
         Assertions.assertThat(restaurant.getCapacity()).isEqualTo(CAPACITY);
         Assertions.assertThat(restaurant.getHours()).isEqualTo(restaurantHours);
-        Assertions.assertThat(restaurant.getReservations()).isEqualTo(restaurantConfiguration);
+        Assertions.assertThat(restaurant.getConfiguration()).isEqualTo(restaurantConfiguration);
     }
 
     @Test

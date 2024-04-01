@@ -3,6 +3,8 @@ package ca.ulaval.glo2003.domain.factories;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
+
+import java.util.HashMap;
 import java.util.UUID;
 
 public class RestaurantFactory {
@@ -15,7 +17,7 @@ public class RestaurantFactory {
         verifyNameNotEmpty(name);
         verifyCapacityAtLeastOne(capacity);
 
-        return new Restaurant(UUID.randomUUID(), ownerId, name, capacity, hours, reservations);
+        return new Restaurant(UUID.randomUUID().toString(), ownerId, name, capacity, hours, reservations, new HashMap<>());
     }
 
     private void verifyNameNotEmpty(String name) {

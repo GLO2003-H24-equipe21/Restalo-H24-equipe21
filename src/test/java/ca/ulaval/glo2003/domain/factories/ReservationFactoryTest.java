@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ca.ulaval.glo2003.domain.entities.*;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,12 +29,13 @@ class ReservationFactoryTest {
 
     private static final Restaurant RESTAURANT =
             new Restaurant(
-                    UUID.randomUUID(),
+                    UUID.randomUUID().toString(),
                     "Rudy",
                     "Chez Rudy",
                     100,
                     new RestaurantHours(LocalTime.parse("07:00:00"), LocalTime.parse("17:00:00")),
-                    new RestaurantConfiguration(60));
+                    new RestaurantConfiguration(60),
+                    new HashMap<>());
     @Mock Customer customer;
 
     ReservationFactory reservationFactory;
