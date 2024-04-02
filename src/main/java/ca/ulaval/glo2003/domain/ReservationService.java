@@ -8,6 +8,7 @@ import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReservationService {
 
@@ -59,9 +60,21 @@ public class ReservationService {
         reservationRepository.delete(number);
     }
 
-    // TODO
     public List<Reservation> searchReservations(
             String restaurantId, String ownerId, String date, String customerName) {
-        return null;
+        Restaurant restaurant =
+                restaurantRepository
+                        .get(restaurantId)
+                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
+
+        if (!restaurant.getOwnerId().equals(ownerId)) {
+            throw new NotFoundException("Restaurant owner id is invalid");
+        }
+
+        return reservationRepository
+                .searchReservations(restaurantId, ownerId, date, customerName)
+                .stream()
+                .filter(reservation -> reservation.getRestaurant().getId().equals(restaurantId))
+                .collect(Collectors.toList());
     }
 }

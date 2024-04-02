@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003.api;
 
 import ca.ulaval.glo2003.api.mappers.ReservationResponseMapper;
+import ca.ulaval.glo2003.api.mappers.ReservationSearchResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
 import ca.ulaval.glo2003.api.responses.ReservationResponse;
 import ca.ulaval.glo2003.domain.ReservationService;
@@ -18,10 +19,12 @@ import java.util.Objects;
 public class ReservationResource {
     private final ReservationService reservationService;
     private final ReservationResponseMapper reservationResponseMapper;
+    private final ReservationSearchResponseMapper reservationSearchResponseMapper;
 
     public ReservationResource(ReservationService reservationService) {
         this.reservationService = reservationService;
         reservationResponseMapper = new ReservationResponseMapper();
+        reservationSearchResponseMapper = new ReservationSearchResponseMapper();
     }
 
     @POST
@@ -80,6 +83,11 @@ public class ReservationResource {
         List<Reservation> reservations =
                 reservationService.searchReservations(restaurantId, ownerId, date, customerName);
 
-        return Response.status(200).build();
+        return Response.status(200)
+                .entity(
+                        reservations.stream()
+                                .map(reservationSearchResponseMapper::from)
+                                .collect(java.util.stream.Collectors.toList()))
+                .build();
     }
 }
