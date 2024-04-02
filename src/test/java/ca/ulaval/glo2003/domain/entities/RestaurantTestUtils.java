@@ -19,8 +19,7 @@ public class RestaurantTestUtils {
                                         5,
                                         new RestaurantHours(
                                                 LocalTime.of(10, 0, 0), LocalTime.of(22, 0, 0)),
-                                        new RestaurantConfiguration(75),
-                                        new HashMap<>()))
+                                        new RestaurantConfiguration(75)))
                 .collect(Collectors.toList());
     }
 }

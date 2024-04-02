@@ -4,6 +4,7 @@ import ca.ulaval.glo2003.domain.RestaurantRepository;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.Search;
 import dev.morphia.Datastore;
+
 import java.util.List;
 import java.util.Optional;
 

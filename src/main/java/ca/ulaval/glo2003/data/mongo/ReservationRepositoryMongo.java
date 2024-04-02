@@ -2,8 +2,13 @@ package ca.ulaval.glo2003.data.mongo;
 
 import ca.ulaval.glo2003.domain.ReservationRepository;
 import ca.ulaval.glo2003.domain.entities.Reservation;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
 import dev.morphia.Datastore;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ReservationRepositoryMongo implements ReservationRepository {
@@ -27,6 +32,11 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     @Override
     public List<Reservation> searchReservations(
             String restaurantId, String ownerId, String date, String customerName) {
+        return null;
+    }
+
+    @Override
+    public Map<LocalDateTime, Integer> searchAvailabilities(Restaurant restaurant, LocalDate date) {
         return null;
     }
 }

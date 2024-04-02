@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
 import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
@@ -41,13 +42,13 @@ class RestaurantServiceTest {
                     RESTAURANT_NAME,
                     CAPACITY,
                     new RestaurantHours(LocalTime.parse(OPEN), LocalTime.parse(CLOSE)),
-                    new RestaurantConfiguration(DURATION),
-                    new HashMap<>());
+                    new RestaurantConfiguration(DURATION));
     private static List<Restaurant> restaurants;
 
     RestaurantService restaurantService;
     @Mock RestaurantFactory restaurantFactory;
     @Mock RestaurantRepositoryInMemory restaurantRepository;
+    @Mock ReservationRepositoryInMemory reservationRepository;
     @Mock RestaurantConfiguration restaurantConfiguration;
     @Mock RestaurantHours restaurantHours;
     @Mock RestaurantConfigurationFactory restaurantConfigurationFactory;
@@ -72,8 +73,7 @@ class RestaurantServiceTest {
                         RESTAURANT_NAME,
                         CAPACITY,
                         restaurantHours,
-                        restaurantConfiguration,
-                        new HashMap<>());
+                        restaurantConfiguration);
         restaurantId = restaurant.getId();
 
         restaurantHoursFactory = new RestaurantHoursFactory();
@@ -86,7 +86,7 @@ class RestaurantServiceTest {
                         restaurantHoursFactory,
                         restaurantConfigurationFactory);
 
-        searchService = new SearchService(restaurantRepository, null);
+        searchService = new SearchService(restaurantRepository, reservationRepository, null);
 
         restaurants = restaurantRepository.getByOwnerId(OWNER_ID);
     }
@@ -160,8 +160,7 @@ class RestaurantServiceTest {
                                 RESTAURANT_NAME,
                                 CAPACITY,
                                 restaurantHours,
-                                restaurantConfiguration,
-                                new HashMap<>()));
+                                restaurantConfiguration));
         when(restaurantRepository.getByOwnerId(OWNER_ID)).thenReturn(mockRestaurants);
         when(restaurantFactory.create(
                         OWNER_ID,

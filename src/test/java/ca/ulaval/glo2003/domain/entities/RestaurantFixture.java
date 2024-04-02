@@ -1,22 +1,19 @@
 package ca.ulaval.glo2003.domain.entities;
 
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class RestaurantFixture {
     private String id = UUID.randomUUID().toString();
     private String ownerId = "owner";
     private String name = "restaurant";
-    private Integer capacity = 14;
+    private Integer capacity = 12;
     private RestaurantHours hours =
             new RestaurantHours(LocalTime.parse("10:00:00"), LocalTime.parse("23:30:00"));
     private RestaurantConfiguration configuration = new RestaurantConfiguration(60);
-    private Map<String, Integer> availabilities = new HashMap<>();
 
     public Restaurant create() {
-        return new Restaurant(id, ownerId, name, capacity, hours, configuration, availabilities);
+        return new Restaurant(id, ownerId, name, capacity, hours, configuration);
     }
 
     public RestaurantFixture withId(String id) {
@@ -46,11 +43,6 @@ public class RestaurantFixture {
 
     public RestaurantFixture withRestaurantConfiguration(Integer duration) {
         this.configuration = new RestaurantConfiguration(duration);
-        return this;
-    }
-
-    public RestaurantFixture withAvailabilities(Map<String, Integer> availabilities) {
-        this.availabilities = availabilities;
         return this;
     }
 }

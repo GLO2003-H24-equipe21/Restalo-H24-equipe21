@@ -4,6 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.api.pojos.SearchOpenedPojo;
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantTestUtils;
@@ -28,6 +29,7 @@ class SearchServiceTest {
     SearchService searchService;
 
     @Mock RestaurantRepositoryInMemory restaurantRepository;
+    @Mock ReservationRepositoryInMemory reservationRepository;
 
     @Mock SearchFactory searchFactory;
 
@@ -49,7 +51,7 @@ class SearchServiceTest {
 
         restaurants = RestaurantTestUtils.createRestaurants(5);
 
-        searchService = new SearchService(restaurantRepository, searchFactory);
+        searchService = new SearchService(restaurantRepository, reservationRepository, searchFactory);
     }
 
     @Test

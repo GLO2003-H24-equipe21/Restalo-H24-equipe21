@@ -1,5 +1,6 @@
 package ca.ulaval.glo2003.api;
 
+import ca.ulaval.glo2003.api.mappers.AvailabilityResponseMapper;
 import ca.ulaval.glo2003.api.mappers.OwnerRestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.responses.OwnerRestaurantResponse;
@@ -12,6 +13,10 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -88,19 +93,5 @@ public class RestaurantResource {
         restaurantService.deleteRestaurant(restaurantId, ownerId);
 
         return Response.status(Response.Status.NO_CONTENT).build();
-    }
-
-    // TODO
-    @GET
-    @Path("restaurants/{id}/availabilities")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response searchAvailabilities(
-            @PathParam("id") String restaurantId, @QueryParam("date") String date) {
-        Objects.requireNonNull(date, "Date query param must be provided");
-
-        List<Availability> availabilities =
-                restaurantService.searchAvailabilities(restaurantId, date);
-
-        return Response.status(200).build();
     }
 }

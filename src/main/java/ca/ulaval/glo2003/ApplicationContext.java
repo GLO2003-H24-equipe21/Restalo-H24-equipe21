@@ -63,7 +63,7 @@ public class ApplicationContext {
     public SearchResource getSearchResource() {
         SearchFactory searchFactory = new SearchFactory();
 
-        SearchService searchService = new SearchService(restaurantRepository, searchFactory);
+        SearchService searchService = new SearchService(restaurantRepository, reservationRepository, searchFactory);
 
         return new SearchResource(searchService);
     }
