@@ -14,7 +14,6 @@ import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,7 +46,8 @@ class ReservationServiceTest {
     private static final Customer CUSTOMER =
             new Customer("Buggy", "Buggy.Boo@Asetin.com", "1234567890");
 
-    private static final Map<LocalDateTime, Integer> AVAILABILITIES = new AvailabilitiesFixture().on(LocalDate.parse(DATE)).create();
+    private static final Map<LocalDateTime, Integer> AVAILABILITIES =
+            new AvailabilitiesFixture().on(LocalDate.parse(DATE)).create();
 
     ReservationService reservationService;
 
@@ -91,9 +91,11 @@ class ReservationServiceTest {
 
     @Test
     void givenValidInputs_thenReservationCreated() {
-        when(reservationFactory.create(DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
+        when(reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
                 .thenReturn(reservation);
-        when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE))).thenReturn(AVAILABILITIES);
+        when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE)))
+                .thenReturn(AVAILABILITIES);
 
         String reservationNumber =
                 reservationService.createReservation(
@@ -104,9 +106,11 @@ class ReservationServiceTest {
 
     @Test
     void givenValidInputs_thenReservationIsSaved() {
-        when(reservationFactory.create(DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
+        when(reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
                 .thenReturn(reservation);
-        when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE))).thenReturn(AVAILABILITIES);
+        when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE)))
+                .thenReturn(AVAILABILITIES);
 
         reservationService.createReservation(
                 RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerPojo);

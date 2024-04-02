@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain.entities;
 
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

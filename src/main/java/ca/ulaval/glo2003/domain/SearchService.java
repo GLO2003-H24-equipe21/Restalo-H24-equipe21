@@ -7,7 +7,6 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.Search;
 import ca.ulaval.glo2003.domain.factories.SearchFactory;
 import jakarta.ws.rs.NotFoundException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,14 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class SearchService {
     private final RestaurantRepository restaurantRepository;
     private final ReservationRepository reservationRepository;
     private final SearchFactory searchFactory;
 
-    public SearchService(RestaurantRepository restaurantRepository, ReservationRepository reservationRepository, SearchFactory searchFactory) {
+    public SearchService(
+            RestaurantRepository restaurantRepository,
+            ReservationRepository reservationRepository,
+            SearchFactory searchFactory) {
         this.restaurantRepository = restaurantRepository;
         this.reservationRepository = reservationRepository;
         this.searchFactory = searchFactory;
@@ -48,17 +49,16 @@ public class SearchService {
             throw new NotFoundException("Restaurant owner id is invalid");
         }
 
-        return reservationRepository.searchReservations(restaurantId, parseDate(date), customerName);
+        return reservationRepository.searchReservations(
+                restaurantId, parseDate(date), customerName);
     }
-
 
     private LocalDate parseDate(String date) {
         if (Objects.isNull(date)) return null;
         try {
             return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException exception) {
-            throw new IllegalArgumentException(
-                    "Date format is not valid (YYYY-MM-DD)");
+            throw new IllegalArgumentException("Date format is not valid (YYYY-MM-DD)");
         }
     }
 
@@ -68,11 +68,12 @@ public class SearchService {
                         .get(restaurantId)
                         .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
         Map<LocalDateTime, Integer> availabilities =
-                reservationRepository
-                        .searchAvailabilities(restaurant, parseDate(date));
+                reservationRepository.searchAvailabilities(restaurant, parseDate(date));
 
         List<Availability> availabilityEntities = new ArrayList<>();
-        availabilities.forEach((start, remainingPlace) -> availabilityEntities.add(new Availability(start, remainingPlace)));
+        availabilities.forEach(
+                (start, remainingPlace) ->
+                        availabilityEntities.add(new Availability(start, remainingPlace)));
 
         return availabilityEntities;
     }

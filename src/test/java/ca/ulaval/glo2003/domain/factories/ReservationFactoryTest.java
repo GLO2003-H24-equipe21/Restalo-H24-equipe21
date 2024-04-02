@@ -3,11 +3,9 @@ package ca.ulaval.glo2003.domain.factories;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ca.ulaval.glo2003.domain.entities.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -41,7 +39,8 @@ class ReservationFactoryTest {
                     new RestaurantConfiguration(60));
     @Mock Customer customer;
 
-    private static final Map<LocalDateTime, Integer> AVAILABILITIES = new AvailabilitiesFixture().on(LocalDate.parse(DATE)).create();
+    private static final Map<LocalDateTime, Integer> AVAILABILITIES =
+            new AvailabilitiesFixture().on(LocalDate.parse(DATE)).create();
 
     ReservationFactory reservationFactory;
 
@@ -56,7 +55,8 @@ class ReservationFactoryTest {
     @Test
     void givenValidInputs_thenReservationCreated() {
         Reservation reservation =
-                reservationFactory.create(DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT, AVAILABILITIES);
+                reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT, AVAILABILITIES);
 
         Assertions.assertThat(reservation.getDate()).isEqualTo(DATE);
         Assertions.assertThat(reservation.getReservationTime()).isEqualTo(reservationTime);
@@ -69,7 +69,9 @@ class ReservationFactoryTest {
     void givenGroupSizeBelowOne_throwInvalidArgumentException() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> reservationFactory.create(DATE, START_TIME, 0, customer, RESTAURANT, AVAILABILITIES));
+                () ->
+                        reservationFactory.create(
+                                DATE, START_TIME, 0, customer, RESTAURANT, AVAILABILITIES));
     }
 
     @Test
@@ -78,7 +80,12 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                DATE, INVALID_START_TIME, GROUP_SIZE, customer, RESTAURANT, AVAILABILITIES));
+                                DATE,
+                                INVALID_START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 
     @Test
@@ -87,7 +94,12 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                DATE, EARLY_START_TIME, GROUP_SIZE, customer, RESTAURANT, AVAILABILITIES));
+                                DATE,
+                                EARLY_START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 
     @Test
@@ -96,7 +108,12 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                DATE, LATE_START_TIME, GROUP_SIZE, customer, RESTAURANT, AVAILABILITIES));
+                                DATE,
+                                LATE_START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 
     @Test
@@ -105,6 +122,11 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                INVALID_DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT, AVAILABILITIES));
+                                INVALID_DATE,
+                                START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 }

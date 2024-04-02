@@ -7,13 +7,12 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
-import org.glassfish.grizzly.utils.Pair;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
+import org.glassfish.grizzly.utils.Pair;
 
 public class ReservationService {
 
@@ -49,7 +48,8 @@ public class ReservationService {
         Map<LocalDateTime, Integer> availabilities =
                 reservationRepository.searchAvailabilities(restaurant, parseDate(date));
         Reservation reservation =
-                reservationFactory.create(date, startTime, groupSize, customer, restaurant, availabilities);
+                reservationFactory.create(
+                        date, startTime, groupSize, customer, restaurant, availabilities);
 
         reservationRepository.add(reservation);
 
@@ -60,16 +60,17 @@ public class ReservationService {
         try {
             return LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
         } catch (DateTimeParseException exception) {
-            throw new IllegalArgumentException(
-                    "Date format is not valid (YYYY-MM-DD)");
+            throw new IllegalArgumentException("Date format is not valid (YYYY-MM-DD)");
         }
     }
 
     public Pair<Reservation, Restaurant> getReservation(String number) {
-        Reservation reservation = reservationRepository
-                .get(number)
-                .orElseThrow(() -> new NotFoundException("Reservation does not exist"));
-        Restaurant restaurant = restaurantRepository.get(reservation.getRestaurantId()).orElse(null);
+        Reservation reservation =
+                reservationRepository
+                        .get(number)
+                        .orElseThrow(() -> new NotFoundException("Reservation does not exist"));
+        Restaurant restaurant =
+                restaurantRepository.get(reservation.getRestaurantId()).orElse(null);
 
         return new Pair<>(reservation, restaurant);
     }

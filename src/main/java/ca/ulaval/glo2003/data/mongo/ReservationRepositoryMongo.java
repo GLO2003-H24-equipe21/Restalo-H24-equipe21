@@ -4,7 +4,6 @@ import ca.ulaval.glo2003.domain.ReservationRepository;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import dev.morphia.Datastore;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +29,8 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     public void delete(String reservationId) {}
 
     @Override
-    public List<Reservation> searchReservations(String restaurantId, LocalDate date, String customerName) {
+    public List<Reservation> searchReservations(
+            String restaurantId, LocalDate date, String customerName) {
         return null;
     }
 

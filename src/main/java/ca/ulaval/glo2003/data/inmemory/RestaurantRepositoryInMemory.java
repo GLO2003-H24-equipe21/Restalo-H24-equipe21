@@ -2,12 +2,7 @@ package ca.ulaval.glo2003.data.inmemory;
 
 import ca.ulaval.glo2003.domain.RestaurantRepository;
 import ca.ulaval.glo2003.domain.entities.*;
-import jakarta.ws.rs.NotFoundException;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 

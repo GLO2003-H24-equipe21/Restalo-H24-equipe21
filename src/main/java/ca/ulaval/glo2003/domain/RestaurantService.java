@@ -9,7 +9,6 @@ import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import jakarta.ws.rs.NotFoundException;
-
 import java.util.List;
 import java.util.Objects;
 

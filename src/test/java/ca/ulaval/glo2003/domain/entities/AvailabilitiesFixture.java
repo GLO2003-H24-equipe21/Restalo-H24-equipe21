@@ -3,7 +3,6 @@ package ca.ulaval.glo2003.domain.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,7 +14,9 @@ public class AvailabilitiesFixture {
 
     public Map<LocalDateTime, Integer> create() {
         Map<LocalDateTime, Integer> availabilities = new LinkedHashMap<>();
-        for (LocalTime current = from; current.isBefore(to.plusSeconds(1)); current = current.plusMinutes(15)) {
+        for (LocalTime current = from;
+                current.isBefore(to.plusSeconds(1));
+                current = current.plusMinutes(15)) {
             availabilities.put(LocalDateTime.of(date, current), capacity);
         }
         return availabilities;

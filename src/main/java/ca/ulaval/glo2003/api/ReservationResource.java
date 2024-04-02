@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.api;
 
 import ca.ulaval.glo2003.api.mappers.ReservationResponseMapper;
-import ca.ulaval.glo2003.api.mappers.ReservationSearchResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
 import ca.ulaval.glo2003.api.responses.ReservationResponse;
 import ca.ulaval.glo2003.domain.ReservationService;
@@ -14,9 +13,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import org.glassfish.grizzly.utils.Pair;
-
-import java.util.List;
-import java.util.Objects;
 
 @Path("")
 public class ReservationResource {
@@ -54,9 +50,11 @@ public class ReservationResource {
     @Path("reservations/{number}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReservation(@PathParam("number") String number) {
-        Pair<Reservation, Restaurant> reservationRestaurantPair = reservationService.getReservation(number);
+        Pair<Reservation, Restaurant> reservationRestaurantPair =
+                reservationService.getReservation(number);
 
-        ReservationResponse reservationResponse = reservationResponseMapper.from(reservationRestaurantPair);
+        ReservationResponse reservationResponse =
+                reservationResponseMapper.from(reservationRestaurantPair);
 
         return Response.status(Response.Status.OK).entity(reservationResponse).build();
     }

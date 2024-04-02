@@ -11,7 +11,6 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -65,6 +64,7 @@ public class SearchResource {
                                 .collect(java.util.stream.Collectors.toList()))
                 .build();
     }
+
     @GET
     @Path("restaurants/{id}/availabilities")
     @Produces(MediaType.APPLICATION_JSON)
@@ -72,8 +72,7 @@ public class SearchResource {
             @PathParam("id") String restaurantId, @QueryParam("date") String date) {
         Objects.requireNonNull(date, "Date query param must be provided");
 
-        List<Availability> availabilities =
-                searchService.searchAvailabilities(restaurantId, date);
+        List<Availability> availabilities = searchService.searchAvailabilities(restaurantId, date);
 
         return Response.status(Response.Status.OK)
                 .entity(

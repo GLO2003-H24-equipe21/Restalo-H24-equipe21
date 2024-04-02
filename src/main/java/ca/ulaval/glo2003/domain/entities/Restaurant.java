@@ -54,7 +54,12 @@ public class Restaurant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Restaurant that = (Restaurant) o;
-        return Objects.equals(ownerId, that.ownerId) && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(capacity, that.capacity) && Objects.equals(hours, that.hours) && Objects.equals(configuration, that.configuration);
+        return Objects.equals(ownerId, that.ownerId)
+                && Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(capacity, that.capacity)
+                && Objects.equals(hours, that.hours)
+                && Objects.equals(configuration, that.configuration);
     }
 
     @Override

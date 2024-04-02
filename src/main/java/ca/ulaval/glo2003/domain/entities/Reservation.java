@@ -55,7 +55,12 @@ public class Reservation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return Objects.equals(number, that.number) && Objects.equals(date, that.date) && Objects.equals(reservationTime, that.reservationTime) && Objects.equals(groupSize, that.groupSize) && Objects.equals(customer, that.customer) && Objects.equals(restaurantId, that.restaurantId);
+        return Objects.equals(number, that.number)
+                && Objects.equals(date, that.date)
+                && Objects.equals(reservationTime, that.reservationTime)
+                && Objects.equals(groupSize, that.groupSize)
+                && Objects.equals(customer, that.customer)
+                && Objects.equals(restaurantId, that.restaurantId);
     }
 
     @Override

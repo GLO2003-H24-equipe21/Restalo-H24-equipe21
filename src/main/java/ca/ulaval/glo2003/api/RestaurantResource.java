@@ -1,11 +1,9 @@
 package ca.ulaval.glo2003.api;
 
-import ca.ulaval.glo2003.api.mappers.AvailabilityResponseMapper;
 import ca.ulaval.glo2003.api.mappers.OwnerRestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.responses.OwnerRestaurantResponse;
 import ca.ulaval.glo2003.domain.RestaurantService;
-import ca.ulaval.glo2003.domain.entities.Availability;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -13,10 +11,6 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

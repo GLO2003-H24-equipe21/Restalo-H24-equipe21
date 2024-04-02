@@ -51,7 +51,8 @@ class SearchServiceTest {
 
         restaurants = RestaurantTestUtils.createRestaurants(5);
 
-        searchService = new SearchService(restaurantRepository, reservationRepository, searchFactory);
+        searchService =
+                new SearchService(restaurantRepository, reservationRepository, searchFactory);
     }
 
     @Test

@@ -37,7 +37,13 @@ public class ReservationFactory {
         verifyGroupSizeAtLeastOne(groupSize);
         verifyAvailabilities(availabilities, parsedDate, reservationTime, groupSize);
 
-        return new Reservation(createNumber(), parsedDate, reservationTime, groupSize, customer, restaurant.getId());
+        return new Reservation(
+                createNumber(),
+                parsedDate,
+                reservationTime,
+                groupSize,
+                customer,
+                restaurant.getId());
     }
 
     private LocalDate parseDate(String date) {
@@ -79,16 +85,22 @@ public class ReservationFactory {
         }
     }
 
-    private void verifyAvailabilities(Map<LocalDateTime, Integer> availabilities, LocalDate date, ReservationTime time, Integer groupSize) {
-        List<LocalDateTime> intervals = create15MinutesIntervals(date, time.getStart(), time.getEnd());
-        for (LocalDateTime dateTime: intervals) {
+    private void verifyAvailabilities(
+            Map<LocalDateTime, Integer> availabilities,
+            LocalDate date,
+            ReservationTime time,
+            Integer groupSize) {
+        List<LocalDateTime> intervals =
+                create15MinutesIntervals(date, time.getStart(), time.getEnd());
+        for (LocalDateTime dateTime : intervals) {
             if (availabilities.getOrDefault(dateTime, 0) < groupSize) {
                 throw new IllegalArgumentException("No availabilities at " + dateTime);
             }
         }
     }
 
-    private List<LocalDateTime> create15MinutesIntervals(LocalDate date, LocalTime start, LocalTime end) {
+    private List<LocalDateTime> create15MinutesIntervals(
+            LocalDate date, LocalTime start, LocalTime end) {
         List<LocalDateTime> localDateTimes = new ArrayList<>();
         for (LocalTime current = start; current.isBefore(end); current = current.plusMinutes(15)) {
             localDateTimes.add(LocalDateTime.of(date, current));
