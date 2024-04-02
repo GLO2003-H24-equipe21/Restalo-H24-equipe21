@@ -18,7 +18,7 @@ public interface ReservationRepository {
     void delete(String reservationId);
 
     List<Reservation> searchReservations(
-            String restaurantId, String ownerId, String date, String customerName);
+            String restaurantId, LocalDate date, String customerName);
 
     Map<LocalDateTime, Integer> searchAvailabilities(Restaurant restaurant, LocalDate date);
 }

@@ -30,8 +30,7 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     public void delete(String reservationId) {}
 
     @Override
-    public List<Reservation> searchReservations(
-            String restaurantId, String ownerId, String date, String customerName) {
+    public List<Reservation> searchReservations(String restaurantId, LocalDate date, String customerName) {
         return null;
     }
 

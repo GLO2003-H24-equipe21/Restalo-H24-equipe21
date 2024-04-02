@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003.data.inmemory;
 
 import ca.ulaval.glo2003.domain.ReservationRepository;
+import ca.ulaval.glo2003.domain.entities.Customer;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 
@@ -8,6 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
+
 
 public class ReservationRepositoryInMemory implements ReservationRepository {
 
@@ -37,17 +40,32 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
     @Override
     public void delete(String reservationId) {}
 
-    // TODO
     @Override
     public List<Reservation> searchReservations(
-            String restaurantId, String ownerId, String date, String customerName) {
-        return null;
+            String restaurantId, LocalDate date, String customerName) {
+        return restaurantIdToReservations.getOrDefault(restaurantId, new ArrayList<>()).stream()
+                .filter(reservation -> matchesCustomerName(reservation.getCustomer(), customerName))
+                .filter(reservation -> matchesDate(reservation.getDate(), date))
+                .collect(Collectors.toList());
+    }
+
+    private boolean matchesCustomerName(Customer customer, String customerName) {
+        if (Objects.isNull(customerName)) return true;
+        return customer.getName()
+                .toLowerCase()
+                .replaceAll("\\s", "")
+                .contains(customerName.toLowerCase().replaceAll("\\s", ""));
+    }
+
+    private boolean matchesDate(LocalDate reservationDate, LocalDate date) {
+        if (Objects.isNull(date)) return true;
+        return reservationDate.equals(date);
     }
 
     @Override
     public Map<LocalDateTime, Integer> searchAvailabilities(Restaurant restaurant, LocalDate date) {
         List<Reservation> reservations = searchReservations(
-                restaurant.getId(), null, null, null
+                restaurant.getId(), date, null
         );
         List<LocalDateTime> intervals =
                 create15MinutesIntervals(

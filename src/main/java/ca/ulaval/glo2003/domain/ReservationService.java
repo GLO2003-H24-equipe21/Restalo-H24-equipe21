@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.Map;
 
 public class ReservationService {
@@ -78,11 +77,5 @@ public class ReservationService {
     // TODO
     public void deleteReservation(String number) {
         reservationRepository.delete(number);
-    }
-
-    // TODO
-    public List<Reservation> searchReservations(
-            String restaurantId, String ownerId, String date, String customerName) {
-        return null;
     }
 }

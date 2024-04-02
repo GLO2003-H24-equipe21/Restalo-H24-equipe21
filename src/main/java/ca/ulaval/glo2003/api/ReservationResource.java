@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003.api;
 
 import ca.ulaval.glo2003.api.mappers.ReservationResponseMapper;
+import ca.ulaval.glo2003.api.mappers.ReservationSearchResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateReservationRequest;
 import ca.ulaval.glo2003.api.responses.ReservationResponse;
 import ca.ulaval.glo2003.domain.ReservationService;
@@ -67,22 +68,5 @@ public class ReservationResource {
         reservationService.deleteReservation(number);
 
         return Response.status(Response.Status.NO_CONTENT).build();
-    }
-
-    // TODO
-    @GET
-    @Path("restaurants/{id}/reservations")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response searchReservations(
-            @HeaderParam("ownerId") String ownerId,
-            @PathParam("id") String restaurantId,
-            @QueryParam("date") String date,
-            @QueryParam("customerName") String customerName) {
-        Objects.requireNonNull(ownerId, "Owner id must be provided");
-
-        List<Reservation> reservations =
-                reservationService.searchReservations(restaurantId, ownerId, date, customerName);
-
-        return Response.status(200).build();
     }
 }
