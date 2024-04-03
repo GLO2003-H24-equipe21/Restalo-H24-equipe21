@@ -26,7 +26,9 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     }
 
     @Override
-    public void delete(String reservationId) {}
+    public Optional<Reservation> delete(String reservationId) {
+        return Optional.empty();
+    }
 
     @Override
     public List<Reservation> searchReservations(

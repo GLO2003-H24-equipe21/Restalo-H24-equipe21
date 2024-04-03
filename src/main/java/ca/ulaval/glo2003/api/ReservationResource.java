@@ -59,7 +59,6 @@ public class ReservationResource {
         return Response.status(Response.Status.OK).entity(reservationResponse).build();
     }
 
-    // TODO
     @DELETE
     @Path("reservations/{number}")
     public Response deleteReservation(@PathParam("number") String number) {

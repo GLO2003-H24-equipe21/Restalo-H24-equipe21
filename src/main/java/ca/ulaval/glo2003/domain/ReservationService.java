@@ -75,8 +75,9 @@ public class ReservationService {
         return new Pair<>(reservation, restaurant);
     }
 
-    // TODO
     public void deleteReservation(String number) {
-        reservationRepository.delete(number);
+        reservationRepository
+                .delete(number)
+                .orElseThrow(() -> new NotFoundException("Reservation does not exist"));
     }
 }
