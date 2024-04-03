@@ -2,7 +2,6 @@ package ca.ulaval.glo2003.domain;
 
 import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
 import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
-import ca.ulaval.glo2003.domain.entities.Availability;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
@@ -70,10 +69,5 @@ public class RestaurantService {
     // TODO
     public void deleteRestaurant(String restaurantId, String ownerId) {
         restaurantRepository.delete(restaurantId, ownerId);
-    }
-
-    // TODO
-    public List<Availability> searchAvailabilities(String restaurantId, String date) {
-        return null;
     }
 }

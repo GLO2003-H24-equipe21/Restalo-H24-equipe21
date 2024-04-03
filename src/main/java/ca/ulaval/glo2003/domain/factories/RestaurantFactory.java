@@ -15,7 +15,8 @@ public class RestaurantFactory {
         verifyNameNotEmpty(name);
         verifyCapacityAtLeastOne(capacity);
 
-        return new Restaurant(UUID.randomUUID(), ownerId, name, capacity, hours, reservations);
+        return new Restaurant(
+                UUID.randomUUID().toString(), ownerId, name, capacity, hours, reservations);
     }
 
     private void verifyNameNotEmpty(String name) {

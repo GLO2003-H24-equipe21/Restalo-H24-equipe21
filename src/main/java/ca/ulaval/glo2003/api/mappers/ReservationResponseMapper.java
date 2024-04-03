@@ -5,13 +5,17 @@ import ca.ulaval.glo2003.api.pojos.ReservationTimePojo;
 import ca.ulaval.glo2003.api.responses.ReservationResponse;
 import ca.ulaval.glo2003.api.responses.UserRestaurantResponse;
 import ca.ulaval.glo2003.domain.entities.Reservation;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
 import java.time.format.DateTimeFormatter;
+import org.glassfish.grizzly.utils.Pair;
 
 public class ReservationResponseMapper {
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
-    public ReservationResponse from(Reservation reservation) {
+    public ReservationResponse from(Pair<Reservation, Restaurant> pair) {
+        Reservation reservation = pair.getFirst();
+        Restaurant restaurant = pair.getSecond();
         CustomerPojo customer =
                 new CustomerPojo(
                         reservation.getCustomer().getName(),
@@ -21,8 +25,7 @@ public class ReservationResponseMapper {
                 new ReservationTimePojo(
                         reservation.getReservationTime().getStart().format(timeFormatter),
                         reservation.getReservationTime().getEnd().format(timeFormatter));
-        UserRestaurantResponse restaurant =
-                new UserRestaurantResponseMapper().from(reservation.getRestaurant());
+        UserRestaurantResponse userRestaurant = new UserRestaurantResponseMapper().from(restaurant);
 
         return new ReservationResponse(
                 reservation.getNumber(),
@@ -30,6 +33,6 @@ public class ReservationResponseMapper {
                 reservationTime,
                 reservation.getGroupSize(),
                 customer,
-                restaurant);
+                userRestaurant);
     }
 }

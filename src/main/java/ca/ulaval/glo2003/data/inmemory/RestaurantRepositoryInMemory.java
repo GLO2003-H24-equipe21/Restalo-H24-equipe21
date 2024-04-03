@@ -1,9 +1,7 @@
 package ca.ulaval.glo2003.data.inmemory;
 
 import ca.ulaval.glo2003.domain.RestaurantRepository;
-import ca.ulaval.glo2003.domain.entities.Restaurant;
-import ca.ulaval.glo2003.domain.entities.RestaurantHours;
-import ca.ulaval.glo2003.domain.entities.Search;
+import ca.ulaval.glo2003.domain.entities.*;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,20 +14,24 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
         restaurantIdToRestaurant = new HashMap<>();
     }
 
+    @Override
     public Optional<Restaurant> get(String restaurantId) {
         return Optional.ofNullable(restaurantIdToRestaurant.get(restaurantId));
     }
 
+    @Override
     public void add(Restaurant restaurant) {
         restaurantIdToRestaurant.put(restaurant.getId(), restaurant);
     }
 
+    @Override
     public List<Restaurant> getByOwnerId(String ownerId) {
         return restaurantIdToRestaurant.values().stream()
                 .filter(restaurant -> restaurant.getOwnerId().equals(ownerId))
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<Restaurant> searchRestaurants(Search search) {
         return restaurantIdToRestaurant.values().stream()
                 .filter(restaurant -> matchesRestaurantName(restaurant, search.getName()))
@@ -65,5 +67,6 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
     }
 
     // TODO
+    @Override
     public void delete(String restaurantId, String ownerId) {}
 }

@@ -3,7 +3,10 @@ package ca.ulaval.glo2003.domain.factories;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ca.ulaval.glo2003.domain.entities.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +31,7 @@ class ReservationFactoryTest {
 
     private static final Restaurant RESTAURANT =
             new Restaurant(
-                    UUID.randomUUID(),
+                    UUID.randomUUID().toString(),
                     "Rudy",
                     "Chez Rudy",
                     100,
@@ -36,13 +39,15 @@ class ReservationFactoryTest {
                     new RestaurantConfiguration(60));
     @Mock Customer customer;
 
+    private static final Map<LocalDateTime, Integer> AVAILABILITIES =
+            new AvailabilitiesFixture().on(LocalDate.parse(DATE)).create();
+
     ReservationFactory reservationFactory;
 
     ReservationTime reservationTime;
 
     @BeforeEach
     void setUp() {
-
         reservationFactory = new ReservationFactory();
         reservationTime = new ReservationTime(LocalTime.parse(START_TIME), 60);
     }
@@ -50,20 +55,23 @@ class ReservationFactoryTest {
     @Test
     void givenValidInputs_thenReservationCreated() {
         Reservation reservation =
-                reservationFactory.create(DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT);
+                reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT, AVAILABILITIES);
 
         Assertions.assertThat(reservation.getDate()).isEqualTo(DATE);
         Assertions.assertThat(reservation.getReservationTime()).isEqualTo(reservationTime);
         Assertions.assertThat(reservation.getGroupSize()).isEqualTo(GROUP_SIZE);
         Assertions.assertThat(reservation.getCustomer()).isEqualTo(customer);
-        Assertions.assertThat(reservation.getRestaurant()).isEqualTo(RESTAURANT);
+        Assertions.assertThat(reservation.getRestaurantId()).isEqualTo(RESTAURANT.getId());
     }
 
     @Test
     void givenGroupSizeBelowOne_throwInvalidArgumentException() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> reservationFactory.create(DATE, START_TIME, 0, customer, RESTAURANT));
+                () ->
+                        reservationFactory.create(
+                                DATE, START_TIME, 0, customer, RESTAURANT, AVAILABILITIES));
     }
 
     @Test
@@ -72,7 +80,12 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                DATE, INVALID_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+                                DATE,
+                                INVALID_START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 
     @Test
@@ -81,7 +94,12 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                DATE, EARLY_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+                                DATE,
+                                EARLY_START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 
     @Test
@@ -90,7 +108,12 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                DATE, LATE_START_TIME, GROUP_SIZE, customer, RESTAURANT));
+                                DATE,
+                                LATE_START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 
     @Test
@@ -99,6 +122,11 @@ class ReservationFactoryTest {
                 IllegalArgumentException.class,
                 () ->
                         reservationFactory.create(
-                                INVALID_DATE, START_TIME, GROUP_SIZE, customer, RESTAURANT));
+                                INVALID_DATE,
+                                START_TIME,
+                                GROUP_SIZE,
+                                customer,
+                                RESTAURANT,
+                                AVAILABILITIES));
     }
 }
