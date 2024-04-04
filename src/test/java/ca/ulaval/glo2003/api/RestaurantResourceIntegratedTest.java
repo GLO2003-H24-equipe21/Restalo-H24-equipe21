@@ -51,10 +51,10 @@ class RestaurantResourceIntegratedTest {
     private static final OwnerRestaurantResponseMapper RESTAURANT_MAPPER =
             new OwnerRestaurantResponseMapper();
     static RestaurantRepositoryInMemory restaurantRepository = new RestaurantRepositoryInMemory();
-    static ReservationRepositoryInMemory reservationRepository = new ReservationRepositoryInMemory();
+    static ReservationRepositoryInMemory reservationRepository =
+            new ReservationRepositoryInMemory();
 
-    static RestaurantFactory restaurantFactory = new RestaurantFactory()
-            ;
+    static RestaurantFactory restaurantFactory = new RestaurantFactory();
     static RestaurantHoursFactory restaurantHoursFactory = new RestaurantHoursFactory();
     static RestaurantConfigurationFactory restaurantConfigurationFactory =
             new RestaurantConfigurationFactory();

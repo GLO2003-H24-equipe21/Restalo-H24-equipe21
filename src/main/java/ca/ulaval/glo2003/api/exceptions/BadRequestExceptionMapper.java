@@ -7,7 +7,7 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
     @Override
-    public Response toResponse(BadRequestException exception){
+    public Response toResponse(BadRequestException exception) {
         return Response.status(Response.Status.BAD_REQUEST)
                 .entity(new ErrorResponse("MISSING_PARAMETER", exception.getMessage()))
                 .build();

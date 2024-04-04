@@ -11,7 +11,6 @@ import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -75,20 +74,21 @@ public class RestaurantService {
 
     // TODO
     public void deleteRestaurant(String restaurantId, String ownerId) {
-        if(Objects.isNull(ownerId)) throw new BadRequestException("Restaurant owner id is missing");
+        if (Objects.isNull(ownerId))
+            throw new BadRequestException("Restaurant owner id is missing");
 
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
                         .orElseThrow(() -> new NotFoundException("Restaurant owner id is invalid"));
 
-        if (!restaurant.getOwnerId().equals(ownerId)){
+        if (!restaurant.getOwnerId().equals(ownerId)) {
             throw new NotFoundException("Restaurant owner id is invalid");
         }
-        List<Reservation> reservations = new ArrayList<>(reservationRepository.listReservations(restaurantId));
+        List<Reservation> reservations =
+                new ArrayList<>(reservationRepository.listReservations(restaurantId));
 
-
-        for (Reservation reservation : reservations){
+        for (Reservation reservation : reservations) {
             reservationRepository.delete(reservation.getNumber());
         }
         restaurantRepository.delete(restaurantId, ownerId);
