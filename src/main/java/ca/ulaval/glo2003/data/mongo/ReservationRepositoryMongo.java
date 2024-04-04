@@ -40,4 +40,9 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     public Map<LocalDateTime, Integer> searchAvailabilities(Restaurant restaurant, LocalDate date) {
         return null;
     }
+
+    @Override
+    public List<Reservation> listReservations(String restaurantId) {
+        return null;
+    }
 }

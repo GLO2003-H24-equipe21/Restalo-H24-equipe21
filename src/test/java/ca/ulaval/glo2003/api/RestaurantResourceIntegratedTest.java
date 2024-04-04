@@ -9,6 +9,7 @@ import ca.ulaval.glo2003.api.requests.RestaurantRequestFixture;
 import ca.ulaval.glo2003.api.responses.ErrorResponse;
 import ca.ulaval.glo2003.api.responses.OwnerRestaurantResponse;
 import ca.ulaval.glo2003.api.responses.RestaurantResponseFixture;
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.RestaurantService;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
@@ -50,8 +51,10 @@ class RestaurantResourceIntegratedTest {
     private static final OwnerRestaurantResponseMapper RESTAURANT_MAPPER =
             new OwnerRestaurantResponseMapper();
     static RestaurantRepositoryInMemory restaurantRepository = new RestaurantRepositoryInMemory();
+    static ReservationRepositoryInMemory reservationRepository = new ReservationRepositoryInMemory();
 
-    static RestaurantFactory restaurantFactory = new RestaurantFactory();
+    static RestaurantFactory restaurantFactory = new RestaurantFactory()
+            ;
     static RestaurantHoursFactory restaurantHoursFactory = new RestaurantHoursFactory();
     static RestaurantConfigurationFactory restaurantConfigurationFactory =
             new RestaurantConfigurationFactory();
@@ -61,6 +64,7 @@ class RestaurantResourceIntegratedTest {
     private static final RestaurantService restaurantService =
             new RestaurantService(
                     restaurantRepository,
+                    reservationRepository,
                     restaurantFactory,
                     restaurantHoursFactory,
                     restaurantConfigurationFactory);

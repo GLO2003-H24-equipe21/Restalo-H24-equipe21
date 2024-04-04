@@ -3,6 +3,7 @@ package ca.ulaval.glo2003.api;
 import ca.ulaval.glo2003.api.mappers.OwnerRestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.responses.OwnerRestaurantResponse;
+import ca.ulaval.glo2003.domain.ReservationService;
 import ca.ulaval.glo2003.domain.RestaurantService;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class RestaurantResource {
 
     private final RestaurantService restaurantService;
+
     private final OwnerRestaurantResponseMapper restaurantResponseMapper;
 
     public RestaurantResource(RestaurantService restaurantService) {
@@ -85,7 +87,6 @@ public class RestaurantResource {
     public Response deleteRestaurant(
             @PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId) {
         restaurantService.deleteRestaurant(restaurantId, ownerId);
-
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

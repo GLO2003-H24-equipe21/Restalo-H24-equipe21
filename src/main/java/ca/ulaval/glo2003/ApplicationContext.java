@@ -39,6 +39,7 @@ public class ApplicationContext {
         RestaurantService restaurantService =
                 new RestaurantService(
                         restaurantRepository,
+                        reservationRepository,
                         restaurantFactory,
                         restaurantHoursFactory,
                         restaurantConfigurationFactory);
