@@ -15,5 +15,5 @@ public interface RestaurantRepository {
 
     List<Restaurant> searchRestaurants(Search search);
 
-    void delete(String restaurantId, String ownerId);
+    Optional <Restaurant> delete(String restaurantId, String ownerId);
 }

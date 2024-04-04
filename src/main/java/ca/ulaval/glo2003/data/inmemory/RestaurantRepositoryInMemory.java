@@ -65,8 +65,15 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
         if (Objects.isNull(to)) return true;
         return !to.isAfter(restaurantHours.getClose()) && to.isAfter(restaurantHours.getOpen());
     }
-
-    // TODO
     @Override
-    public void delete(String restaurantId, String ownerId) {}
+    public Optional<Restaurant> delete(String restaurantId, String ownerId) {
+        if (restaurantIdToRestaurant.get(restaurantId) == null) {
+            return Optional.empty();
+        }
+        if (!Objects.equals(restaurantIdToRestaurant.get(restaurantId).getOwnerId(), ownerId)) {
+            return Optional.empty();
+        }
+        Restaurant restaurant = restaurantIdToRestaurant.remove(restaurantId);
+        return Optional.of(restaurant);
+    }
 }

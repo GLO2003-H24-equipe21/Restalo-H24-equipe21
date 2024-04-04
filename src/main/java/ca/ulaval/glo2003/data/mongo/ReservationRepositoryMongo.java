@@ -90,6 +90,15 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> deleteAll(String restaurantId) {
+        List<Reservation> reservations = searchReservations(restaurantId, null, null);
+        for (Reservation reservation: reservations) {
+            delete(reservation.getNumber());
+        }
+        return reservations;
+    }
+
+    @Override
     public List<Reservation> searchReservations(
             String restaurantId, LocalDate date, String customerName) {
 
@@ -128,17 +137,15 @@ public class ReservationRepositoryMongo implements ReservationRepository {
                                         .minusMinutes(
                                                 restaurant.getConfiguration().getDuration())));
         Map<LocalDateTime, Integer> availabilities = new LinkedHashMap<>();
-        System.out.println(intervals);
 
         intervals.forEach(dateTime -> availabilities.put(dateTime, restaurant.getCapacity()));
-        System.out.println(availabilities);
+
         for (Reservation reservation : reservations) {
             List<LocalDateTime> reservationInterval =
                     create15MinutesIntervals(
                             reservation.getDate(),
                             reservation.getReservationTime().getStart(),
                             reservation.getReservationTime().getEnd());
-            System.out.println(reservationInterval);
             reservationInterval.forEach(
                     dateTime ->
                             availabilities.put(
