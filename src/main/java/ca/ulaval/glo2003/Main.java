@@ -13,6 +13,7 @@ public class Main {
     public static HttpServer startServer() {
         // if (!Objects.isNull(System.getenv("PORT")))
         //   BASE_URI = BASE_URI.replace("8080", System.getenv("PORT"));
+        //Test
 
         ApplicationContext applicationContext = new ApplicationContext();
 
