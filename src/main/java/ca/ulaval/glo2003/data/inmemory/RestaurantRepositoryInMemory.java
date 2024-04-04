@@ -68,5 +68,7 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
 
     // TODO
     @Override
-    public void delete(String restaurantId, String ownerId) {}
+    public void delete(String restaurantId, String ownerId) {
+        restaurantIdToRestaurant.remove(restaurantId);
+    }
 }
