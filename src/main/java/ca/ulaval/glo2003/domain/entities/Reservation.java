@@ -9,7 +9,7 @@ public class Reservation {
     private final ReservationTime reservationTime;
     private final Integer groupSize;
     private final Customer customer;
-    private final Restaurant restaurant;
+    private final String restaurantId;
 
     public Reservation(
             String number,
@@ -17,13 +17,13 @@ public class Reservation {
             ReservationTime reservationTime,
             Integer groupSize,
             Customer customer,
-            Restaurant restaurant) {
+            String restaurantId) {
         this.number = number;
         this.date = date;
         this.reservationTime = reservationTime;
         this.groupSize = groupSize;
         this.customer = customer;
-        this.restaurant = restaurant;
+        this.restaurantId = restaurantId;
     }
 
     public String getNumber() {
@@ -46,8 +46,8 @@ public class Reservation {
         return customer;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public String getRestaurantId() {
+        return restaurantId;
     }
 
     @Override
@@ -60,11 +60,11 @@ public class Reservation {
                 && Objects.equals(reservationTime, that.reservationTime)
                 && Objects.equals(groupSize, that.groupSize)
                 && Objects.equals(customer, that.customer)
-                && Objects.equals(restaurant, that.restaurant);
+                && Objects.equals(restaurantId, that.restaurantId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, date, reservationTime, groupSize, customer, restaurant);
+        return Objects.hash(number, date, reservationTime, groupSize, customer, restaurantId);
     }
 }

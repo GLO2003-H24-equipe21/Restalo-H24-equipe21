@@ -103,7 +103,6 @@ class RestaurantResourceIntegratedTest {
                         .header("Owner", OWNER_ID)
                         .post(Entity.entity(restaurantRequest, MediaType.APPLICATION_JSON));
         Assertions.assertThat(response.getStatus()).isEqualTo(201);
-        System.out.println("test");
         String[] headers = response.getHeaderString(HttpHeaders.LOCATION).split("restaurants/", 2);
 
         Assertions.assertThat(headers[1]).isNotEmpty();

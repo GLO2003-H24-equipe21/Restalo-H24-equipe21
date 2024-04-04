@@ -12,7 +12,9 @@ import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.assertj.core.api.Assertions;
@@ -31,7 +33,7 @@ class ReservationServiceTest {
 
     private static final Restaurant RESTAURANT =
             new Restaurant(
-                    UUID.randomUUID(),
+                    UUID.randomUUID().toString(),
                     "Rudy",
                     "Chez Rudy",
                     100,
@@ -43,6 +45,9 @@ class ReservationServiceTest {
 
     private static final Customer CUSTOMER =
             new Customer("Buggy", "Buggy.Boo@Asetin.com", "1234567890");
+
+    private static final Map<LocalDateTime, Integer> AVAILABILITIES =
+            new AvailabilitiesFixture().on(LocalDate.parse(DATE)).create();
 
     ReservationService reservationService;
 
@@ -69,7 +74,7 @@ class ReservationServiceTest {
                         new ReservationTime(LocalTime.parse(START_TIME), 60),
                         GROUP_SIZE,
                         CUSTOMER,
-                        RESTAURANT);
+                        RESTAURANT.getId());
         number = reservation.getNumber();
 
         restaurantRepository.add(RESTAURANT);
@@ -86,8 +91,11 @@ class ReservationServiceTest {
 
     @Test
     void givenValidInputs_thenReservationCreated() {
-        when(reservationFactory.create(DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT))
+        when(reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
                 .thenReturn(reservation);
+        when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE)))
+                .thenReturn(AVAILABILITIES);
 
         String reservationNumber =
                 reservationService.createReservation(
@@ -98,8 +106,11 @@ class ReservationServiceTest {
 
     @Test
     void givenValidInputs_thenReservationIsSaved() {
-        when(reservationFactory.create(DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT))
+        when(reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
                 .thenReturn(reservation);
+        when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE)))
+                .thenReturn(AVAILABILITIES);
 
         reservationService.createReservation(
                 RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerPojo);
@@ -111,7 +122,7 @@ class ReservationServiceTest {
     void givenExistingNumber_thenFindsReservation() {
         when(reservationRepository.get(number)).thenReturn(Optional.ofNullable(reservation));
 
-        Reservation gottenReservation = reservationService.getReservation(number);
+        Reservation gottenReservation = reservationService.getReservation(number).getFirst();
 
         Assertions.assertThat(gottenReservation).isEqualTo(reservation);
     }

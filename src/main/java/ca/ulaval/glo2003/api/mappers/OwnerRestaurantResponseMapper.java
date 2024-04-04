@@ -15,7 +15,7 @@ public class OwnerRestaurantResponseMapper {
                         restaurant.getHours().getOpen().format(dateTimeFormatter),
                         restaurant.getHours().getClose().format(dateTimeFormatter));
         RestaurantConfigurationPojo configuration =
-                new RestaurantConfigurationPojo(restaurant.getReservations().getDuration());
+                new RestaurantConfigurationPojo(restaurant.getConfiguration().getDuration());
         return new OwnerRestaurantResponse(
                 restaurant.getId(),
                 restaurant.getName(),

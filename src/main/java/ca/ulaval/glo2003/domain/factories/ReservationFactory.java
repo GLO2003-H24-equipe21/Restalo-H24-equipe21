@@ -5,9 +5,13 @@ import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.ReservationTime;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class ReservationFactory {
@@ -19,11 +23,27 @@ public class ReservationFactory {
             String startTime,
             Integer groupSize,
             Customer customer,
-            Restaurant restaurant) {
-        LocalDate localDateDate = parseDate(date);
-        LocalTime localTimeStartTime = parseStartTime(startTime);
+            Restaurant restaurant,
+            Map<LocalDateTime, Integer> availabilities) {
+        LocalDate parsedDate = parseDate(date);
+        LocalTime parsedStartTime = parseStartTime(startTime);
+        ReservationTime reservationTime =
+                new ReservationTime(parsedStartTime, restaurant.getConfiguration().getDuration());
 
-        return create(localDateDate, localTimeStartTime, groupSize, customer, restaurant);
+        verifyReservationStartsBeforeRestaurantOpen(
+                reservationTime.getStart(), restaurant.getHours().getOpen());
+        verifyReservationEndBeforeRestaurantClose(
+                reservationTime.getEnd(), restaurant.getHours().getClose());
+        verifyGroupSizeAtLeastOne(groupSize);
+        verifyAvailabilities(availabilities, parsedDate, reservationTime, groupSize);
+
+        return new Reservation(
+                createNumber(),
+                parsedDate,
+                reservationTime,
+                groupSize,
+                customer,
+                restaurant.getId());
     }
 
     private LocalDate parseDate(String date) {
@@ -41,24 +61,6 @@ public class ReservationFactory {
             throw new IllegalArgumentException(
                     "Reservation start time format is not valid (HH:mm:ss)");
         }
-    }
-
-    public Reservation create(
-            LocalDate date,
-            LocalTime startTime,
-            Integer groupSize,
-            Customer customer,
-            Restaurant restaurant) {
-        ReservationTime reservationTime =
-                new ReservationTime(startTime, restaurant.getReservations().getDuration());
-        verifyReservationStartsBeforeRestaurantOpen(
-                reservationTime.getStart(), restaurant.getHours().getOpen());
-        verifyReservationEndBeforeRestaurantClose(
-                reservationTime.getEnd(), restaurant.getHours().getClose());
-        verifyGroupSizeAtLeastOne(groupSize);
-
-        return new Reservation(
-                createNumber(), date, reservationTime, groupSize, customer, restaurant);
     }
 
     private void verifyReservationStartsBeforeRestaurantOpen(
@@ -81,6 +83,29 @@ public class ReservationFactory {
         if (groupSize < 1) {
             throw new IllegalArgumentException("Reservation group size must be at least one");
         }
+    }
+
+    private void verifyAvailabilities(
+            Map<LocalDateTime, Integer> availabilities,
+            LocalDate date,
+            ReservationTime time,
+            Integer groupSize) {
+        List<LocalDateTime> intervals =
+                create15MinutesIntervals(date, time.getStart(), time.getEnd());
+        for (LocalDateTime dateTime : intervals) {
+            if (availabilities.getOrDefault(dateTime, 0) < groupSize) {
+                throw new IllegalArgumentException("No availabilities at " + dateTime);
+            }
+        }
+    }
+
+    private List<LocalDateTime> create15MinutesIntervals(
+            LocalDate date, LocalTime start, LocalTime end) {
+        List<LocalDateTime> localDateTimes = new ArrayList<>();
+        for (LocalTime current = start; current.isBefore(end); current = current.plusMinutes(15)) {
+            localDateTimes.add(LocalDateTime.of(date, current));
+        }
+        return localDateTimes;
     }
 
     private String createNumber() {

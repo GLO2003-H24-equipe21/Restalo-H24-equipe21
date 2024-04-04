@@ -1,33 +1,32 @@
 package ca.ulaval.glo2003.domain.entities;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Restaurant {
     private final String ownerId;
-    private final UUID id;
+    private final String id;
     private final String name;
     private final Integer capacity;
     private final RestaurantHours hours;
-    private final RestaurantConfiguration reservations;
+    private final RestaurantConfiguration configuration;
 
     public Restaurant(
-            UUID id,
+            String id,
             String ownerId,
             String name,
             Integer capacity,
             RestaurantHours hours,
-            RestaurantConfiguration reservations) {
+            RestaurantConfiguration configuration) {
         this.id = id;
         this.ownerId = ownerId;
         this.name = name;
         this.capacity = capacity;
         this.hours = hours;
-        this.reservations = reservations;
+        this.configuration = configuration;
     }
 
     public String getId() {
-        return id.toString();
+        return id;
     }
 
     public String getOwnerId() {
@@ -46,8 +45,8 @@ public class Restaurant {
         return hours;
     }
 
-    public RestaurantConfiguration getReservations() {
-        return reservations;
+    public RestaurantConfiguration getConfiguration() {
+        return configuration;
     }
 
     @Override
@@ -60,11 +59,11 @@ public class Restaurant {
                 && Objects.equals(name, that.name)
                 && Objects.equals(capacity, that.capacity)
                 && Objects.equals(hours, that.hours)
-                && Objects.equals(reservations, that.reservations);
+                && Objects.equals(configuration, that.configuration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ownerId, id, name, capacity, hours, reservations);
+        return Objects.hash(ownerId, id, name, capacity, hours, configuration);
     }
 }

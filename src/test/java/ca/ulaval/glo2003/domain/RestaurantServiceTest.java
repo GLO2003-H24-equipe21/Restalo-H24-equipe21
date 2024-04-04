@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
 import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
@@ -25,7 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantServiceTest {
-    private static final UUID RESTAURANT_ID = UUID.randomUUID();
+    private static final String RESTAURANT_ID = UUID.randomUUID().toString();
     private static final String OWNER_ID = "1234";
     private static final String INVALID_OWNER_ID = "ABCD";
     private static final String RESTAURANT_NAME = "Paccini";
@@ -47,6 +48,7 @@ class RestaurantServiceTest {
     RestaurantService restaurantService;
     @Mock RestaurantFactory restaurantFactory;
     @Mock RestaurantRepositoryInMemory restaurantRepository;
+    @Mock ReservationRepositoryInMemory reservationRepository;
     @Mock RestaurantConfiguration restaurantConfiguration;
     @Mock RestaurantHours restaurantHours;
     @Mock RestaurantConfigurationFactory restaurantConfigurationFactory;
@@ -84,7 +86,7 @@ class RestaurantServiceTest {
                         restaurantHoursFactory,
                         restaurantConfigurationFactory);
 
-        searchService = new SearchService(restaurantRepository, null);
+        searchService = new SearchService(restaurantRepository, reservationRepository, null);
 
         restaurants = restaurantRepository.getByOwnerId(OWNER_ID);
     }

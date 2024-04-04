@@ -12,7 +12,7 @@ public class RestaurantTestUtils {
                 .mapToObj(
                         i ->
                                 new Restaurant(
-                                        UUID.randomUUID(),
+                                        UUID.randomUUID().toString(),
                                         String.format("owner %d", i),
                                         String.format("restaurant %d", i),
                                         5,
