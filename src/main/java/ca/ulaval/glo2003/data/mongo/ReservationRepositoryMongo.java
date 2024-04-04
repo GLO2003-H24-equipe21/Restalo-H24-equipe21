@@ -99,6 +99,11 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> listReservations(String restaurantId) {
+        return searchReservations(restaurantId, null, null);
+    }
+
+    @Override
     public List<Reservation> searchReservations(
             String restaurantId, LocalDate date, String customerName) {
 
