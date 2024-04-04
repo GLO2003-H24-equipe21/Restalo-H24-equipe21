@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class RestaurantResource {
 
     private final RestaurantService restaurantService;
+
     private final OwnerRestaurantResponseMapper restaurantResponseMapper;
 
     public RestaurantResource(RestaurantService restaurantService) {
@@ -85,7 +86,6 @@ public class RestaurantResource {
     public Response deleteRestaurant(
             @PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId) {
         restaurantService.deleteRestaurant(restaurantId, ownerId);
-
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

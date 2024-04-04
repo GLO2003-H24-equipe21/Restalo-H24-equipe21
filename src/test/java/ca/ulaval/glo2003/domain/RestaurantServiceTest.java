@@ -82,6 +82,7 @@ class RestaurantServiceTest {
         restaurantService =
                 new RestaurantService(
                         restaurantRepository,
+                        reservationRepository,
                         restaurantFactory,
                         restaurantHoursFactory,
                         restaurantConfigurationFactory);

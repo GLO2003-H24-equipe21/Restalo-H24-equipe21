@@ -101,6 +101,11 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
         return availabilities;
     }
 
+    @Override
+    public List<Reservation> listReservations(String restaurantId) {
+        return restaurantIdToReservations.getOrDefault(restaurantId, new ArrayList<>());
+    }
+
     private List<LocalDateTime> create15MinutesIntervals(
             LocalDate date, LocalTime start, LocalTime end) {
         List<LocalDateTime> localDateTimes = new ArrayList<>();
