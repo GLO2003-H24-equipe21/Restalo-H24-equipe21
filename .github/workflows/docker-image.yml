@@ -15,7 +15,6 @@ permissions:
   packages: write
   pull-requests: write
   repository-projects: write
-  security-events: write
   statuses: write
 
 env:
