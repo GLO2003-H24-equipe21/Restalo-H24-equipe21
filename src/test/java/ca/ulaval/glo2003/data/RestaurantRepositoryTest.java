@@ -3,7 +3,10 @@ package ca.ulaval.glo2003.data;
 import static com.google.common.truth.Truth.assertThat;
 
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
-import ca.ulaval.glo2003.domain.entities.*;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
+import ca.ulaval.glo2003.domain.entities.Search;
+import ca.ulaval.glo2003.domain.entities.SearchOpened;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
