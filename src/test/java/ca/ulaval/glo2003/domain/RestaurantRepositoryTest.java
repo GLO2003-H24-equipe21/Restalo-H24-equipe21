@@ -1,17 +1,26 @@
-package ca.ulaval.glo2003.data;
-
-import static com.google.common.truth.Truth.assertThat;
+package ca.ulaval.glo2003.domain;
 
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
-import ca.ulaval.glo2003.domain.entities.*;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
+import ca.ulaval.glo2003.domain.entities.Search;
+import ca.ulaval.glo2003.domain.entities.SearchOpened;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class RestaurantRepositoryTest {
-    RestaurantRepositoryInMemory repository;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
+
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
+public abstract class RestaurantRepositoryTest {
+
+    protected abstract RestaurantRepository createRepository();
+
+
+    private RestaurantRepository repository;
 
     Restaurant restaurant1, restaurant2;
     String restaurantId;
@@ -21,7 +30,7 @@ class RestaurantRepositoryTest {
 
     @BeforeEach
     void setup() {
-        repository = new RestaurantRepositoryInMemory();
+        repository = createRepository();
         restaurant1 = new RestaurantFixture().withOwnerId(OWNER_ID).create();
         restaurant2 =
                 new RestaurantFixture()
@@ -139,7 +148,7 @@ class RestaurantRepositoryTest {
 
     @Test
     public void
-            whenSearchOpenedFromIs12AndOpenedToIs20_thenReturnsRestaurantsOpenedBetween12And20() {
+    whenSearchOpenedFromIs12AndOpenedToIs20_thenReturnsRestaurantsOpenedBetween12And20() {
         repository.add(restaurant1);
         repository.add(restaurant2);
         Search search =
@@ -151,4 +160,47 @@ class RestaurantRepositoryTest {
 
         assertThat(gottenRestaurants).containsExactly(restaurant1);
     }
+
+    @Test
+    public void
+    givenSavedRestaurant_whenDeletingWithValidIdAndOwnerId_thenReturnsThatReservationAfterDeleting() {
+        repository.add(restaurant1);
+
+        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId(), restaurant1.getOwnerId());
+
+        assertThat(restaurant.isPresent()).isTrue();
+        assertThat(restaurant.get()).isEqualTo(restaurant1);
+
+    }
+
+    @Test
+    public void
+    givenSavedRestaurant_whenDeletingWithInValidIdAndValidOwnerId_thenReturnsThatReservationAfterDeleting() {
+        repository.add(restaurant1);
+
+        Optional<Restaurant> restaurant = repository.delete("invalidId", restaurant1.getOwnerId());
+
+        assertThat(restaurant.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void
+    givenSavedRestaurant_whenDeletingWithValidIdAndInvalidOwnerId_thenReturnsThatReservationAfterDeleting() {
+        repository.add(restaurant1);
+
+        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId(), "invalidOwnerId");
+
+        assertThat(restaurant.isEmpty()).isTrue();
+
+    }
+
+    @Test
+    public void
+    givenNoRestaurants_whenDeleting_thenReturnsNullOptional() {
+        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId(), restaurant1.getOwnerId());
+
+        assertThat(restaurant.isEmpty()).isTrue();
+    }
+
+
 }

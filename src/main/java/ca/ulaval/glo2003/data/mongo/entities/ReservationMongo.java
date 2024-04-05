@@ -12,6 +12,8 @@ public class ReservationMongo {
     public CustomerMongo customer;
     public String restaurantId;
 
+    public ReservationMongo() {}
+
     public ReservationMongo(
             String number,
             String date,
