@@ -15,4 +15,34 @@ public class ReservationFixture {
     public Reservation create() {
         return new Reservation(number, date, reservationTime, groupSize, customer, restaurantId);
     }
+
+    public ReservationFixture withNumber(String number) {
+        this.number = number;
+        return this;
+    }
+
+    public ReservationFixture withDate(LocalDate date) {
+        this.date = date;
+        return this;
+    }
+
+    public ReservationFixture withReservationTime(LocalTime start, Integer duration) {
+        this.reservationTime = new ReservationTime(start, duration);
+        return this;
+    }
+
+    public ReservationFixture withGroupSize(Integer groupSize) {
+        this.groupSize = groupSize;
+        return this;
+    }
+
+    public ReservationFixture withCustomer(Customer customer) {
+        this.customer = customer;
+        return this;
+    }
+
+    public ReservationFixture withRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+        return this;
+    }
 }

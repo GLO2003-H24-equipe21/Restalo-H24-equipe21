@@ -9,7 +9,7 @@ public class RestaurantFixture {
     private String name = "restaurant";
     private Integer capacity = 12;
     private RestaurantHours hours =
-            new RestaurantHours(LocalTime.parse("10:00:00"), LocalTime.parse("23:30:00"));
+            new RestaurantHours(LocalTime.parse("10:00:00"), LocalTime.parse("22:30:00"));
     private RestaurantConfiguration configuration = new RestaurantConfiguration(60);
 
     public Restaurant create() {
