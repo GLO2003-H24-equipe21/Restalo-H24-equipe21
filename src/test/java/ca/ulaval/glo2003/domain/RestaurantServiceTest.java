@@ -1,23 +1,22 @@
 package ca.ulaval.glo2003.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
 import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
-import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
-import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
-import ca.ulaval.glo2003.domain.entities.Restaurant;
-import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
-import ca.ulaval.glo2003.domain.entities.RestaurantHours;
+import ca.ulaval.glo2003.domain.entities.*;
 import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalTime;
-import java.util.*;
-import org.assertj.core.api.Assertions;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,168 +25,118 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantServiceTest {
-    private static final String RESTAURANT_ID = UUID.randomUUID().toString();
-    private static final String OWNER_ID = "1234";
-    private static final String INVALID_OWNER_ID = "ABCD";
-    private static final String RESTAURANT_NAME = "Paccini";
-    private static final int CAPACITY = 34;
-    private static final String OPEN = "10:24:32";
-    private static final String CLOSE = "22:24:32";
-    private static final int DURATION = 120;
-    private static String restaurantId;
-    private static final Restaurant restaurant =
-            new Restaurant(
-                    RESTAURANT_ID,
-                    OWNER_ID,
-                    RESTAURANT_NAME,
-                    CAPACITY,
-                    new RestaurantHours(LocalTime.parse(OPEN), LocalTime.parse(CLOSE)),
-                    new RestaurantConfiguration(DURATION));
-    private static List<Restaurant> restaurants;
 
     RestaurantService restaurantService;
+
+    @Mock RestaurantRepository restaurantRepository;
     @Mock RestaurantFactory restaurantFactory;
-    @Mock RestaurantRepositoryInMemory restaurantRepository;
-    @Mock ReservationRepositoryInMemory reservationRepository;
-    @Mock RestaurantConfiguration restaurantConfiguration;
-    @Mock RestaurantHours restaurantHours;
     @Mock RestaurantConfigurationFactory restaurantConfigurationFactory;
     @Mock RestaurantHoursFactory restaurantHoursFactory;
-    @Mock SearchService searchService;
-
-    Restaurant restaurantMock;
-    RestaurantHoursPojo restaurantHoursPojo;
-    RestaurantConfigurationPojo restaurantConfigurationPojo;
 
     @BeforeEach
     void setUp() {
-        restaurantHours = RestaurantTestUtils.createRestaurantHours(OPEN, CLOSE);
-        restaurantHoursPojo = new RestaurantHoursPojo(OPEN, CLOSE);
-        restaurantConfiguration = RestaurantTestUtils.createRestaurantReservation(DURATION);
-        restaurantConfigurationPojo = new RestaurantConfigurationPojo(DURATION);
-
-        restaurantMock =
-                new Restaurant(
-                        RESTAURANT_ID,
-                        OWNER_ID,
-                        RESTAURANT_NAME,
-                        CAPACITY,
-                        restaurantHours,
-                        restaurantConfiguration);
-        restaurantId = restaurant.getId();
-
-        restaurantHoursFactory = new RestaurantHoursFactory();
-        restaurantConfigurationFactory = new RestaurantConfigurationFactory();
-
         restaurantService =
                 new RestaurantService(
                         restaurantRepository,
                         restaurantFactory,
                         restaurantHoursFactory,
                         restaurantConfigurationFactory);
-
-        searchService = new SearchService(restaurantRepository, reservationRepository, null);
-
-        restaurants = restaurantRepository.getByOwnerId(OWNER_ID);
     }
 
     @Test
-    void givenValidInputs_whenCreate_thenRestaurantCreated() {
-        when(restaurantFactory.create(
-                        OWNER_ID,
-                        RESTAURANT_NAME,
-                        CAPACITY,
-                        restaurantHours,
-                        restaurantConfiguration))
-                .thenReturn(restaurantMock);
+    void whenCreateRestaurant_thenReturnsRestaurantId() {
+        when(restaurantHoursFactory.create(OPEN, CLOSE)).thenReturn(HOURS);
+        when(restaurantConfigurationFactory.create(DURATION)).thenReturn(CONFIGURATION);
+        when(restaurantFactory.create(OWNER_ID, NAME, CAPACITY, HOURS, CONFIGURATION))
+                .thenReturn(RESTAURANT);
 
-        String restaurantServiceId =
+        String gottenRestaurantId =
                 restaurantService.createRestaurant(
-                        OWNER_ID,
-                        RESTAURANT_NAME,
-                        CAPACITY,
-                        restaurantHoursPojo,
-                        restaurantConfigurationPojo);
+                        OWNER_ID, NAME, CAPACITY, HOURS_POJO, CONFIGURATION_POJO);
 
-        assertEquals(restaurantMock.getId(), restaurantServiceId);
+        assertThat(gottenRestaurantId).isEqualTo(RESTAURANT_ID);
     }
 
     @Test
-    void whenCreateRestaurantWithValidValues_thenRestaurantIsCreatedAndSaved() {
-        when(restaurantFactory.create(
-                        OWNER_ID,
-                        RESTAURANT_NAME,
-                        CAPACITY,
-                        restaurantHours,
-                        restaurantConfiguration))
-                .thenReturn(restaurantMock);
+    void whenCreateRestaurant_thenRestaurantIsSaved() {
+        when(restaurantHoursFactory.create(OPEN, CLOSE)).thenReturn(HOURS);
+        when(restaurantConfigurationFactory.create(DURATION)).thenReturn(CONFIGURATION);
+        when(restaurantFactory.create(OWNER_ID, NAME, CAPACITY, HOURS, CONFIGURATION))
+                .thenReturn(RESTAURANT);
 
         restaurantService.createRestaurant(
-                OWNER_ID,
-                RESTAURANT_NAME,
-                CAPACITY,
-                restaurantHoursPojo,
-                restaurantConfigurationPojo);
+                OWNER_ID, NAME, CAPACITY, HOURS_POJO, CONFIGURATION_POJO);
 
-        verify(restaurantRepository).add(restaurantMock);
+        verify(restaurantRepository).add(RESTAURANT);
     }
 
     @Test
-    void givenExistingId_thenFindsRestaurant() {
-        when(restaurantRepository.get(restaurantId)).thenReturn(Optional.of(restaurant));
+    void whenGetRestaurant_thenReturnsRestaurant() {
+        when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
 
-        Restaurant gottenRestaurant = restaurantService.getRestaurant(restaurantId, OWNER_ID);
+        Restaurant gottenRestaurant = restaurantService.getRestaurant(RESTAURANT_ID, OWNER_ID);
 
-        Assertions.assertThat(gottenRestaurant).isEqualTo(restaurant);
+        assertThat(gottenRestaurant).isEqualTo(RESTAURANT);
     }
 
     @Test
-    void givenInvalidId_thenThrowNotFoundException() {
-        when(restaurantRepository.get("invalid_number")).thenReturn(Optional.empty());
+    void givenNonExistingRestaurantId_whenGetRestaurant_thenThrowsNotFoundException() {
+        String invalidRestaurantId = "invalid_id";
+        when(restaurantRepository.get(invalidRestaurantId)).thenReturn(Optional.empty());
 
         assertThrows(
                 NotFoundException.class,
-                () -> restaurantService.getRestaurant("invalid_number", OWNER_ID));
+                () -> restaurantService.getRestaurant(invalidRestaurantId, OWNER_ID));
     }
 
     @Test
-    void givenValidOwnerId_thenListRestaurantsReturnsListOfRestaurantDtos() {
-        List<Restaurant> mockRestaurants =
-                Arrays.asList(
-                        new Restaurant(
-                                RESTAURANT_ID,
-                                OWNER_ID,
-                                RESTAURANT_NAME,
-                                CAPACITY,
-                                restaurantHours,
-                                restaurantConfiguration));
-        when(restaurantRepository.getByOwnerId(OWNER_ID)).thenReturn(mockRestaurants);
-        when(restaurantFactory.create(
-                        OWNER_ID,
-                        RESTAURANT_NAME,
-                        CAPACITY,
-                        restaurantHours,
-                        restaurantConfiguration))
-                .thenReturn(restaurant);
+    void givenInvalidOwnerId_whenGetRestaurant_thenThrowsNotFoundException() {
+        String invalidOwnerId = "not an owner";
+        when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
 
-        restaurantService.createRestaurant(
-                OWNER_ID,
-                RESTAURANT_NAME,
-                CAPACITY,
-                restaurantHoursPojo,
-                restaurantConfigurationPojo);
-        List<Restaurant> restaurants = restaurantService.listRestaurants(OWNER_ID);
-
-        Assertions.assertThat(mockRestaurants.size()).isEqualTo(restaurants.size());
+        assertThrows(
+                NotFoundException.class,
+                () -> restaurantService.getRestaurant(RESTAURANT_ID, invalidOwnerId));
     }
 
     @Test
-    void givenInvalidOwnerId_thenReturnsEmptyRestaurantList() {
+    void whenListRestaurants_thenReturnsListOfRestaurants() {
+        when(restaurantRepository.getByOwnerId(OWNER_ID)).thenReturn(RESTAURANTS);
 
-        when(restaurantRepository.getByOwnerId(INVALID_OWNER_ID))
+        List<Restaurant> gottenRestaurants = restaurantService.listRestaurants(OWNER_ID);
+
+        assertThat(gottenRestaurants).isEqualTo(RESTAURANTS);
+    }
+
+    @Test
+    void givenNonExistingOwnerId_whenListRestaurants_thenReturnsEmptyList() {
+        String nonExistingOwnerId = "i do not exist";
+        when(restaurantRepository.getByOwnerId(nonExistingOwnerId))
                 .thenReturn(Collections.emptyList());
-        List<Restaurant> restaurants = restaurantService.listRestaurants(INVALID_OWNER_ID);
 
-        assertTrue(restaurants.isEmpty());
+        List<Restaurant> gottenRestaurants = restaurantService.listRestaurants(nonExistingOwnerId);
+
+        assertThat(gottenRestaurants).isEmpty();
     }
+
+    private static final String RESTAURANT_ID = UUID.randomUUID().toString();
+    private static final String OWNER_ID = "owner";
+    private static final String NAME = "restaurant";
+    private static final Integer CAPACITY = 12;
+
+    private static final String OPEN = "10:00:00";
+    private static final String CLOSE = "22:30:00";
+    private static final RestaurantHours HOURS =
+            new RestaurantHours(LocalTime.parse(OPEN), LocalTime.parse(CLOSE));
+    private static final RestaurantHoursPojo HOURS_POJO = new RestaurantHoursPojo(OPEN, CLOSE);
+
+    private static final int DURATION = 60;
+    private static final RestaurantConfiguration CONFIGURATION =
+            new RestaurantConfiguration(DURATION);
+    private static final RestaurantConfigurationPojo CONFIGURATION_POJO =
+            new RestaurantConfigurationPojo(DURATION);
+
+    private static final Restaurant RESTAURANT =
+            new RestaurantFixture().withId(RESTAURANT_ID).create();
+    private static final List<Restaurant> RESTAURANTS = TestUtils.createRestaurants(3);
 }
