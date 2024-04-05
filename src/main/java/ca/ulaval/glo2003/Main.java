@@ -11,6 +11,9 @@ public class Main {
     public static final String BASE_URI = "http://0.0.0.0:8080/";
 
     public static HttpServer startServer() {
+        // if (!Objects.isNull(System.getenv("PORT")))
+        //   BASE_URI = BASE_URI.replace("8080", System.getenv("PORT"));
+
         ApplicationContext applicationContext = new ApplicationContext();
 
         final ResourceConfig resourceConfig =

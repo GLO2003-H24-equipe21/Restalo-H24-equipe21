@@ -124,7 +124,7 @@ class ReservationServiceTest {
     private static final Restaurant RESTAURANT =
             new RestaurantFixture().withId(RESTAURANT_ID).create();
     private static final Reservation RESERVATION =
-            new ReservationFixture().withRestaurantId(RESTAURANT_ID).create();
+            new ReservationFixture().withNumber(NUMBER).withRestaurantId(RESTAURANT_ID).create();
 
     private static final String CUSTOMER_NAME = "Johnny Cash";
     private static final String EMAIL = "johnny.cash@example.com";

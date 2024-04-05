@@ -29,6 +29,7 @@ class RestaurantServiceTest {
     RestaurantService restaurantService;
 
     @Mock RestaurantRepository restaurantRepository;
+    @Mock ReservationRepository reservationRepository;
     @Mock RestaurantFactory restaurantFactory;
     @Mock RestaurantConfigurationFactory restaurantConfigurationFactory;
     @Mock RestaurantHoursFactory restaurantHoursFactory;
@@ -38,6 +39,7 @@ class RestaurantServiceTest {
         restaurantService =
                 new RestaurantService(
                         restaurantRepository,
+                        reservationRepository,
                         restaurantFactory,
                         restaurantHoursFactory,
                         restaurantConfigurationFactory);

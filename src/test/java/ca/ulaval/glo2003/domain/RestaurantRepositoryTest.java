@@ -1,8 +1,7 @@
-package ca.ulaval.glo2003.data;
+package ca.ulaval.glo2003.domain;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
 import ca.ulaval.glo2003.domain.entities.Search;
@@ -13,8 +12,11 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class RestaurantRepositoryTest {
-    RestaurantRepositoryInMemory repository;
+public abstract class RestaurantRepositoryTest {
+
+    protected abstract RestaurantRepository createRepository();
+
+    private RestaurantRepository repository;
 
     Restaurant restaurant1, restaurant2;
     String restaurantId;
@@ -24,7 +26,7 @@ class RestaurantRepositoryTest {
 
     @BeforeEach
     void setup() {
-        repository = new RestaurantRepositoryInMemory();
+        repository = createRepository();
         restaurant1 = new RestaurantFixture().withOwnerId(OWNER_ID).create();
         restaurant2 =
                 new RestaurantFixture()
@@ -153,5 +155,33 @@ class RestaurantRepositoryTest {
         List<Restaurant> gottenRestaurants = repository.searchRestaurants(search);
 
         assertThat(gottenRestaurants).containsExactly(restaurant1);
+    }
+
+    @Test
+    public void
+            givenSavedRestaurant_whenDeletingWithValidIdAndOwnerId_thenReturnsThatReservationAfterDeleting() {
+        repository.add(restaurant1);
+
+        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId());
+
+        assertThat(restaurant.isPresent()).isTrue();
+        assertThat(restaurant.get()).isEqualTo(restaurant1);
+    }
+
+    @Test
+    public void
+            givenSavedRestaurant_whenDeletingWithInValidIdAndValidOwnerId_thenReturnsThatReservationAfterDeleting() {
+        repository.add(restaurant1);
+
+        Optional<Restaurant> restaurant = repository.delete("invalidId");
+
+        assertThat(restaurant.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void givenNoRestaurants_whenDeleting_thenReturnsNullOptional() {
+        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId());
+
+        assertThat(restaurant.isEmpty()).isTrue();
     }
 }

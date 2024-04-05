@@ -14,12 +14,14 @@ import java.util.Objects;
 
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
+    private final ReservationRepository reservationRepository;
     private final RestaurantHoursFactory restaurantHoursFactory;
     private final RestaurantConfigurationFactory restaurantConfigurationFactory;
     private final RestaurantFactory restaurantFactory;
 
     public RestaurantService(
             RestaurantRepository restaurantRepository,
+            ReservationRepository p_reservationRepository,
             RestaurantFactory restaurantFactory,
             RestaurantHoursFactory restaurantHoursFactory,
             RestaurantConfigurationFactory restaurantConfigurationFactory) {
@@ -27,6 +29,7 @@ public class RestaurantService {
         this.restaurantFactory = restaurantFactory;
         this.restaurantHoursFactory = restaurantHoursFactory;
         this.restaurantConfigurationFactory = restaurantConfigurationFactory;
+        this.reservationRepository = p_reservationRepository;
     }
 
     public String createRestaurant(
@@ -66,8 +69,17 @@ public class RestaurantService {
         return restaurantRepository.getByOwnerId(ownerId);
     }
 
-    // TODO
     public void deleteRestaurant(String restaurantId, String ownerId) {
-        restaurantRepository.delete(restaurantId, ownerId);
+        Restaurant restaurant =
+                restaurantRepository
+                        .get(restaurantId)
+                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
+
+        if (!restaurant.getOwnerId().equals(ownerId)) {
+            throw new NotFoundException("Restaurant owner id is invalid");
+        }
+
+        reservationRepository.deleteAll(restaurantId);
+        restaurantRepository.delete(restaurantId);
     }
 }

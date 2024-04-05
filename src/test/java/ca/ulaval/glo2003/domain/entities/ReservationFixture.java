@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 public class ReservationFixture {
-    private String number = "123456789123456789";
+    private String number = UUID.randomUUID().toString();
     private LocalDate date = LocalDate.now().plusDays(2);
     private ReservationTime reservationTime = new ReservationTime(LocalTime.parse("12:00:00"), 60);
     private Integer groupSize = 3;

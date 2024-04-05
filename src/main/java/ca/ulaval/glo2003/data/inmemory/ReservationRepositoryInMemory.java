@@ -47,6 +47,16 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> deleteAll(String restaurantId) {
+        List<Reservation> reservations = searchReservations(restaurantId, null, null);
+        for (Reservation reservation : reservations) {
+            reservationIdToReservation.remove(reservation.getNumber());
+        }
+        restaurantIdToReservations.remove(restaurantId);
+        return reservations;
+    }
+
+    @Override
     public List<Reservation> searchReservations(
             String restaurantId, LocalDate date, String customerName) {
         return restaurantIdToReservations.getOrDefault(restaurantId, new ArrayList<>()).stream()
