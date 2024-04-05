@@ -9,12 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SearchFactoryTest {
-    private static final String VALID_NAME = "My restaurant";
-    private static final String VALID_OPENED_FROM = "10:00:00";
-    private static final String VALID_OPENED_TO = "20:00:00";
-
-    private static final String INVALID_OPENED_FROM = "10 o clock";
-    private static final String INVALID_OPENED_TO = "invalid hour";
 
     SearchFactory searchFactory;
 
@@ -24,47 +18,54 @@ class SearchFactoryTest {
     }
 
     @Test
-    void givenValidInputs_whenCreate_thenSearchCreated() {
-        Search search = searchFactory.create(VALID_NAME, VALID_OPENED_FROM, VALID_OPENED_TO);
+    void canCreateSearch() {
+        Search search = searchFactory.create(NAME, OPENED_FROM, OPENED_TO);
 
-        assertThat(search.getName()).isEqualTo(VALID_NAME);
-        assertThat(search.getSearchOpened().getFrom())
-                .isEqualTo(LocalTime.parse(VALID_OPENED_FROM));
-        assertThat(search.getSearchOpened().getTo()).isEqualTo(LocalTime.parse(VALID_OPENED_TO));
+        assertThat(search.getName()).isEqualTo(NAME);
+        assertThat(search.getSearchOpened().getFrom()).isEqualTo(LocalTime.parse(OPENED_FROM));
+        assertThat(search.getSearchOpened().getTo()).isEqualTo(LocalTime.parse(OPENED_TO));
     }
 
     @Test
-    void givenNullName_whenCreate_thenNameIsNull() {
-        Search search = searchFactory.create(null, VALID_OPENED_FROM, VALID_OPENED_TO);
+    void canCreateSearchWithNullName() {
+        Search search = searchFactory.create(null, OPENED_FROM, OPENED_TO);
 
         assertThat(search.getName()).isEqualTo(null);
     }
 
     @Test
-    void givenNullOpenedFrom_whenCreate_thenOpenedFromIsNull() {
-        Search search = searchFactory.create(VALID_NAME, null, VALID_OPENED_TO);
+    void canCreateSearchWithNullOpenedFrom() {
+        Search search = searchFactory.create(NAME, null, OPENED_TO);
 
         assertThat(search.getSearchOpened().getFrom()).isEqualTo(null);
     }
 
     @Test
-    void givenNullOpenedTo_whenCreate_thenOpenedFromIsNull() {
-        Search search = searchFactory.create(VALID_NAME, VALID_OPENED_FROM, null);
+    void canCreateSearchWithNullOpenedTo() {
+        Search search = searchFactory.create(NAME, OPENED_FROM, null);
 
         assertThat(search.getSearchOpened().getTo()).isEqualTo(null);
     }
 
     @Test
-    void givenInvalidOpenedFromFormat_whenCreate_thenThrowIllegalArgumentException() {
+    void whenOpenedFromFormatIsInvalid_thenThrowsIllegalArgumentException() {
+        String invalidOpenedFrom = "10 o clock";
+
         assertThrows(
                 IllegalArgumentException.class,
-                () -> searchFactory.create(VALID_NAME, INVALID_OPENED_FROM, VALID_OPENED_TO));
+                () -> searchFactory.create(NAME, invalidOpenedFrom, OPENED_TO));
     }
 
     @Test
-    void givenInvalidOpenedToFormat_whenCreate_thenThrowIllegalArgumentException() {
+    void whenOpenedToFormatIsInvalid_thenThrowsIllegalArgumentException() {
+        String invalidOpenedTo = "invalid hour";
+
         assertThrows(
                 IllegalArgumentException.class,
-                () -> searchFactory.create(VALID_NAME, VALID_OPENED_FROM, INVALID_OPENED_TO));
+                () -> searchFactory.create(NAME, OPENED_FROM, invalidOpenedTo));
     }
+
+    private static final String NAME = "My restaurant";
+    private static final String OPENED_FROM = "10:00:00";
+    private static final String OPENED_TO = "20:00:00";
 }

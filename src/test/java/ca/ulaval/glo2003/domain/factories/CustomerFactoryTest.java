@@ -8,13 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CustomerFactoryTest {
-    private static final String VALID_NAME = "Johnny Cash";
-    private static final String VALID_EMAIL = "johnny.cash@example.com";
-    private static final String VALID_PHONE_NUMBER = "1234567890";
-
-    private static final String EMPTY_NAME = "";
-    private static final String INVALID_EMAIL = "invalid_email";
-    private static final String INVALID_PHONE_NUMBER = "123";
 
     CustomerFactory customerFactory;
 
@@ -24,33 +17,42 @@ class CustomerFactoryTest {
     }
 
     @Test
-    void givenValidInputs_whenCreate_thenCustomerCreated() {
-        Customer customer = new Customer(VALID_NAME, VALID_EMAIL, VALID_PHONE_NUMBER);
+    void whenValidInputs_thenCustomerCreated() {
+        Customer customer = new Customer(NAME, EMAIL, PHONE_NUMBER);
 
-        Customer gottenCustomer =
-                customerFactory.create(VALID_NAME, VALID_EMAIL, VALID_PHONE_NUMBER);
+        Customer gottenCustomer = customerFactory.create(NAME, EMAIL, PHONE_NUMBER);
 
         assertThat(gottenCustomer).isEqualTo(customer);
     }
 
     @Test
-    void givenEmptyName_whenCreate_throwsIllegalArgumentException() {
+    void whenEmptyName_thenThrowsIllegalArgumentException() {
+        String emptyName = "";
+
         assertThrows(
                 IllegalArgumentException.class,
-                () -> customerFactory.create(EMPTY_NAME, VALID_EMAIL, VALID_PHONE_NUMBER));
+                () -> customerFactory.create(emptyName, EMAIL, PHONE_NUMBER));
     }
 
     @Test
-    void givenInvalidEmail_whenCreate_throwsIllegalArgumentException() {
+    void whenInvalidEmail_thenThrowsIllegalArgumentException() {
+        String invalidEmail = "invalid_email";
+
         assertThrows(
                 IllegalArgumentException.class,
-                () -> customerFactory.create(VALID_NAME, INVALID_EMAIL, VALID_PHONE_NUMBER));
+                () -> customerFactory.create(NAME, invalidEmail, PHONE_NUMBER));
     }
 
     @Test
-    void givenInvalidPhoneNumber_whenCreate_throwsIllegalArgumentException() {
+    void whenInvalidPhoneNumber_thenThrowsIllegalArgumentException() {
+        String invalidPhoneNumber = "123";
+
         assertThrows(
                 IllegalArgumentException.class,
-                () -> customerFactory.create(VALID_NAME, VALID_EMAIL, INVALID_PHONE_NUMBER));
+                () -> customerFactory.create(NAME, EMAIL, invalidPhoneNumber));
     }
+
+    private static final String NAME = "Johnny Cash";
+    private static final String EMAIL = "johnny.cash@example.com";
+    private static final String PHONE_NUMBER = "1234567890";
 }

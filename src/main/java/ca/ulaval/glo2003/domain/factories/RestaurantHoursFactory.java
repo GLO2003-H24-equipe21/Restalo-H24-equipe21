@@ -10,10 +10,13 @@ public class RestaurantHoursFactory {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
 
     public RestaurantHours create(String open, String close) {
-        LocalTime localTimeOpen = parseOpenHour(open);
-        LocalTime localTimeClose = parseCloseHour(close);
+        LocalTime parsedOpen = parseOpenHour(open);
+        LocalTime parsedClose = parseCloseHour(close);
 
-        return create(localTimeOpen, localTimeClose);
+        verifyOpenBeforeClose(parsedOpen, parsedClose);
+        verifyTimeIntervalAtLeastOne(parsedOpen, parsedClose);
+
+        return new RestaurantHours(parsedOpen, parsedClose);
     }
 
     private LocalTime parseOpenHour(String open) {
@@ -32,13 +35,6 @@ public class RestaurantHoursFactory {
             throw new IllegalArgumentException(
                     "Restaurant close time format is not valid (HH:mm:ss)");
         }
-    }
-
-    public RestaurantHours create(LocalTime open, LocalTime close) {
-        verifyOpenBeforeClose(open, close);
-        verifyTimeIntervalAtLeastOne(open, close);
-
-        return new RestaurantHours(open, close);
     }
 
     private void verifyOpenBeforeClose(LocalTime open, LocalTime close) {
