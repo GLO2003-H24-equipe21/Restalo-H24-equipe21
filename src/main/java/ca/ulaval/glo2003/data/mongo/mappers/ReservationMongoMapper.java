@@ -3,6 +3,7 @@ package ca.ulaval.glo2003.data.mongo.mappers;
 import ca.ulaval.glo2003.data.mongo.entities.ReservationMongo;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ReservationMongoMapper {
 
@@ -12,7 +13,7 @@ public class ReservationMongoMapper {
     public ReservationMongo toMongo(Reservation reservation) {
         return new ReservationMongo(
                 reservation.getNumber(),
-                reservation.getDate().toString(),
+                reservation.getDate().format(DateTimeFormatter.ISO_LOCAL_DATE),
                 timeMapper.toMongo(reservation.getReservationTime()),
                 reservation.getGroupSize(),
                 customerMapper.toMongo(reservation.getCustomer()),
