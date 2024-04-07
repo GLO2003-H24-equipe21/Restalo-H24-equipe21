@@ -1,4 +1,5 @@
 package ca.ulaval.glo2003.data.mongo.entities;
+
 import dev.morphia.annotations.Entity;
 
 @Entity

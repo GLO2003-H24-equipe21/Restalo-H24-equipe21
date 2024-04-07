@@ -1,6 +1,6 @@
 package ca.ulaval.glo2003.domain.entities;
 
-import java.util.*;
+import java.util.Objects;
 
 public class Restaurant {
     private final String ownerId;

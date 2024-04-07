@@ -7,8 +7,8 @@ public class RestaurantRequestFixture {
 
     private String ownerId = "owner";
     private String name = "restaurant";
-    private int capacity = 14;
-    private RestaurantHoursPojo hours = new RestaurantHoursPojo("10:00:00", "23:30:00");
+    private int capacity = 12;
+    private RestaurantHoursPojo hours = new RestaurantHoursPojo("10:00:00", "22:30:00");
     private RestaurantConfigurationPojo reservations = new RestaurantConfigurationPojo(60);
 
     public CreateRestaurantRequest create() {

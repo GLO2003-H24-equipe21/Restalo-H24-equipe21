@@ -26,8 +26,7 @@ public class Main {
                         .register(new NullPointerExceptionMapper())
                         .register(new IllegalArgumentExceptionMapper())
                         .register(new RuntimeExceptionMapper())
-                        .register(new NotFoundExceptionMapper())
-                        .register(new BadRequestExceptionMapper());
+                        .register(new NotFoundExceptionMapper());
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
     }

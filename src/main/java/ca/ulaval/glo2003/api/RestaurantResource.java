@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class RestaurantResource {
 
     private final RestaurantService restaurantService;
-
     private final OwnerRestaurantResponseMapper restaurantResponseMapper;
 
     public RestaurantResource(RestaurantService restaurantService) {
@@ -80,12 +79,14 @@ public class RestaurantResource {
                 .build();
     }
 
-    // TODO
     @DELETE
     @Path("restaurants/{id}")
     public Response deleteRestaurant(
             @PathParam("id") String restaurantId, @HeaderParam("Owner") String ownerId) {
+        Objects.requireNonNull(ownerId, "Owner id must be provided");
+
         restaurantService.deleteRestaurant(restaurantId, ownerId);
+
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

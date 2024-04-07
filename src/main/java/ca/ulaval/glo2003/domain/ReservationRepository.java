@@ -21,6 +21,4 @@ public interface ReservationRepository {
     List<Reservation> searchReservations(String restaurantId, LocalDate date, String customerName);
 
     Map<LocalDateTime, Integer> searchAvailabilities(Restaurant restaurant, LocalDate date);
-
-    List<Reservation> listReservations(String restaurantId);
 }

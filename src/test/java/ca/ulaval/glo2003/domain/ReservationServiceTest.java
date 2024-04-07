@@ -1,23 +1,21 @@
 package ca.ulaval.glo2003.domain;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.api.pojos.CustomerPojo;
-import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
-import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.domain.entities.*;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
 import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
+import org.glassfish.grizzly.utils.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,61 +24,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
-    private static final String NUMBER = "12345678912345678910";
-    private static final String DATE = "2024-03-01";
-
-    private static final Integer GROUP_SIZE = 4;
-
-    private static final Restaurant RESTAURANT =
-            new Restaurant(
-                    UUID.randomUUID().toString(),
-                    "Rudy",
-                    "Chez Rudy",
-                    100,
-                    new RestaurantHours(LocalTime.parse("07:00:00"), LocalTime.parse("17:00:00")),
-                    new RestaurantConfiguration(60));
-    private static final String START_TIME = "13:38:59";
-
-    private static final String INVALID_NUMBER = "invalid_number";
-
-    private static final Customer CUSTOMER =
-            new Customer("Buggy", "Buggy.Boo@Asetin.com", "1234567890");
-
-    private static final Map<LocalDateTime, Integer> AVAILABILITIES =
-            new AvailabilitiesFixture().on(LocalDate.parse(DATE)).create();
 
     ReservationService reservationService;
 
-    CustomerPojo customerPojo = new CustomerPojo("Buggy", "Buggy.Boo@Asetin.com", "1234567890");
-
-    @Mock ReservationRepositoryInMemory reservationRepository;
-
+    @Mock ReservationRepository reservationRepository;
+    @Mock RestaurantRepository restaurantRepository;
     @Mock ReservationFactory reservationFactory;
-
-    RestaurantRepositoryInMemory restaurantRepository = new RestaurantRepositoryInMemory();
-
-    CustomerFactory customerFactory;
-
-    String number;
-
-    Reservation reservation;
+    @Mock CustomerFactory customerFactory;
 
     @BeforeEach
     void setUp() {
-        reservation =
-                new Reservation(
-                        NUMBER,
-                        LocalDate.parse(DATE),
-                        new ReservationTime(LocalTime.parse(START_TIME), 60),
-                        GROUP_SIZE,
-                        CUSTOMER,
-                        RESTAURANT.getId());
-        number = reservation.getNumber();
-
-        restaurantRepository.add(RESTAURANT);
-
-        customerFactory = new CustomerFactory();
-
         reservationService =
                 new ReservationService(
                         reservationRepository,
@@ -90,48 +43,96 @@ class ReservationServiceTest {
     }
 
     @Test
-    void givenValidInputs_thenReservationCreated() {
-        when(reservationFactory.create(
-                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
-                .thenReturn(reservation);
+    void whenCreateReservation_thenReturnsReservationNumber() {
+        when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
+        when(customerFactory.create(CUSTOMER_NAME, EMAIL, PHONE_NUMBER)).thenReturn(CUSTOMER);
         when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE)))
                 .thenReturn(AVAILABILITIES);
+        when(reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
+                .thenReturn(RESERVATION);
 
-        String reservationNumber =
+        String gottenNumber =
                 reservationService.createReservation(
-                        RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerPojo);
+                        RESTAURANT_ID, DATE, START_TIME, GROUP_SIZE, CUSTOMER_POJO);
 
-        Assertions.assertThat(reservationNumber).isEqualTo(number);
+        assertThat(gottenNumber).isEqualTo(NUMBER);
     }
 
     @Test
-    void givenValidInputs_thenReservationIsSaved() {
-        when(reservationFactory.create(
-                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
-                .thenReturn(reservation);
+    void whenCreateReservation_thenReservationIsSaved() {
+        when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
+        when(customerFactory.create(CUSTOMER_NAME, EMAIL, PHONE_NUMBER)).thenReturn(CUSTOMER);
         when(reservationRepository.searchAvailabilities(RESTAURANT, LocalDate.parse(DATE)))
                 .thenReturn(AVAILABILITIES);
+        when(reservationFactory.create(
+                        DATE, START_TIME, GROUP_SIZE, CUSTOMER, RESTAURANT, AVAILABILITIES))
+                .thenReturn(RESERVATION);
 
         reservationService.createReservation(
-                RESTAURANT.getId(), DATE, START_TIME, GROUP_SIZE, customerPojo);
+                RESTAURANT_ID, DATE, START_TIME, GROUP_SIZE, CUSTOMER_POJO);
 
-        verify(reservationRepository).add(reservation);
+        verify(reservationRepository).add(RESERVATION);
     }
 
     @Test
-    void givenExistingNumber_thenFindsReservation() {
-        when(reservationRepository.get(number)).thenReturn(Optional.ofNullable(reservation));
+    void whenGetReservation_thenReturnsPairOfReservationAndRestaurant() {
+        Pair<Reservation, Restaurant> expectedPair = new Pair<>(RESERVATION, RESTAURANT);
+        when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
+        when(reservationRepository.get(NUMBER)).thenReturn(Optional.of(RESERVATION));
 
-        Reservation gottenReservation = reservationService.getReservation(number).getFirst();
+        Pair<Reservation, Restaurant> gottenPair = reservationService.getReservation(NUMBER);
 
-        Assertions.assertThat(gottenReservation).isEqualTo(reservation);
+        assertThat(gottenPair.getFirst()).isEqualTo(expectedPair.getFirst());
+        assertThat(gottenPair.getSecond()).isEqualTo(expectedPair.getSecond());
     }
 
     @Test
-    void givenNonExistingNumber_thenThrowNotFoundException() {
-        when(reservationRepository.get(INVALID_NUMBER)).thenReturn(Optional.empty());
+    void givenNonExistingNumber_whenGetReservation_thenThrowsNotFoundException() {
+        String nonExistingNumber = "1234";
+        when(reservationRepository.get(nonExistingNumber)).thenReturn(Optional.empty());
 
         assertThrows(
-                NotFoundException.class, () -> reservationService.getReservation(INVALID_NUMBER));
+                NotFoundException.class,
+                () -> reservationService.getReservation(nonExistingNumber));
     }
+
+    @Test
+    void whenDeleteReservation_thenReservationIsDeleted() {
+        when(reservationRepository.delete(NUMBER)).thenReturn(Optional.of(RESERVATION));
+
+        reservationService.deleteReservation(NUMBER);
+
+        verify(reservationRepository).delete(NUMBER);
+    }
+
+    @Test
+    void givenNonExistingNumber_whenDeleteReservation_thenThrowsNotFoundException() {
+        String nonExistingNumber = "1234";
+
+        assertThrows(
+                NotFoundException.class,
+                () -> reservationService.deleteReservation(nonExistingNumber));
+    }
+
+    private static final String NUMBER = "123456789123456789";
+    private static final String DATE = LocalDate.now().plusDays(2).toString();
+    private static final String START_TIME = "12:00:00";
+    private static final Integer GROUP_SIZE = 3;
+    private static final String RESTAURANT_ID = UUID.randomUUID().toString();
+
+    private static final Restaurant RESTAURANT =
+            new RestaurantFixture().withId(RESTAURANT_ID).create();
+    private static final Reservation RESERVATION =
+            new ReservationFixture().withNumber(NUMBER).withRestaurantId(RESTAURANT_ID).create();
+
+    private static final String CUSTOMER_NAME = "Johnny Cash";
+    private static final String EMAIL = "johnny.cash@example.com";
+    private static final String PHONE_NUMBER = "1234567890";
+    private static final Customer CUSTOMER = new CustomerFixture().create();
+    private static final CustomerPojo CUSTOMER_POJO =
+            new CustomerPojo(CUSTOMER_NAME, EMAIL, PHONE_NUMBER);
+
+    private static final Map<LocalDateTime, Integer> AVAILABILITIES =
+            new AvailabilitiesFixture().create();
 }

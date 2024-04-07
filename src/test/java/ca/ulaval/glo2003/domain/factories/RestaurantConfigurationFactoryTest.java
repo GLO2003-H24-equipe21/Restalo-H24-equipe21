@@ -1,6 +1,7 @@
 package ca.ulaval.glo2003.domain.factories;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,5 +30,14 @@ class RestaurantConfigurationFactoryTest {
         RestaurantConfiguration reservations = restaurantConfigurationFactory.create(duration);
 
         assertThat(reservations.getDuration()).isEqualTo(duration);
+    }
+
+    @Test
+    public void whenDurationIsNegative_thenThrowsIllegalArgumentException() {
+        Integer duration = -15;
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> restaurantConfigurationFactory.create(duration));
     }
 }

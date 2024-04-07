@@ -1,6 +1,5 @@
 package ca.ulaval.glo2003.data.mongo;
 
-import ca.ulaval.glo2003.domain.ReservationRepository;
 import ca.ulaval.glo2003.domain.RestaurantRepository;
 import ca.ulaval.glo2003.domain.RestaurantRepositoryTest;
 import com.mongodb.client.MongoClients;
@@ -9,13 +8,10 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @Testcontainers
 class RestaurantRepositoryMongoTest extends RestaurantRepositoryTest {
 
-    @Container
-    private final MongoDBContainer mongoContainer = new MongoDBContainer("mongo:7.0");
+    @Container private final MongoDBContainer mongoContainer = new MongoDBContainer("mongo:7.0");
 
     @Override
     protected RestaurantRepository createRepository() {

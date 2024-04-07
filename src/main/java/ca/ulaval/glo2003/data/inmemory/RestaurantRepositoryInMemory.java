@@ -1,7 +1,9 @@
 package ca.ulaval.glo2003.data.inmemory;
 
 import ca.ulaval.glo2003.domain.RestaurantRepository;
-import ca.ulaval.glo2003.domain.entities.*;
+import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.RestaurantHours;
+import ca.ulaval.glo2003.domain.entities.Search;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -65,15 +67,9 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
         if (Objects.isNull(to)) return true;
         return !to.isAfter(restaurantHours.getClose()) && to.isAfter(restaurantHours.getOpen());
     }
+
     @Override
-    public Optional<Restaurant> delete(String restaurantId, String ownerId) {
-        if (restaurantIdToRestaurant.get(restaurantId) == null) {
-            return Optional.empty();
-        }
-        if (!Objects.equals(restaurantIdToRestaurant.get(restaurantId).getOwnerId(), ownerId)) {
-            return Optional.empty();
-        }
-        Restaurant restaurant = restaurantIdToRestaurant.remove(restaurantId);
-        return Optional.of(restaurant);
+    public Optional<Restaurant> delete(String restaurantId) {
+        return Optional.ofNullable(restaurantIdToRestaurant.remove(restaurantId));
     }
 }

@@ -8,6 +8,7 @@ public class ReservationTimeMongo {
     public String end;
 
     public ReservationTimeMongo() {}
+
     public ReservationTimeMongo(String start, String end) {
         this.start = start;
         this.end = end;

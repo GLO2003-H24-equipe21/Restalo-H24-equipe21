@@ -1,24 +1,17 @@
 package ca.ulaval.glo2003.data.mongo;
 
-import ca.ulaval.glo2003.data.mongo.entities.ReservationMongo;
 import ca.ulaval.glo2003.data.mongo.entities.RestaurantMongo;
-import ca.ulaval.glo2003.data.mongo.entities.RestaurantToReservationsMapMongo;
-import ca.ulaval.glo2003.data.mongo.mappers.ReservationMongoMapper;
 import ca.ulaval.glo2003.data.mongo.mappers.RestaurantMongoMapper;
 import ca.ulaval.glo2003.domain.RestaurantRepository;
-import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.entities.Search;
 import dev.morphia.Datastore;
-
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static dev.morphia.query.filters.Filters.gt;
 
 public class RestaurantRepositoryMongo implements RestaurantRepository {
     private final Datastore datastore;
@@ -31,9 +24,9 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
 
     @Override
     public Optional<Restaurant> get(String restaurantId) {
-        return datastore.find(RestaurantMongo.class)
-                .stream()
-                .filter(restaurantMongo -> Objects.equals(restaurantMongo.id, restaurantId)).findFirst()
+        return datastore.find(RestaurantMongo.class).stream()
+                .filter(restaurantMongo -> Objects.equals(restaurantMongo.id, restaurantId))
+                .findFirst()
                 .map(restaurantMongoMapper::fromMongo);
     }
 
@@ -45,8 +38,7 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     @Override
     public List<Restaurant> getByOwnerId(String ownerId) {
 
-        return datastore.find(RestaurantMongo.class)
-                .stream()
+        return datastore.find(RestaurantMongo.class).stream()
                 .filter(restaurantMongo -> Objects.equals(restaurantMongo.ownerId, ownerId))
                 .map(restaurantMongoMapper::fromMongo)
                 .collect(Collectors.toList());
@@ -56,15 +48,21 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     public List<Restaurant> searchRestaurants(Search search) {
 
         return datastore.find(RestaurantMongo.class).stream()
-                .filter(restaurant -> matchesRestaurantName(restaurantMongoMapper.fromMongo(restaurant), search.getName()))
+                .filter(
+                        restaurant ->
+                                matchesRestaurantName(
+                                        restaurantMongoMapper.fromMongo(restaurant),
+                                        search.getName()))
                 .filter(
                         restaurant ->
                                 matchesRestaurantOpenHour(
-                                        restaurantMongoMapper.fromMongo(restaurant).getHours(), search.getSearchOpened().getFrom()))
+                                        restaurantMongoMapper.fromMongo(restaurant).getHours(),
+                                        search.getSearchOpened().getFrom()))
                 .filter(
                         restaurant ->
                                 matchesRestaurantCloseHour(
-                                        restaurantMongoMapper.fromMongo(restaurant).getHours(), search.getSearchOpened().getTo()))
+                                        restaurantMongoMapper.fromMongo(restaurant).getHours(),
+                                        search.getSearchOpened().getTo()))
                 .map(restaurantMongoMapper::fromMongo)
                 .collect(Collectors.toList());
     }
@@ -90,12 +88,13 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     }
 
     @Override
-    public Optional<Restaurant> delete(String restaurantId, String ownerId) {
-        Restaurant restaurant = datastore.find(RestaurantMongo.class)
-                .stream()
-                .filter(restaurantMongo -> Objects.equals(restaurantMongo.ownerId, ownerId))
-                .filter(restaurantMongo -> Objects.equals(restaurantMongo.id, restaurantId)).findFirst()
-                .map(restaurantMongoMapper::fromMongo).orElse(null);
+    public Optional<Restaurant> delete(String restaurantId) {
+        Restaurant restaurant =
+                datastore.find(RestaurantMongo.class).stream()
+                        .filter(restaurantMongo -> Objects.equals(restaurantMongo.id, restaurantId))
+                        .findFirst()
+                        .map(restaurantMongoMapper::fromMongo)
+                        .orElse(null);
         if (Objects.isNull(restaurant)) {
             return Optional.empty();
         }

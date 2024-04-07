@@ -1,24 +1,20 @@
 package ca.ulaval.glo2003.domain;
 
-import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
+import static com.google.common.truth.Truth.assertThat;
+
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
 import ca.ulaval.glo2003.domain.entities.Search;
 import ca.ulaval.glo2003.domain.entities.SearchOpened;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public abstract class RestaurantRepositoryTest {
 
     protected abstract RestaurantRepository createRepository();
-
 
     private RestaurantRepository repository;
 
@@ -148,7 +144,7 @@ public abstract class RestaurantRepositoryTest {
 
     @Test
     public void
-    whenSearchOpenedFromIs12AndOpenedToIs20_thenReturnsRestaurantsOpenedBetween12And20() {
+            whenSearchOpenedFromIs12AndOpenedToIs20_thenReturnsRestaurantsOpenedBetween12And20() {
         repository.add(restaurant1);
         repository.add(restaurant2);
         Search search =
@@ -163,44 +159,29 @@ public abstract class RestaurantRepositoryTest {
 
     @Test
     public void
-    givenSavedRestaurant_whenDeletingWithValidIdAndOwnerId_thenReturnsThatReservationAfterDeleting() {
+            givenSavedRestaurant_whenDeletingWithValidIdAndOwnerId_thenReturnsThatReservationAfterDeleting() {
         repository.add(restaurant1);
 
-        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId(), restaurant1.getOwnerId());
+        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId());
 
         assertThat(restaurant.isPresent()).isTrue();
         assertThat(restaurant.get()).isEqualTo(restaurant1);
-
     }
 
     @Test
     public void
-    givenSavedRestaurant_whenDeletingWithInValidIdAndValidOwnerId_thenReturnsThatReservationAfterDeleting() {
+            givenSavedRestaurant_whenDeletingWithInValidIdAndValidOwnerId_thenReturnsThatReservationAfterDeleting() {
         repository.add(restaurant1);
 
-        Optional<Restaurant> restaurant = repository.delete("invalidId", restaurant1.getOwnerId());
+        Optional<Restaurant> restaurant = repository.delete("invalidId");
 
         assertThat(restaurant.isEmpty()).isTrue();
     }
 
     @Test
-    public void
-    givenSavedRestaurant_whenDeletingWithValidIdAndInvalidOwnerId_thenReturnsThatReservationAfterDeleting() {
-        repository.add(restaurant1);
-
-        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId(), "invalidOwnerId");
-
-        assertThat(restaurant.isEmpty()).isTrue();
-
-    }
-
-    @Test
-    public void
-    givenNoRestaurants_whenDeleting_thenReturnsNullOptional() {
-        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId(), restaurant1.getOwnerId());
+    public void givenNoRestaurants_whenDeleting_thenReturnsNullOptional() {
+        Optional<Restaurant> restaurant = repository.delete(restaurant1.getId());
 
         assertThat(restaurant.isEmpty()).isTrue();
     }
-
-
 }

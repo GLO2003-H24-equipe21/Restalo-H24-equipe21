@@ -2,16 +2,13 @@ package ca.ulaval.glo2003.domain;
 
 import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
 import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
-import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
 import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,25 +69,17 @@ public class RestaurantService {
         return restaurantRepository.getByOwnerId(ownerId);
     }
 
-    // TODO
     public void deleteRestaurant(String restaurantId, String ownerId) {
-        if (Objects.isNull(ownerId))
-            throw new BadRequestException("Restaurant owner id is missing");
-
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
-                        .orElseThrow(() -> new NotFoundException("Restaurant owner id is invalid"));
+                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
 
         if (!restaurant.getOwnerId().equals(ownerId)) {
             throw new NotFoundException("Restaurant owner id is invalid");
         }
-        List<Reservation> reservations =
-                new ArrayList<>(reservationRepository.listReservations(restaurantId));
 
-        for (Reservation reservation : reservations) {
-            reservationRepository.delete(reservation.getNumber());
-        }
-        restaurantRepository.delete(restaurantId, ownerId);
+        reservationRepository.deleteAll(restaurantId);
+        restaurantRepository.delete(restaurantId);
     }
 }

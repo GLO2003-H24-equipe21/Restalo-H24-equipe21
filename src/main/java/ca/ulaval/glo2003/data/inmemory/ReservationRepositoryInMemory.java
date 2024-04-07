@@ -45,15 +45,16 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
         restaurantIdToReservations.get(reservation.getRestaurantId()).remove(reservation);
         return Optional.of(reservation);
     }
+
     @Override
     public List<Reservation> deleteAll(String restaurantId) {
         List<Reservation> reservations = searchReservations(restaurantId, null, null);
-        for (Reservation reservation: reservations) {
-            delete(reservation.getNumber());
+        for (Reservation reservation : reservations) {
+            reservationIdToReservation.remove(reservation.getNumber());
         }
+        restaurantIdToReservations.remove(restaurantId);
         return reservations;
     }
-
 
     @Override
     public List<Reservation> searchReservations(
@@ -108,11 +109,6 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
         }
 
         return availabilities;
-    }
-
-    @Override
-    public List<Reservation> listReservations(String restaurantId) {
-        return restaurantIdToReservations.getOrDefault(restaurantId, new ArrayList<>());
     }
 
     private List<LocalDateTime> create15MinutesIntervals(

@@ -12,7 +12,7 @@ public class RestaurantMongo {
     public RestaurantHoursMongo hours;
     public Integer reservationsDuration;
 
-    public RestaurantMongo(){}
+    public RestaurantMongo() {}
 
     public RestaurantMongo(
             String id,
