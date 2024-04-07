@@ -49,23 +49,31 @@
 ## Planification du travail
 
 ### GitHub Project
+![Project](pictures_tp3/git-hub-project.png)
 
 ### Milestone
+![Milestone](pictures_tp3/milestone_tp3.png)
 
 ### Issues
 
 Issue #1
+![Issue_2](pictures_tp3/issue_107.png)
 
 Issue #2
+![Issue_1](pictures_tp3/issue_108.png)
 
 Issue #3
+![Issue_1](pictures_tp3/issue_109.png)
 
 ### Pull requests
 
 Pull request #1
+![Pull_request_1](pictures_tp3/pr_125.png)
 
 Pull request #2
+![Pull_request_2](pictures_tp3/pr_130.png)
 
 Pull request #3
+![Pull_request_3](pictures_tp3/pr_134.png)
 
 ### Arbre de commits
