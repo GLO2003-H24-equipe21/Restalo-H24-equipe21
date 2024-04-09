@@ -1,9 +1,8 @@
 package ca.ulaval.glo2003.data.mongo;
 
-import static dev.morphia.query.filters.Filters.gt;
+import static dev.morphia.query.filters.Filters.eq;
 
 import ca.ulaval.glo2003.data.mongo.entities.ReservationMongo;
-import ca.ulaval.glo2003.data.mongo.entities.RestaurantToReservationsMapMongo;
 import ca.ulaval.glo2003.data.mongo.mappers.ReservationMongoMapper;
 import ca.ulaval.glo2003.domain.ReservationRepository;
 import ca.ulaval.glo2003.domain.entities.Customer;
@@ -26,16 +25,7 @@ public class ReservationRepositoryMongo implements ReservationRepository {
 
     @Override
     public void add(Reservation reservation) {
-        addToReservationMap(reservation.getRestaurantId(), reservation);
         datastore.save(reservationMongoMapper.toMongo(reservation));
-    }
-
-    private Optional<RestaurantToReservationsMapMongo> getMap(String restaurantId) {
-        return datastore.find(RestaurantToReservationsMapMongo.class).stream()
-                .filter(
-                        reservationMongo ->
-                                Objects.equals(reservationMongo.restaurantId, restaurantId))
-                .findFirst();
     }
 
     @Override
@@ -48,53 +38,9 @@ public class ReservationRepositoryMongo implements ReservationRepository {
 
     @Override
     public Optional<Reservation> delete(String reservationId) {
-        Reservation reservation = get(reservationId).orElse(null);
-        if (Objects.isNull(reservation)) {
-            return Optional.empty();
-        }
-        datastore.find(ReservationMongo.class).filter(gt("number", reservationId)).delete();
-        RestaurantToReservationsMapMongo map =
-                deleteFromReservationMap(reservation.getRestaurantId(), reservation).orElse(null);
-        return Optional.of(reservation);
-    }
-
-    private void addToReservationMap(String restaurantId, Reservation reservation) {
-        RestaurantToReservationsMapMongo reservationsMap = getMap(restaurantId).orElse(null);
-        if (reservationsMap == null) {
-            reservationsMap = new RestaurantToReservationsMapMongo(restaurantId);
-        }
-        reservationsMap.add(reservationMongoMapper.toMongo(reservation));
-        modifyReservationsMap(restaurantId, reservationsMap);
-    }
-
-    private Optional<RestaurantToReservationsMapMongo> deleteFromReservationMap(
-            String restaurantId, Reservation reservation) {
-        RestaurantToReservationsMapMongo map = getMap(restaurantId).orElse(null);
-
-        if (map == null) {
-            return Optional.empty();
-        }
-        Boolean removed = map.remove(reservationMongoMapper.toMongo(reservation));
-        if (!removed) {
-            return Optional.empty();
-        }
-        modifyReservationsMap(restaurantId, map);
-        return Optional.of(map);
-    }
-
-    private void modifyReservationsMap(String restaurantId, RestaurantToReservationsMapMongo map) {
-        datastore.find(RestaurantToReservationsMapMongo.class).stream()
-                .filter(
-                        reservationMongo ->
-                                Objects.equals(reservationMongo.restaurantId, restaurantId))
-                .findFirst()
-                .ifPresent(
-                        oldMap ->
-                                datastore
-                                        .find(RestaurantToReservationsMapMongo.class)
-                                        .filter(gt("restaurantId", restaurantId))
-                                        .delete());
-        datastore.save(map);
+        Optional<Reservation> reservation = get(reservationId);
+        datastore.find(ReservationMongo.class).filter(eq("_id", reservationId)).delete();
+        return reservation;
     }
 
     @Override
@@ -110,9 +56,8 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     public List<Reservation> searchReservations(
             String restaurantId, LocalDate date, String customerName) {
 
-        RestaurantToReservationsMapMongo map =
-                getMap(restaurantId).orElse(new RestaurantToReservationsMapMongo(restaurantId));
-        return map.reservations.stream()
+        return datastore.find(ReservationMongo.class).stream()
+                .filter(reservation -> reservation.restaurantId.equals(restaurantId))
                 .filter(
                         reservation ->
                                 matchesCustomerName(
@@ -132,7 +77,7 @@ public class ReservationRepositoryMongo implements ReservationRepository {
         return customer.getName()
                 .toLowerCase()
                 .replaceAll("\\s", "")
-                .contains(customerName.toLowerCase().replaceAll("\\s", ""));
+                .startsWith(customerName.toLowerCase().replaceAll("\\s", ""));
     }
 
     private boolean matchesDate(LocalDate reservationDate, LocalDate date) {
@@ -147,29 +92,11 @@ public class ReservationRepositoryMongo implements ReservationRepository {
                 create15MinutesIntervals(
                         date,
                         roundToNext15Minutes(restaurant.getHours().getOpen()),
-                        roundToNext15Minutes(
-                                restaurant
-                                        .getHours()
-                                        .getClose()
-                                        .plusSeconds(1)
-                                        .minusMinutes(
-                                                restaurant.getConfiguration().getDuration())));
+                        calculateRoundedCloseTime(restaurant));
         Map<LocalDateTime, Integer> availabilities = new LinkedHashMap<>();
 
         intervals.forEach(dateTime -> availabilities.put(dateTime, restaurant.getCapacity()));
-
-        for (Reservation reservation : reservations) {
-            List<LocalDateTime> reservationInterval =
-                    create15MinutesIntervals(
-                            reservation.getDate(),
-                            reservation.getReservationTime().getStart(),
-                            reservation.getReservationTime().getEnd());
-            reservationInterval.forEach(
-                    dateTime ->
-                            availabilities.put(
-                                    dateTime,
-                                    availabilities.get(dateTime) - reservation.getGroupSize()));
-        }
+        updateAvailabilitiesWithReservations(availabilities, reservations);
 
         return availabilities;
     }
@@ -188,5 +115,30 @@ public class ReservationRepositoryMongo implements ReservationRepository {
             time = time.plusSeconds(1);
         }
         return time.withNano(0).plusSeconds((4500 - (time.toSecondOfDay() % 3600)) % 900);
+    }
+
+    private LocalTime calculateRoundedCloseTime(Restaurant restaurant) {
+        return roundToNext15Minutes(
+                restaurant
+                        .getHours()
+                        .getClose()
+                        .plusSeconds(1)
+                        .minusMinutes(restaurant.getConfiguration().getDuration()));
+    }
+
+    private void updateAvailabilitiesWithReservations(
+            Map<LocalDateTime, Integer> availabilities, List<Reservation> reservations) {
+        for (Reservation reservation : reservations) {
+            List<LocalDateTime> reservationInterval =
+                    create15MinutesIntervals(
+                            reservation.getDate(),
+                            reservation.getReservationTime().getStart(),
+                            reservation.getReservationTime().getEnd());
+            reservationInterval.forEach(
+                    dateTime ->
+                            availabilities.put(
+                                    dateTime,
+                                    availabilities.get(dateTime) - reservation.getGroupSize()));
+        }
     }
 }

@@ -1,5 +1,7 @@
 package ca.ulaval.glo2003.data.mongo;
 
+import static dev.morphia.query.filters.Filters.eq;
+
 import ca.ulaval.glo2003.data.mongo.entities.RestaurantMongo;
 import ca.ulaval.glo2003.data.mongo.mappers.RestaurantMongoMapper;
 import ca.ulaval.glo2003.domain.RestaurantRepository;
@@ -23,6 +25,11 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     }
 
     @Override
+    public void add(Restaurant restaurant) {
+        datastore.save(restaurantMongoMapper.toMongo(restaurant));
+    }
+
+    @Override
     public Optional<Restaurant> get(String restaurantId) {
         return datastore.find(RestaurantMongo.class).stream()
                 .filter(restaurantMongo -> Objects.equals(restaurantMongo.id, restaurantId))
@@ -31,13 +38,7 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     }
 
     @Override
-    public void add(Restaurant restaurant) {
-        datastore.save(restaurantMongoMapper.toMongo(restaurant));
-    }
-
-    @Override
     public List<Restaurant> getByOwnerId(String ownerId) {
-
         return datastore.find(RestaurantMongo.class).stream()
                 .filter(restaurantMongo -> Objects.equals(restaurantMongo.ownerId, ownerId))
                 .map(restaurantMongoMapper::fromMongo)
@@ -45,8 +46,14 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     }
 
     @Override
-    public List<Restaurant> searchRestaurants(Search search) {
+    public Optional<Restaurant> delete(String restaurantId) {
+        Optional<Restaurant> restaurant = get(restaurantId);
+        datastore.find(RestaurantMongo.class).filter(eq("_id", restaurantId)).delete();
+        return restaurant;
+    }
 
+    @Override
+    public List<Restaurant> searchRestaurants(Search search) {
         return datastore.find(RestaurantMongo.class).stream()
                 .filter(
                         restaurant ->
@@ -85,19 +92,5 @@ public class RestaurantRepositoryMongo implements RestaurantRepository {
     private boolean matchesRestaurantCloseHour(RestaurantHours restaurantHours, LocalTime to) {
         if (Objects.isNull(to)) return true;
         return !to.isAfter(restaurantHours.getClose()) && to.isAfter(restaurantHours.getOpen());
-    }
-
-    @Override
-    public Optional<Restaurant> delete(String restaurantId) {
-        Restaurant restaurant =
-                datastore.find(RestaurantMongo.class).stream()
-                        .filter(restaurantMongo -> Objects.equals(restaurantMongo.id, restaurantId))
-                        .findFirst()
-                        .map(restaurantMongoMapper::fromMongo)
-                        .orElse(null);
-        if (Objects.isNull(restaurant)) {
-            return Optional.empty();
-        }
-        return Optional.of(restaurant);
     }
 }

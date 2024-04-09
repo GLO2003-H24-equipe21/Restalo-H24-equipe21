@@ -70,7 +70,7 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
         return customer.getName()
                 .toLowerCase()
                 .replaceAll("\\s", "")
-                .contains(customerName.toLowerCase().replaceAll("\\s", ""));
+                .startsWith(customerName.toLowerCase().replaceAll("\\s", ""));
     }
 
     private boolean matchesDate(LocalDate reservationDate, LocalDate date) {
@@ -85,28 +85,11 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
                 create15MinutesIntervals(
                         date,
                         roundToNext15Minutes(restaurant.getHours().getOpen()),
-                        roundToNext15Minutes(
-                                restaurant
-                                        .getHours()
-                                        .getClose()
-                                        .plusSeconds(1)
-                                        .minusMinutes(
-                                                restaurant.getConfiguration().getDuration())));
+                        calculateRoundedCloseTime(restaurant));
         Map<LocalDateTime, Integer> availabilities = new LinkedHashMap<>();
 
         intervals.forEach(dateTime -> availabilities.put(dateTime, restaurant.getCapacity()));
-        for (Reservation reservation : reservations) {
-            List<LocalDateTime> reservationInterval =
-                    create15MinutesIntervals(
-                            reservation.getDate(),
-                            reservation.getReservationTime().getStart(),
-                            reservation.getReservationTime().getEnd());
-            reservationInterval.forEach(
-                    dateTime ->
-                            availabilities.put(
-                                    dateTime,
-                                    availabilities.get(dateTime) - reservation.getGroupSize()));
-        }
+        updateAvailabilitiesWithReservations(availabilities, reservations);
 
         return availabilities;
     }
@@ -125,5 +108,30 @@ public class ReservationRepositoryInMemory implements ReservationRepository {
             time = time.plusSeconds(1);
         }
         return time.withNano(0).plusSeconds((4500 - (time.toSecondOfDay() % 3600)) % 900);
+    }
+
+    private LocalTime calculateRoundedCloseTime(Restaurant restaurant) {
+        return roundToNext15Minutes(
+                restaurant
+                        .getHours()
+                        .getClose()
+                        .plusSeconds(1)
+                        .minusMinutes(restaurant.getConfiguration().getDuration()));
+    }
+
+    private void updateAvailabilitiesWithReservations(
+            Map<LocalDateTime, Integer> availabilities, List<Reservation> reservations) {
+        for (Reservation reservation : reservations) {
+            List<LocalDateTime> reservationInterval =
+                    create15MinutesIntervals(
+                            reservation.getDate(),
+                            reservation.getReservationTime().getStart(),
+                            reservation.getReservationTime().getEnd());
+            reservationInterval.forEach(
+                    dateTime ->
+                            availabilities.put(
+                                    dateTime,
+                                    availabilities.get(dateTime) - reservation.getGroupSize()));
+        }
     }
 }
