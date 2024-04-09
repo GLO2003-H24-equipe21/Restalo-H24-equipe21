@@ -17,13 +17,13 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
     }
 
     @Override
-    public Optional<Restaurant> get(String restaurantId) {
-        return Optional.ofNullable(restaurantIdToRestaurant.get(restaurantId));
+    public void add(Restaurant restaurant) {
+        restaurantIdToRestaurant.put(restaurant.getId(), restaurant);
     }
 
     @Override
-    public void add(Restaurant restaurant) {
-        restaurantIdToRestaurant.put(restaurant.getId(), restaurant);
+    public Optional<Restaurant> get(String restaurantId) {
+        return Optional.ofNullable(restaurantIdToRestaurant.get(restaurantId));
     }
 
     @Override
@@ -31,6 +31,11 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
         return restaurantIdToRestaurant.values().stream()
                 .filter(restaurant -> restaurant.getOwnerId().equals(ownerId))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Restaurant> delete(String restaurantId) {
+        return Optional.ofNullable(restaurantIdToRestaurant.remove(restaurantId));
     }
 
     @Override
@@ -66,10 +71,5 @@ public class RestaurantRepositoryInMemory implements RestaurantRepository {
     private boolean matchesRestaurantCloseHour(RestaurantHours restaurantHours, LocalTime to) {
         if (Objects.isNull(to)) return true;
         return !to.isAfter(restaurantHours.getClose()) && to.isAfter(restaurantHours.getOpen());
-    }
-
-    @Override
-    public Optional<Restaurant> delete(String restaurantId) {
-        return Optional.ofNullable(restaurantIdToRestaurant.remove(restaurantId));
     }
 }
