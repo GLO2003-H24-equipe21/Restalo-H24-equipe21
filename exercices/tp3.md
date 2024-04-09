@@ -46,6 +46,127 @@
    - Faire des revues de tests chaque semaine afin de s'assurer que l'ensemble des tests soit mis à jour selon les 
      nouvelles fonctionnalités du système.
 
+## Stories
+
+Voici quelques idées pour le développement futur de la plateforme `restalo`. Ces idées sont développées sous la 
+forme de récits utilisateur.
+
+### Modifier une réservation
+
+En tant que client, je peux modifier les paramètres de ma réservation.
+
+#### Critères de succès
+
+- Seul le créateur de la réservation peut modifier sa réservation.
+- Seuls les paramètres que le client souhaite modifier sont spécifiés.
+- Dans le cas où la date de réservation est modifiée, la nouvelle date doit être postérieure à la date initiale.
+- Tous les autres critères de création d'une réservation s'appliquent. (voir **Créer une réservation**)
+
+### Obtenir l'heure d'affluence du restaurant
+
+En tant qu'utilisateur, je peux obtenir l'heure d'affluence d'un restaurant.
+
+#### Critères de succès
+
+- Le paramètre de date est obligatoire.
+- S'il n'y a aucune réservation à la date spécifiée, aucun résultat n'est donné.
+- L'heure d'affluence est donnée sous la forme d'un intervalle d'une heure. Par exemple :
+  - 13h15 - 14h15.
+  - 11h00 - 12h00.
+
+### Ajouter une évaluation
+
+En tant que client, je peux ajouter une évaluation au restaurant.
+
+#### Critères de succès
+
+- La note doit être comprise entre 0 et 5 inclusivement.
+- Le commentaire ne peut pas être vide.
+- Chaque évaluation est horodatée au moment de sa création.
+
+### Rechercher des évaluations
+
+En tant qu'utilisateur, je peux voir les évaluations d'un restaurant.
+
+#### Critères de succès
+- Il est possible de rechercher par note.
+- Il est possible de rechercher par date.
+- Si aucun paramètre n'est spécifié, toutes les évaluations du restaurant sont affichées.
+
+## Architecture
+
+Ci-dessous se trouve une représentation graphique de l'architecture de Restalo. Nous avons séparé les diagrammes en
+fonction des différentes fonctionnalités de l'API. Comme il est possible d'effectuer six requêtes, six diagrammes sont
+présentés.
+
+L'architecture est divisée en trois couches: client ([api](#api)), modèle d'affaire ([domain](#domain)) et
+persistance ([data](#data)). Étant donné notre manque d'expérience en développement d'API, nous nous sommes très
+fortement inspiré de la structure du répertoire [Utournament](https://github.com/glo2003/UTournament) présenté en
+classe. Voici une brève description du rôle des classes principales :
+
+### API
+
+- Les classes de type `Request` telles que `CreateRestaurantRequest` et `CreateReservationRequest` représentent les
+  *body* des requêtes qui peuvent être envoyés par l'utilisateur. Ce sont des classes qui peuvent contenir des
+  annotations `jakarta` afin d'exiger ou non la présence d'un attribut.
+- Les classes de type `Mapper` comme `RestaurantResponseMapper` convertissent les entités du domaine en
+  objet `Response`. Chaque type de réponse possède son *mapper* associé.
+- Les classes de type `Response` représentent les *body* des réponses qui peuvent être envoyées à l'utilisateur lorsqu'
+  il fait une requête `GET`, par exemple.
+- Les classes `Resource` sont les points d'entrée des requêtes de l'utilisateur. Elles utilisent diverses
+  fonctionnalités de la librairie `Jersey` pour y arriver. Elles communiquent avec les classes `Services` du domaine.
+
+### DOMAIN
+
+- Les classes telles que `Restaurant`, `Reservation` ou `Customer` sont les classes représentant les entités du domaine.
+- Les classes `Factory` permettent de créer des entités. Elles valident les arguments et soulèvent des exceptions
+  lorsque des champs ne sont pas valides.
+- Les classes `SearchService`, `RestaurantService` et `ReservationService` sont au centre de l'application et servent d'
+  interface entre l'utilisateur et la base de données. Chaque classe `Service` reçoit des informations des
+  classes `Resource` et les utilisent pour communiquer aux interfaces `Repository`.
+
+### DATA
+
+- Dans les diagrammes ci-dessous, les classes stockant les données sont `RestaurantRepositoryInMemory` et 
+  `ReservationRepositoryInMemory`. À noter qu'il existe des variantes à ces classes qui permettent de stocker les 
+  données dans une base de données `Mongo`. Ces classes renvoient des objets aux classes `Service` de la couche du domaine.
+- `RestaurantRepository` est l'interface déclarant les méthodes à implémenter pour sauvegarder les restaurants.
+- `ReservationRepository` est l'interface dictant les méthodes à implémenter pour sauvegarder les réservations.
+
+Nous avons corrigé les potentiels problèmes mentionnés dans le [fichier d'exercice](./tp2.md#architecture) du TP 
+précédent. Notamment,
+
+- Désormais, nos classes de sauvegarde suivent correctement le principe du `Repository`. Ce principe permet 
+  d'abstraire la persistence de données (avec les interfaces) et de créer plusieurs implémentations (`InMemory` et 
+  `Mongo`, par exemple).
+- Nous avons réduit le nombre de classes impliquées pour chacune des fonctionnalités en enlevant les classes de type 
+  `DTO` et `Mapper`. Comme mentionné par notre correcteur, nous avons pris cette décision, car les entités du domaine 
+  sont relativement petites.
+
+### Créer un restaurant
+
+![createRestaurant](pictures_tp3/architecture/createRestaurant.png)
+
+### Obtenir un restaurant
+
+![getRestaurant](pictures_tp3/architecture/getRestaurant.png)
+
+### Lister des restaurants
+
+![listRestaurants](pictures_tp3/architecture/listRestaurants.png)
+
+### Rechercher des restaurants
+
+![searchRestaurant](pictures_tp3/architecture/searchRestaurants.png)
+
+### Créer une réservation
+
+![createReservation](pictures_tp3/architecture/createReservation.png)
+
+### Obtenir une réservation
+
+![getReservation](pictures_tp3/architecture/getReservation.png)
+
 ## Planification du travail
 
 ### GitHub Project
@@ -77,3 +198,5 @@ Pull request #3
 ![Pull_request_3](pictures_tp3/pr_134.png)
 
 ### Arbre de commits
+
+![Commit_tree](pictures_tp3/graph.png)
