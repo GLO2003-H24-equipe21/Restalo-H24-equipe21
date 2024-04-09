@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain.factories;
 
 import ca.ulaval.glo2003.domain.entities.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,10 +27,8 @@ public class ReservationFactory {
         ReservationTime reservationTime =
                 new ReservationTime(parsedStartTime, restaurant.getConfiguration().getDuration());
 
-        verifyReservationStartTime(
-                reservationTime.getStart(), restaurant.getHours());
-        verifyReservationEndTime(
-                reservationTime.getEnd(), restaurant.getHours());
+        verifyReservationStartTime(reservationTime.getStart(), restaurant.getHours());
+        verifyReservationEndTime(reservationTime.getEnd(), restaurant.getHours());
         verifyGroupSizeAtLeastOne(groupSize);
         verifyAvailabilities(availabilities, parsedDate, reservationTime, groupSize);
 
@@ -61,19 +58,17 @@ public class ReservationFactory {
         }
     }
 
-    private void verifyReservationStartTime(
-            LocalTime startTime, RestaurantHours restaurantHours) {
-        if (startTime.isBefore(restaurantHours.getOpen()) || startTime.isAfter(restaurantHours.getClose())) {
-            throw new IllegalArgumentException(
-                    "Reservation starts when restaurant is closed");
+    private void verifyReservationStartTime(LocalTime startTime, RestaurantHours restaurantHours) {
+        if (startTime.isBefore(restaurantHours.getOpen())
+                || startTime.isAfter(restaurantHours.getClose())) {
+            throw new IllegalArgumentException("Reservation starts when restaurant is closed");
         }
     }
 
-    private void verifyReservationEndTime(
-            LocalTime endTime, RestaurantHours restaurantHours) {
-        if (endTime.isBefore(restaurantHours.getOpen()) || endTime.isAfter(restaurantHours.getClose())) {
-            throw new IllegalArgumentException(
-                    "Reservation ends when restaurant is closed");
+    private void verifyReservationEndTime(LocalTime endTime, RestaurantHours restaurantHours) {
+        if (endTime.isBefore(restaurantHours.getOpen())
+                || endTime.isAfter(restaurantHours.getClose())) {
+            throw new IllegalArgumentException("Reservation ends when restaurant is closed");
         }
     }
 
