@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface RestaurantRepository {
 
-    Optional<Restaurant> get(String restaurantId);
-
     void add(Restaurant restaurant);
+
+    Optional<Restaurant> get(String restaurantId);
 
     List<Restaurant> getByOwnerId(String ownerId);
 
-    List<Restaurant> searchRestaurants(Search search);
-
     Optional<Restaurant> delete(String restaurantId);
+
+    List<Restaurant> searchRestaurants(Search search);
 }

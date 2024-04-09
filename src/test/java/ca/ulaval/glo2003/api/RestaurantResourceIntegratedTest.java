@@ -27,26 +27,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class RestaurantResourceIntegratedTest {
-    private static final Restaurant RESTAURANT = new RestaurantFixture().create();
-    private static final String OWNER_ID = RESTAURANT.getOwnerId();
-
-    private static final String OTHER_OWNER_NAME = "Shaker";
-    private static final Restaurant RESTAURANT2 =
-            new RestaurantFixture().withName(OTHER_OWNER_NAME).create();
-
-    private static final String OTHER_OWNER_ID = "lola";
-    private static final Restaurant OTHER_RESTAURANT =
-            new RestaurantFixture().withOwnerId(OTHER_OWNER_ID).create();
-
-    private static final CreateRestaurantRequest restaurantRequest =
-            new RestaurantRequestFixture().create();
-    private static final CreateRestaurantRequest invalidRestaurantRequest =
-            new RestaurantRequestFixture().withInvalidParameter(-30);
-    private static final CreateRestaurantRequest missingRestaurantRequest =
-            new RestaurantRequestFixture().withMissingParameter();
-
-    private static final String INVALID_OWNER_ID = "ABCD";
-    private static final String INVALID_RESTAURANT_ID = "32JFD323";
 
     private static final OwnerRestaurantResponseMapper RESTAURANT_MAPPER =
             new OwnerRestaurantResponseMapper();
@@ -69,10 +49,10 @@ class RestaurantResourceIntegratedTest {
                     restaurantHoursFactory,
                     restaurantConfigurationFactory);
 
+    private static final Restaurant RESTAURANT = new RestaurantFixture().create();
+    private static final String OWNER_ID = RESTAURANT.getOwnerId();
     private static final OwnerRestaurantResponse restaurantResponse =
             new RestaurantResponseFixture().create(RESTAURANT.getId());
-
-    private static List<OwnerRestaurantResponse> restaurants;
 
     protected static Application configure() {
         return new ResourceConfig()
@@ -93,7 +73,7 @@ class RestaurantResourceIntegratedTest {
         restaurantRepository.add(RESTAURANT2);
         restaurantRepository.add(OTHER_RESTAURANT);
 
-        restaurants = new ArrayList<>();
+        List<OwnerRestaurantResponse> restaurants = new ArrayList<>();
 
         restaurants.add(RESTAURANT_MAPPER.from(RESTAURANT));
         restaurants.add(RESTAURANT_MAPPER.from(RESTAURANT2));
@@ -230,4 +210,22 @@ class RestaurantResourceIntegratedTest {
         Assertions.assertThat(response.readEntity(ErrorResponse.class).error())
                 .isEqualTo(new ErrorResponse("MISSING_PARAMETER", "Missing Parameter").error());
     }
+
+    private static final String OTHER_OWNER_NAME = "Shaker";
+    private static final Restaurant RESTAURANT2 =
+            new RestaurantFixture().withName(OTHER_OWNER_NAME).create();
+
+    private static final String OTHER_OWNER_ID = "lola";
+    private static final Restaurant OTHER_RESTAURANT =
+            new RestaurantFixture().withOwnerId(OTHER_OWNER_ID).create();
+
+    private static final CreateRestaurantRequest restaurantRequest =
+            new RestaurantRequestFixture().create();
+    private static final CreateRestaurantRequest invalidRestaurantRequest =
+            new RestaurantRequestFixture().withInvalidParameter(-30);
+    private static final CreateRestaurantRequest missingRestaurantRequest =
+            new RestaurantRequestFixture().withMissingParameter();
+
+    private static final String INVALID_OWNER_ID = "ABCD";
+    private static final String INVALID_RESTAURANT_ID = "32JFD323";
 }

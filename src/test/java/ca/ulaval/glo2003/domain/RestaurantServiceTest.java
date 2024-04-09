@@ -121,6 +121,36 @@ class RestaurantServiceTest {
         assertThat(gottenRestaurants).isEmpty();
     }
 
+    @Test
+    void whenDeleteRestaurant_thenRestaurantIsDeleted() {
+        when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
+        when(restaurantRepository.delete(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
+        when(reservationRepository.deleteAll(RESTAURANT_ID)).thenReturn(List.of());
+
+        restaurantService.deleteRestaurant(RESTAURANT_ID, OWNER_ID);
+
+        verify(restaurantRepository).delete(RESTAURANT_ID);
+        verify(reservationRepository).deleteAll(RESTAURANT_ID);
+    }
+
+    @Test
+    void givenNonExistingRestaurantId_whenDeleteRestaurant_thenThrowsNotFoundException() {
+        String nonExistingRestaurantId = "1234";
+
+        assertThrows(
+                NotFoundException.class,
+                () -> restaurantService.deleteRestaurant(nonExistingRestaurantId, OWNER_ID));
+    }
+
+    @Test
+    void givenInvalidOwnerId_whenDeleteRestaurant_thenThrowsNotFoundException() {
+        String invalidOwnerId = "not an owner";
+
+        assertThrows(
+                NotFoundException.class,
+                () -> restaurantService.deleteRestaurant(RESTAURANT_ID, invalidOwnerId));
+    }
+
     private static final String RESTAURANT_ID = UUID.randomUUID().toString();
     private static final String OWNER_ID = "owner";
     private static final String NAME = "restaurant";

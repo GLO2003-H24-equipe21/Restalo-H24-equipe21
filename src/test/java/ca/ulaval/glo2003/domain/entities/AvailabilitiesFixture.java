@@ -12,7 +12,7 @@ public class AvailabilitiesFixture {
     private Integer capacity = 12;
     private LocalDate date = LocalDate.now().plusDays(2);
     private LocalTime from = LocalTime.parse("10:00:00");
-    private LocalTime to = LocalTime.parse("22:30:00");
+    private LocalTime to = LocalTime.parse("21:30:00");
 
     public Map<LocalDateTime, Integer> create() {
         Map<LocalDateTime, Integer> availabilities = new LinkedHashMap<>();
