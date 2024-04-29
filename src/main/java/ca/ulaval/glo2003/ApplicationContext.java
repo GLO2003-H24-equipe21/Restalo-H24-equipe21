@@ -2,6 +2,7 @@ package ca.ulaval.glo2003;
 
 import ca.ulaval.glo2003.api.ReservationResource;
 import ca.ulaval.glo2003.api.RestaurantResource;
+import ca.ulaval.glo2003.api.ReviewResource;
 import ca.ulaval.glo2003.api.SearchResource;
 import ca.ulaval.glo2003.data.DatastoreProvider;
 import ca.ulaval.glo2003.data.inmemory.*;
@@ -76,5 +77,13 @@ public class ApplicationContext {
                         searchFactory);
 
         return new SearchResource(searchService);
+    }
+
+    public ReviewResource getReviewResource() {
+        ReviewFactory reviewFactory = new ReviewFactory();
+
+        ReviewService reviewService = new ReviewService(reviewRepository, restaurantRepository, reviewFactory);
+
+        return new ReviewResource(reviewService);
     }
 }
