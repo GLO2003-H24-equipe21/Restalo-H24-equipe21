@@ -2,7 +2,6 @@ package ca.ulaval.glo2003.api.mappers;
 
 import ca.ulaval.glo2003.api.responses.ReviewResponse;
 import ca.ulaval.glo2003.domain.entities.Review;
-
 import java.time.format.DateTimeFormatter;
 
 public class ReviewResponseMapper {
@@ -12,7 +11,6 @@ public class ReviewResponseMapper {
         return new ReviewResponse(
                 review.getRating(),
                 review.getComment(),
-                review.getDate().format(dateTimeFormatter)
-        );
+                review.getDate().format(dateTimeFormatter));
     }
 }

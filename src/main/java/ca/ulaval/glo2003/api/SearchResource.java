@@ -100,8 +100,7 @@ public class SearchResource {
                 .entity(
                         reviews.stream()
                                 .map(reviewResponseMapper::from)
-                                .collect(Collectors.toList())
-                )
+                                .collect(Collectors.toList()))
                 .build();
     }
 }

@@ -80,10 +80,12 @@ public class SearchService {
         return availabilityEntities;
     }
 
-    public List<Review> searchReviews(String restaurantId, List<String> ratings, String from, String to) {
+    public List<Review> searchReviews(
+            String restaurantId, List<String> ratings, String from, String to) {
         getRestaurantIfExists(restaurantId);
 
-        return reviewRepository.searchReviews(restaurantId, parseRatings(ratings), parseDate(from), parseDate(to));
+        return reviewRepository.searchReviews(
+                restaurantId, parseRatings(ratings), parseDate(from), parseDate(to));
     }
 
     private List<Integer> parseRatings(List<String> ratings) {

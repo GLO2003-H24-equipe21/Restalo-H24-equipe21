@@ -43,7 +43,11 @@ public class Review {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Review review = (Review) o;
-        return Objects.equals(id, review.id) && Objects.equals(restaurantId, review.restaurantId) && Objects.equals(rating, review.rating) && Objects.equals(comment, review.comment) && Objects.equals(date, review.date);
+        return Objects.equals(id, review.id)
+                && Objects.equals(restaurantId, review.restaurantId)
+                && Objects.equals(rating, review.rating)
+                && Objects.equals(comment, review.comment)
+                && Objects.equals(date, review.date);
     }
 
     @Override

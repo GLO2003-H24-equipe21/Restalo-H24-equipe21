@@ -69,7 +69,11 @@ public class ApplicationContext {
         SearchFactory searchFactory = new SearchFactory();
 
         SearchService searchService =
-                new SearchService(restaurantRepository, reservationRepository, reviewRepository, searchFactory);
+                new SearchService(
+                        restaurantRepository,
+                        reservationRepository,
+                        reviewRepository,
+                        searchFactory);
 
         return new SearchResource(searchService);
     }

@@ -2,7 +2,6 @@ package ca.ulaval.glo2003.data.inmemory;
 
 import ca.ulaval.glo2003.domain.ReviewRepository;
 import ca.ulaval.glo2003.domain.entities.Review;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,12 +18,11 @@ public class ReviewRepositoryInMemory implements ReviewRepository {
     }
 
     @Override
-    public void add(Review review) {
-
-    }
+    public void add(Review review) {}
 
     @Override
-    public List<Review> searchReviews(String restaurantId, List<Integer> ratings, LocalDate from, LocalDate to) {
+    public List<Review> searchReviews(
+            String restaurantId, List<Integer> ratings, LocalDate from, LocalDate to) {
         return restaurantIdToReviews.getOrDefault(restaurantId, new ArrayList<>()).stream()
                 .filter(review -> matchesRating(review.getRating(), ratings))
                 .filter(review -> matchesDateFrom(review.getDate(), from))
@@ -46,6 +44,4 @@ public class ReviewRepositoryInMemory implements ReviewRepository {
         if (Objects.isNull(to)) return true;
         return !date.isAfter(to);
     }
-
-
 }

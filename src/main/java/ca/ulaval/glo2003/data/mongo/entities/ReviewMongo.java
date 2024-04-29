@@ -5,17 +5,16 @@ import dev.morphia.annotations.Id;
 
 @Entity("reviews")
 public class ReviewMongo {
-    @Id
-    public String id;
+    @Id public String id;
     public String restaurantId;
     public Integer rating;
     public String comment;
     public String date;
 
-    public ReviewMongo() {
-    }
+    public ReviewMongo() {}
 
-    public ReviewMongo(String id, String restaurantId, Integer rating, String comment, String date) {
+    public ReviewMongo(
+            String id, String restaurantId, Integer rating, String comment, String date) {
         this.id = id;
         this.restaurantId = restaurantId;
         this.rating = rating;

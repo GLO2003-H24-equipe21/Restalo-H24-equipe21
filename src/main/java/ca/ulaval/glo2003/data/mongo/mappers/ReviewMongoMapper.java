@@ -2,7 +2,6 @@ package ca.ulaval.glo2003.data.mongo.mappers;
 
 import ca.ulaval.glo2003.data.mongo.entities.ReviewMongo;
 import ca.ulaval.glo2003.domain.entities.Review;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 

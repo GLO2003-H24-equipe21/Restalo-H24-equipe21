@@ -1,7 +1,6 @@
 package ca.ulaval.glo2003.domain.factories;
 
 import ca.ulaval.glo2003.domain.entities.Review;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -10,7 +9,8 @@ public class ReviewFactory {
         verifyRatingBetween0And5(rating);
         verifyCommentNotEmpty(comment);
 
-        return new Review(UUID.randomUUID().toString(), restaurantId, rating, comment, LocalDate.now());
+        return new Review(
+                UUID.randomUUID().toString(), restaurantId, rating, comment, LocalDate.now());
     }
 
     private void verifyRatingBetween0And5(Integer rating) {
