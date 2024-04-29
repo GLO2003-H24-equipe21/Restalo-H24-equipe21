@@ -4,16 +4,15 @@ import ca.ulaval.glo2003.api.ReservationResource;
 import ca.ulaval.glo2003.api.RestaurantResource;
 import ca.ulaval.glo2003.api.SearchResource;
 import ca.ulaval.glo2003.data.DatastoreProvider;
-import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
-import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
-import ca.ulaval.glo2003.data.mongo.ReservationRepositoryMongo;
-import ca.ulaval.glo2003.data.mongo.RestaurantRepositoryMongo;
+import ca.ulaval.glo2003.data.inmemory.*;
+import ca.ulaval.glo2003.data.mongo.*;
 import ca.ulaval.glo2003.domain.*;
 import ca.ulaval.glo2003.domain.factories.*;
 
 public class ApplicationContext {
     private final RestaurantRepository restaurantRepository;
     private final ReservationRepository reservationRepository;
+    private final ReviewRepository reviewRepository;
 
     public ApplicationContext() {
         String persistenceProperty = System.getProperty("persistence", "inmemory");
@@ -21,11 +20,13 @@ public class ApplicationContext {
             case "inmemory" -> {
                 restaurantRepository = new RestaurantRepositoryInMemory();
                 reservationRepository = new ReservationRepositoryInMemory();
+                reviewRepository = new ReviewRepositoryInMemory();
             }
             case "mongo" -> {
                 DatastoreProvider datastoreProvider = new DatastoreProvider();
                 restaurantRepository = new RestaurantRepositoryMongo(datastoreProvider.provide());
                 reservationRepository = new ReservationRepositoryMongo(datastoreProvider.provide());
+                reviewRepository = new ReviewRepositoryMongo(datastoreProvider.provide());
             }
             default ->
                     throw new IllegalArgumentException(
@@ -68,7 +69,11 @@ public class ApplicationContext {
         SearchFactory searchFactory = new SearchFactory();
 
         SearchService searchService =
-                new SearchService(restaurantRepository, reservationRepository, searchFactory);
+                new SearchService(
+                        restaurantRepository,
+                        reservationRepository,
+                        reviewRepository,
+                        searchFactory);
 
         return new SearchResource(searchService);
     }
