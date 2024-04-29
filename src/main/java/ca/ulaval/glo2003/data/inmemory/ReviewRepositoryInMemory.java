@@ -20,7 +20,8 @@ public class ReviewRepositoryInMemory implements ReviewRepository {
     public void add(Review review) {
         reviewIdToReview.put(review.getId(), review);
 
-        List<Review> reviews = restaurantIdToReviews.getOrDefault(review.getRestaurantId(), new ArrayList<>());
+        List<Review> reviews =
+                restaurantIdToReviews.getOrDefault(review.getRestaurantId(), new ArrayList<>());
         reviews.add(review);
 
         restaurantIdToReviews.put(review.getRestaurantId(), reviews);

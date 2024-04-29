@@ -82,7 +82,8 @@ public class ApplicationContext {
     public ReviewResource getReviewResource() {
         ReviewFactory reviewFactory = new ReviewFactory();
 
-        ReviewService reviewService = new ReviewService(reviewRepository, restaurantRepository, reviewFactory);
+        ReviewService reviewService =
+                new ReviewService(reviewRepository, restaurantRepository, reviewFactory);
 
         return new ReviewResource(reviewService);
     }

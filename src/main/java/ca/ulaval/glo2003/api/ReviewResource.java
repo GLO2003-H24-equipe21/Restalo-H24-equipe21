@@ -23,13 +23,16 @@ public class ReviewResource {
     @POST
     @Path("restaurants/{id}/reviews")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createReview(@Context UriInfo uriInfo, @PathParam("id") String restaurantId, @Valid CreateReviewRequest reviewRequest) {
-        String reviewId = reviewService.createReview(restaurantId, reviewRequest.rating, reviewRequest.comment);
+    public Response createReview(
+            @Context UriInfo uriInfo,
+            @PathParam("id") String restaurantId,
+            @Valid CreateReviewRequest reviewRequest) {
+        String reviewId =
+                reviewService.createReview(
+                        restaurantId, reviewRequest.rating, reviewRequest.comment);
 
         return Response.status(Response.Status.CREATED)
-                .header(
-                        "Location",
-                        String.format("%sreviews/%s", uriInfo.getBaseUri(), reviewId))
+                .header("Location", String.format("%sreviews/%s", uriInfo.getBaseUri(), reviewId))
                 .build();
     }
 }

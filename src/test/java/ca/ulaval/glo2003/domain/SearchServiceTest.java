@@ -28,12 +28,17 @@ class SearchServiceTest {
 
     @Mock RestaurantRepository restaurantRepository;
     @Mock ReservationRepository reservationRepository;
+    @Mock ReviewRepository reviewRepository;
     @Mock SearchFactory searchFactory;
 
     @BeforeEach
     void setup() {
         searchService =
-                new SearchService(restaurantRepository, reservationRepository, searchFactory);
+                new SearchService(
+                        restaurantRepository,
+                        reservationRepository,
+                        reviewRepository,
+                        searchFactory);
     }
 
     @Test
