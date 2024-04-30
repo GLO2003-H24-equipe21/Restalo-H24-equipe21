@@ -50,8 +50,7 @@ public class Main {
 
     public static void main(String[] args) {
         startServer();
-
         System.out.printf("Jersey app started with endpoints available at %s%n", BASE_URI);
-        throw new RuntimeException();
+
     }
 }
