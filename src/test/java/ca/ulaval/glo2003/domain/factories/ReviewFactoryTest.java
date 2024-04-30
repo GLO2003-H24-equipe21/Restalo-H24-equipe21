@@ -1,7 +1,7 @@
 package ca.ulaval.glo2003.domain.factories;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ca.ulaval.glo2003.domain.entities.Review;
 import java.time.LocalDate;

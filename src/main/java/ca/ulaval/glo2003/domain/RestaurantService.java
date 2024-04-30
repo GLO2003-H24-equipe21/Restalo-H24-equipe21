@@ -56,7 +56,8 @@ public class RestaurantService {
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
-                        .orElseThrow(() -> new EntityNotFoundException("Restaurant does not exist"));
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Restaurant does not exist"));
 
         if (!restaurant.getOwnerId().equals(ownerId)) {
             throw new EntityNotFoundException("Restaurant owner id is invalid");
@@ -73,7 +74,8 @@ public class RestaurantService {
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
-                        .orElseThrow(() -> new EntityNotFoundException("Restaurant does not exist"));
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Restaurant does not exist"));
 
         if (!restaurant.getOwnerId().equals(ownerId)) {
             throw new EntityNotFoundException("Restaurant owner id is invalid");

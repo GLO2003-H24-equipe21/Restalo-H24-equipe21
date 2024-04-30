@@ -41,7 +41,8 @@ public class ReservationService {
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
-                        .orElseThrow(() -> new EntityNotFoundException("Restaurant does not exist"));
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Restaurant does not exist"));
         Customer customer =
                 customerFactory.create(
                         customerRequest.name, customerRequest.email, customerRequest.phoneNumber);
@@ -68,7 +69,8 @@ public class ReservationService {
         Reservation reservation =
                 reservationRepository
                         .get(number)
-                        .orElseThrow(() -> new EntityNotFoundException("Reservation does not exist"));
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Reservation does not exist"));
         Restaurant restaurant =
                 restaurantRepository.get(reservation.getRestaurantId()).orElse(null);
 

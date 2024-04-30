@@ -2,7 +2,10 @@ package ca.ulaval.glo2003.api;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import ca.ulaval.glo2003.api.exceptions.*;
+import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.EntityNotFoundExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
 import ca.ulaval.glo2003.api.requests.CreateReviewRequest;
 import ca.ulaval.glo2003.api.responses.ErrorResponse;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
