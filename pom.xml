@@ -136,6 +136,24 @@
                             <goal>java</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>intellij-coverage-agent</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <!-- IntelliJ Coverage Agent -->
+                                <artifactItem>
+                                    <groupId>org.jetbrains.intellij.deps</groupId>
+                                    <artifactId>intellij-coverage-agent</artifactId>
+                                    <version>${intellij.coverage.agent.version}</version>
+                                    <destFileName>intellij-coverage-agent.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
