@@ -27,3 +27,9 @@ jobs:
         run: mvn compile
       - name: Test
         run: mvn test
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2024.1.2
+        with:
+          pr-mode: false
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
