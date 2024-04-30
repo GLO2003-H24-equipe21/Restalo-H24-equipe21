@@ -14,6 +14,8 @@
         <maven.compiler.release>21</maven.compiler.release>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <intellij.coverage.agent.version>1.0.746</intellij.coverage.agent.version>
+        <intellij.agent.options>${project.basedir}/.qodana/code-coverage/output.ic,true,true,true,false</intellij.agent.options>
     </properties>
 
     <dependencyManagement>
@@ -124,18 +126,10 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <mainClass>ca.ulaval.glo2003.Main</mainClass>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
                 <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                    </execution>
                     <execution>
                         <id>intellij-coverage-agent</id>
                         <phase>process-test-classes</phase>
@@ -144,7 +138,6 @@
                         </goals>
                         <configuration>
                             <artifactItems>
-                                <!-- IntelliJ Coverage Agent -->
                                 <artifactItem>
                                     <groupId>org.jetbrains.intellij.deps</groupId>
                                     <artifactId>intellij-coverage-agent</artifactId>
@@ -157,9 +150,29 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <mainClass>ca.ulaval.glo2003.Main</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.3</version>
+                <configuration>
+                    <argLine>
+                        -javaagent:${project.build.directory}/dependency/intellij-coverage-agent.jar=${intellij.agent.options}
+                    </argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
