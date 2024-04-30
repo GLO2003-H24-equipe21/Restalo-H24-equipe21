@@ -24,5 +24,8 @@ jobs:
           fetch-depth: 0
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2024.1.2
+        with:
+          args: "-i,JVM/jacoco/maven,--linter,jetbrains/qodana-jvm:2023.3-eap"
+          pr-mode: false
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
