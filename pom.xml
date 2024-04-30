@@ -132,10 +132,10 @@
                 <executions>
                     <execution>
                         <id>intellij-coverage-agent</id>
-                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
+                        <phase>process-test-classes</phase>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
@@ -169,9 +169,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.3</version>
                 <configuration>
-                    <argLine>
-                        -javaagent:${project.build.directory}/dependency/intellij-coverage-agent.jar=${intellij.agent.options}
-                    </argLine>
+                    <argLine>-javaagent:${project.build.directory}/dependency/intellij-coverage-agent.jar=${intellij.agent.options}</argLine>
                 </configuration>
             </plugin>
             <plugin>
