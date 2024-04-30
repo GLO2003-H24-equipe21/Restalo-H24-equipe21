@@ -14,7 +14,6 @@ public class Main {
 
     public static HttpServer startServer() {
         String port = System.getenv("PORT");
-        String dns;
         if (!Objects.isNull(port)) {
             BASE_URI = BASE_URI.replace("8080/", port + "/");
         }
@@ -34,9 +33,8 @@ public class Main {
                         .register(new IllegalArgumentExceptionMapper())
                         .register(new NotFoundExceptionMapper());
 
-        dns = System.getenv("SENTRY_DSN");
-
-        if (!Objects.isNull(dns)) {
+        String sentryDsn = System.getenv("SENTRY_DSN");
+        if (!Objects.isNull(sentryDsn)) {
             Sentry.init(
                     options -> {
                         options.setDsn(System.getenv("SENTRY_DSN"));
@@ -46,6 +44,7 @@ public class Main {
                     });
             Sentry.metrics().increment("start", 1);
         }
+
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
     }
 

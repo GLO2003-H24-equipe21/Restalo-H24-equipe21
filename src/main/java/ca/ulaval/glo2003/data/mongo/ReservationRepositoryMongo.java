@@ -96,7 +96,8 @@ public class ReservationRepositoryMongo implements ReservationRepository {
         Map<LocalDateTime, Integer> availabilities = new LinkedHashMap<>();
 
         intervals.forEach(dateTime -> availabilities.put(dateTime, restaurant.getCapacity()));
-        updateAvailabilitiesWithReservations(availabilities, reservations);
+        updateAvailabilitiesWithReservations(
+                availabilities, reservations, restaurant.getConfiguration().getDuration());
 
         return availabilities;
     }
@@ -127,18 +128,24 @@ public class ReservationRepositoryMongo implements ReservationRepository {
     }
 
     private void updateAvailabilitiesWithReservations(
-            Map<LocalDateTime, Integer> availabilities, List<Reservation> reservations) {
+            Map<LocalDateTime, Integer> availabilities,
+            List<Reservation> reservations,
+            Integer duration) {
         for (Reservation reservation : reservations) {
             List<LocalDateTime> reservationInterval =
                     create15MinutesIntervals(
                             reservation.getDate(),
-                            reservation.getReservationTime().getStart(),
+                            reservation.getReservationTime().getStart().minusMinutes(duration - 15),
                             reservation.getReservationTime().getEnd());
+
             reservationInterval.forEach(
-                    dateTime ->
+                    dateTime -> {
+                        if (availabilities.containsKey(dateTime)) {
                             availabilities.put(
                                     dateTime,
-                                    availabilities.get(dateTime) - reservation.getGroupSize()));
+                                    availabilities.get(dateTime) - reservation.getGroupSize());
+                        }
+                    });
         }
     }
 }

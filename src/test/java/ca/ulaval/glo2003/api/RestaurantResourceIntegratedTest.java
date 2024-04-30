@@ -61,7 +61,6 @@ class RestaurantResourceIntegratedTest {
                 .register(new NullPointerExceptionMapper())
                 .register(new IllegalArgumentExceptionMapper())
                 .register(new ConstraintViolationExceptionMapper())
-                .register(new RuntimeExceptionMapper())
                 .register(new NotFoundExceptionMapper());
     }
 
