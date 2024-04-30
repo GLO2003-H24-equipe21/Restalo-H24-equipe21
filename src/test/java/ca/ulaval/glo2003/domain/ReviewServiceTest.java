@@ -9,8 +9,8 @@ import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
 import ca.ulaval.glo2003.domain.entities.Review;
 import ca.ulaval.glo2003.domain.entities.ReviewFixture;
+import ca.ulaval.glo2003.domain.exceptions.EntityNotFoundException;
 import ca.ulaval.glo2003.domain.factories.ReviewFactory;
-import jakarta.ws.rs.NotFoundException;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,11 +55,11 @@ public class ReviewServiceTest {
     }
 
     @Test
-    void givenNonExistingRestaurantId_whenCreateReview_thenThrowsNotFoundException() {
+    void givenNonExistingRestaurantId_whenCreateReview_thenThrowsEntityNotFoundException() {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.empty());
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> reviewService.createReview(RESTAURANT_ID, RATING, COMMENT));
     }
 

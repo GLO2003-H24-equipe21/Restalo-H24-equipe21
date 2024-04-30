@@ -205,7 +205,7 @@ public abstract class ReservationRepositoryTest {
                         .to(TIME.plusMinutes(DURATION - 15))
                         .create();
         expectedAvailabilities.putAll(reservationAvailabilities);
-        System.out.println(expectedAvailabilities);
+
         Map<LocalDateTime, Integer> gottenAvailabilities =
                 reservationRepository.searchAvailabilities(RESTAURANT, DATE);
 

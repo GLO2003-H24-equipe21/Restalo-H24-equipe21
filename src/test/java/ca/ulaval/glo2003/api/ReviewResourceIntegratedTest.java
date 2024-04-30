@@ -40,7 +40,7 @@ public class ReviewResourceIntegratedTest {
                 .register(new NullPointerExceptionMapper())
                 .register(new IllegalArgumentExceptionMapper())
                 .register(new ConstraintViolationExceptionMapper())
-                .register(new NotFoundExceptionMapper());
+                .register(new EntityNotFoundExceptionMapper());
     }
 
     @BeforeAll

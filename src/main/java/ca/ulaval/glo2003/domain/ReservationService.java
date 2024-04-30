@@ -4,9 +4,9 @@ import ca.ulaval.glo2003.api.pojos.CustomerPojo;
 import ca.ulaval.glo2003.domain.entities.Customer;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.exceptions.EntityNotFoundException;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
-import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,7 +41,7 @@ public class ReservationService {
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
-                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
+                        .orElseThrow(() -> new EntityNotFoundException("Restaurant does not exist"));
         Customer customer =
                 customerFactory.create(
                         customerRequest.name, customerRequest.email, customerRequest.phoneNumber);
@@ -68,7 +68,7 @@ public class ReservationService {
         Reservation reservation =
                 reservationRepository
                         .get(number)
-                        .orElseThrow(() -> new NotFoundException("Reservation does not exist"));
+                        .orElseThrow(() -> new EntityNotFoundException("Reservation does not exist"));
         Restaurant restaurant =
                 restaurantRepository.get(reservation.getRestaurantId()).orElse(null);
 
@@ -78,6 +78,6 @@ public class ReservationService {
     public void deleteReservation(String number) {
         reservationRepository
                 .delete(number)
-                .orElseThrow(() -> new NotFoundException("Reservation does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Reservation does not exist"));
     }
 }

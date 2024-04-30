@@ -6,8 +6,8 @@ import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.api.pojos.SearchOpenedPojo;
 import ca.ulaval.glo2003.domain.entities.*;
+import ca.ulaval.glo2003.domain.exceptions.EntityNotFoundException;
 import ca.ulaval.glo2003.domain.factories.SearchFactory;
-import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -100,23 +100,23 @@ class SearchServiceTest {
     }
 
     @Test
-    void givenNonExistingRestaurant_whenSearchReservations_thenThrowsNotFoundException() {
+    void givenNonExistingRestaurant_whenSearchReservations_thenThrowsEntityNotFoundException() {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.empty());
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () ->
                         searchService.searchReservations(
                                 RESTAURANT_ID, OWNER_ID, DATE, CUSTOMER_NAME));
     }
 
     @Test
-    void givenInvalidOwnerId_whenSearchReservations_thenThrowsNotFoundException() {
+    void givenInvalidOwnerId_whenSearchReservations_thenThrowsEntityNotFoundException() {
         String invalidOwnerId = "invalid_owner";
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () ->
                         searchService.searchReservations(
                                 RESTAURANT_ID, invalidOwnerId, DATE, CUSTOMER_NAME));
@@ -135,11 +135,11 @@ class SearchServiceTest {
     }
 
     @Test
-    void givenNonExistingRestaurant_whenSearchAvailabilities_thenThrowsNotFoundException() {
+    void givenNonExistingRestaurant_whenSearchAvailabilities_thenThrowsEntityNotFoundException() {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.empty());
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> searchService.searchAvailabilities(RESTAURANT_ID, DATE));
     }
 
@@ -170,11 +170,11 @@ class SearchServiceTest {
     }
 
     @Test
-    void givenNonExistingRestaurant_whenSearchReviews_thenThrowsNotFoundException() {
+    void givenNonExistingRestaurant_whenSearchReviews_thenThrowsEntityNotFoundException() {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.empty());
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, TO));
     }
 

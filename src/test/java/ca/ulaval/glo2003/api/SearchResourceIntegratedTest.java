@@ -4,7 +4,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
-import ca.ulaval.glo2003.api.exceptions.NotFoundExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.EntityNotFoundExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
 import ca.ulaval.glo2003.api.responses.ErrorResponse;
 import ca.ulaval.glo2003.api.responses.ReviewResponse;
@@ -48,7 +48,7 @@ public class SearchResourceIntegratedTest {
                 .register(new NullPointerExceptionMapper())
                 .register(new IllegalArgumentExceptionMapper())
                 .register(new ConstraintViolationExceptionMapper())
-                .register(new NotFoundExceptionMapper());
+                .register(new EntityNotFoundExceptionMapper());
     }
 
     @BeforeAll

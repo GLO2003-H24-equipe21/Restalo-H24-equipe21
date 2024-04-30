@@ -8,10 +8,10 @@ import static org.mockito.Mockito.when;
 import ca.ulaval.glo2003.api.pojos.RestaurantConfigurationPojo;
 import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
 import ca.ulaval.glo2003.domain.entities.*;
+import ca.ulaval.glo2003.domain.exceptions.EntityNotFoundException;
 import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import jakarta.ws.rs.NotFoundException;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -82,22 +82,22 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void givenNonExistingRestaurantId_whenGetRestaurant_thenThrowsNotFoundException() {
+    void givenNonExistingRestaurantId_whenGetRestaurant_thenThrowsEntityNotFoundException() {
         String invalidRestaurantId = "invalid_id";
         when(restaurantRepository.get(invalidRestaurantId)).thenReturn(Optional.empty());
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> restaurantService.getRestaurant(invalidRestaurantId, OWNER_ID));
     }
 
     @Test
-    void givenInvalidOwnerId_whenGetRestaurant_thenThrowsNotFoundException() {
+    void givenInvalidOwnerId_whenGetRestaurant_thenThrowsEntityNotFoundException() {
         String invalidOwnerId = "not an owner";
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> restaurantService.getRestaurant(RESTAURANT_ID, invalidOwnerId));
     }
 
@@ -134,20 +134,20 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void givenNonExistingRestaurantId_whenDeleteRestaurant_thenThrowsNotFoundException() {
+    void givenNonExistingRestaurantId_whenDeleteRestaurant_thenThrowsEntityNotFoundException() {
         String nonExistingRestaurantId = "1234";
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> restaurantService.deleteRestaurant(nonExistingRestaurantId, OWNER_ID));
     }
 
     @Test
-    void givenInvalidOwnerId_whenDeleteRestaurant_thenThrowsNotFoundException() {
+    void givenInvalidOwnerId_whenDeleteRestaurant_thenThrowsEntityNotFoundException() {
         String invalidOwnerId = "not an owner";
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> restaurantService.deleteRestaurant(RESTAURANT_ID, invalidOwnerId));
     }
 
