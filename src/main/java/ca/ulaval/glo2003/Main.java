@@ -37,8 +37,7 @@ public class Main {
 
 
         Sentry.init(options -> {
-            //options.setDsn(System.getenv("SENTRY_DSN"));
-            options.setDsn("https://9d931fa7d4cf6a24a0d903ca545760cc@o4507170796273664.ingest.us.sentry.io/4507170802302976");
+            options.setDsn(System.getenv("SENTRY_DSN"));
             options.setEnableMetrics(true);
             options.setTracesSampleRate(1.0);
             options.setDebug(true);
