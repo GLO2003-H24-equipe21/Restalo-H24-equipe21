@@ -8,7 +8,7 @@ public class ReviewFixture {
     private String restaurantId = UUID.randomUUID().toString();
     private Integer rating = 4;
     private String comment = "Very good restaurant!";
-    private LocalDate date = LocalDate.now().plusDays(2);
+    private LocalDate date = LocalDate.now().plusDays(1);
 
     public Review create() {
         return new Review(id, restaurantId, rating, comment, date);

@@ -1,4 +1,4 @@
 version: 1.0
 include:
   - name: VulnerableLibrariesGlobal
-  - name: VulnerableCodeUsagesInspection
+  - name: VulnerableCodeUsages

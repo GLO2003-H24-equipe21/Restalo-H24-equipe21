@@ -6,7 +6,9 @@ import com.mongodb.client.MongoClients;
 import dev.morphia.Morphia;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+@Testcontainers
 public class ReviewRepositoryMongoTest extends ReviewRepositoryTest {
 
     @Container private final MongoDBContainer mongoContainer = new MongoDBContainer("mongo:7.0");
