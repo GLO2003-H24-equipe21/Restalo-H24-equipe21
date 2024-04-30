@@ -1,13 +1,12 @@
 package ca.ulaval.glo2003.domain.factories;
 
-import ca.ulaval.glo2003.domain.entities.Review;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
+import ca.ulaval.glo2003.domain.entities.Review;
+import java.time.LocalDate;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class ReviewFactoryTest {
     ReviewFactory reviewFactory;
@@ -31,21 +30,27 @@ class ReviewFactoryTest {
     void whenRatingIsBelow0_thenThrowsIllegalArgumentException() {
         int belowZeroRating = -1;
 
-        assertThrows(IllegalArgumentException.class, () -> reviewFactory.create(RESTAURANT_ID, belowZeroRating, COMMENT));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> reviewFactory.create(RESTAURANT_ID, belowZeroRating, COMMENT));
     }
 
     @Test
     void whenRatingIsAbove5_thenThrowsIllegalArgumentException() {
         int aboveFiveRating = 6;
 
-        assertThrows(IllegalArgumentException.class, () -> reviewFactory.create(RESTAURANT_ID, aboveFiveRating, COMMENT));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> reviewFactory.create(RESTAURANT_ID, aboveFiveRating, COMMENT));
     }
 
     @Test
     void whenCommentIsEmpty_thenThrowsIllegalArgumentException() {
         String emptyComment = "";
 
-        assertThrows(IllegalArgumentException.class, () -> reviewFactory.create(RESTAURANT_ID, RATING, emptyComment));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> reviewFactory.create(RESTAURANT_ID, RATING, emptyComment));
     }
 
     private static final String RESTAURANT_ID = "restaurant_id";

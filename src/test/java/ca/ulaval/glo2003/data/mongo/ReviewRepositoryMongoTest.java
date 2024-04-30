@@ -9,8 +9,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 public class ReviewRepositoryMongoTest extends ReviewRepositoryTest {
 
-    @Container
-    private final MongoDBContainer mongoContainer = new MongoDBContainer("mongo:7.0");
+    @Container private final MongoDBContainer mongoContainer = new MongoDBContainer("mongo:7.0");
 
     @Override
     protected ReviewRepository createRepository() {

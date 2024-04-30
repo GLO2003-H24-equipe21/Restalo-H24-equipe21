@@ -1,24 +1,23 @@
 package ca.ulaval.glo2003.domain;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
 import ca.ulaval.glo2003.domain.entities.Review;
 import ca.ulaval.glo2003.domain.entities.ReviewFixture;
 import ca.ulaval.glo2003.domain.factories.ReviewFactory;
 import jakarta.ws.rs.NotFoundException;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-import java.util.UUID;
-
-import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ReviewServiceTest {
@@ -31,7 +30,8 @@ public class ReviewServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.reviewService = new ReviewService(reviewRepository, restaurantRepository, reviewFactory);
+        this.reviewService =
+                new ReviewService(reviewRepository, restaurantRepository, reviewFactory);
     }
 
     @Test
@@ -68,7 +68,8 @@ public class ReviewServiceTest {
     private static final String COMMENT = "Very good restaurant!";
     private static final String RESTAURANT_ID = UUID.randomUUID().toString();
 
-    private static final Review REVIEW = new ReviewFixture().withId(ID).withRestaurantId(RESTAURANT_ID).create();
+    private static final Review REVIEW =
+            new ReviewFixture().withId(ID).withRestaurantId(RESTAURANT_ID).create();
     private static final Restaurant RESTAURANT =
             new RestaurantFixture().withId(RESTAURANT_ID).create();
 }

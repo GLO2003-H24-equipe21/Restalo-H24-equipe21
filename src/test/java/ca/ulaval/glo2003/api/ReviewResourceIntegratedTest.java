@@ -1,5 +1,7 @@
 package ca.ulaval.glo2003.api;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import ca.ulaval.glo2003.api.exceptions.*;
 import ca.ulaval.glo2003.api.requests.CreateReviewRequest;
 import ca.ulaval.glo2003.api.responses.ErrorResponse;
@@ -15,14 +17,11 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.UUID;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.util.UUID;
-
-import static com.google.common.truth.Truth.assertThat;
 
 public class ReviewResourceIntegratedTest {
 
@@ -32,7 +31,8 @@ public class ReviewResourceIntegratedTest {
     static final RestaurantRepository restaurantRepository = new RestaurantRepositoryInMemory();
     static final ReviewFactory reviewFactory = new ReviewFactory();
 
-    static final ReviewService reviewService = new ReviewService(reviewRepository, restaurantRepository, reviewFactory);
+    static final ReviewService reviewService =
+            new ReviewService(reviewRepository, restaurantRepository, reviewFactory);
 
     protected static Application configure() {
         return new ResourceConfig()
@@ -81,7 +81,7 @@ public class ReviewResourceIntegratedTest {
                         .post(Entity.entity(request, MediaType.APPLICATION_JSON_TYPE));
 
         assertThat(response.getStatus()).isEqualTo(400);
-         assertThat(response.readEntity(ErrorResponse.class).error()).isEqualTo("MISSING_PARAMETER");
+        assertThat(response.readEntity(ErrorResponse.class).error()).isEqualTo("MISSING_PARAMETER");
     }
 
     @Test
