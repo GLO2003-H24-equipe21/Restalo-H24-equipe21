@@ -20,3 +20,6 @@ mvn compile
 ```
 mvn exec:java
 ```
+
+### Autres fichiers importants
+[![Contributor Covenant](https://img.shields.io/badge/Code%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
