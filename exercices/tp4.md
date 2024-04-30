@@ -71,7 +71,7 @@
   Tant qu'on a considéré le license Apache 2.0, le point fort de celui-ci c'est ces permissions d'utilisation de brevets, mais nous n'en avions pas dans le projet,
   donc ce n'est pas nécessaire.
     * 2. Ce license déclare que nous ne sommes pas responsables pour des dommages causés par notre logiciel. Nous ne devons pas souciés de ce genre de trouble légal dans ce cas.
-    * 3. Nous avons remarqués que ce license est très souvent utilisé par plusieurs projets réputés. 
+    * 3. Nous avons remarqué que ce license est très souvent utilisé par plusieurs projets réputés. 
   Ce license est donc très crédible et nous donne plus de raison de l'utiliser pour notre projet aussi
 
 #### 3: CONTRIBUTING

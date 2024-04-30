@@ -163,3 +163,7 @@ mvn test
 ```
 >On github, our tests run automatically with actions, so make sure they all pass when creating a PR.
 >
+
+
+This Contributing guideline is adapted from the [Nayafia-code_of_conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html),
+and certain guidelines were inspired by Ruby on Rails' [Rails-code_of_conduct](https://github.com/rails/rails/blob/main/CONTRIBUTING.md)
