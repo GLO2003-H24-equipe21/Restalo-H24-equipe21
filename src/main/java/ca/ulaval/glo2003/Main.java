@@ -7,6 +7,8 @@ import java.util.Objects;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import io.sentry.Sentry;
+
 
 public class Main {
     public static String BASE_URI = "http://0.0.0.0:8080/";
@@ -25,17 +27,31 @@ public class Main {
                         .register(applicationContext.getRestaurantResource())
                         .register(applicationContext.getReservationResource())
                         .register(applicationContext.getSearchResource())
+                        .register(new ProductionExceptionMapper())
                         .register(new ConstraintViolationExceptionMapper())
                         .register(new NullPointerExceptionMapper())
                         .register(new IllegalArgumentExceptionMapper())
                         .register(new RuntimeExceptionMapper())
                         .register(new NotFoundExceptionMapper());
 
+
+
+        Sentry.init(options -> {
+            //options.setDsn(System.getenv("SENTRY_DSN"));
+            options.setDsn("https://9d931fa7d4cf6a24a0d903ca545760cc@o4507170796273664.ingest.us.sentry.io/4507170802302976");
+            options.setEnableMetrics(true);
+            options.setTracesSampleRate(1.0);
+            options.setDebug(true);
+        });
+
+        Sentry.metrics().increment("start", 1);
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
     }
 
     public static void main(String[] args) {
         startServer();
+
         System.out.printf("Jersey app started with endpoints available at %s%n", BASE_URI);
+        throw new RuntimeException();
     }
 }
