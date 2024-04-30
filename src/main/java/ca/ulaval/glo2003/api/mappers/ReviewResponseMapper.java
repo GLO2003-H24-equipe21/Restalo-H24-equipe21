@@ -9,6 +9,7 @@ public class ReviewResponseMapper {
 
     public ReviewResponse from(Review review) {
         return new ReviewResponse(
+                review.getId(),
                 review.getRating(),
                 review.getComment(),
                 review.getDate().format(dateTimeFormatter));

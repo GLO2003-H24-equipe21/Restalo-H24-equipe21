@@ -37,12 +37,12 @@
 
 # How to report a bug
 
-> Any security issues should be submitted directly to rudy.saal.1@ulaval.ca or edwin.lemelin.1@ulaval.ca
+> Any security issues should be submitted directly to rudy.saal.1@ulaval.ca or edwin.lemelin.1@ulaval.ca. 
 > In order to determine whether you are dealing with a security issue, ask yourself these two questions:
 > * Can I access something that's not mine, or something I shouldn't have access to?
 > * Can I disable something for other people?
 >
-> If the answer to either of those two questions are "yes", then you're probably dealing with a security issue. Note that even if you answer "no" to both questions, you may still be dealing with a security issue, so if you're unsure, just email us at security@travis-ci.org.
+> If the answer to either of those two questions are "yes", then you're probably dealing with a security issue. Note that even if you answer "no" to both questions, you may still be dealing with a security issue, so if you're unsure, just email us at rudy.saal.1@ulaval.ca or edwin.lemelin.1@ulaval.ca.
 
 >Before filing an issue, make sure to verify that it has not already been adressed as an issue.
 
@@ -85,6 +85,71 @@ while avoiding scheduling issues and other common errors
 >2. Do the changes in your fork
 >3. Send a pull request
 
+
+# Conventions
+
+
+### Commit Naming
+
+We follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) standard for our commit naming convention. Specifically, our commit messages are structured as follows:
+
+    <type>[optional scope]: <description>
+
+Here are the types we use and their purposes:
+
+- **`fix`**: To fix a bug in the code.
+- **`feat`**: To introduce a new feature into the code.
+- **`docs`**: To add documentation.
+- **`refactor`**: When the code is restructured/refactored.
+- **`test`**: To add tests to the code.
+- **`del`**: When deleting files.
+- **`misc`**: If none of the other types apply.
+
+The optional `scope` attribute refers to a word that provides additional contextual information. It is enclosed in parentheses and should describe a section of the code.
+
+Finally, the description is a short phrase describing the reason for the commit. It usually starts with an infinitive verb, does not begin with a capital letter, and does not end with a period.
+
+Here are some examples taken from Conventional Commits:
+
+    feat(lang): add Polish language
+    fix: prevent racing of requests
+    docs: correct spelling of CHANGELOG
+
+### Branching Strategy
+
+This session, we employ a branching strategy inspired by [GitHub Flow](https://githubflow.github.io/) and [GitLab Flow](https://about.gitlab.com/topics/version-control/what-is-gitlab-flow/). Here are the details:
+
+1. Our repository contains two main branches: `main` and `production`. The `main` branch is our working branch. From this branch, we create other branches to implement new features or fix bugs. Once the code on `main` is ready to be deployed, it is integrated into the `production` branch, which contains the official, tested, and functional code of our application.
+
+2. Our main branch is `production`, as it contains the code and documentation ready for delivery. Additionally, it holds the tags for the delivery of different parts of the project.
+
+3. Like the GitHub Flow strategy, we choose to create a new branch from `main` each time we work on something new. Thus, a new branch will be created for each of the issues currently in progress. For more details on branch naming, see [Branch Naming](#branch-naming).
+
+4. Once a developer has completed the issue assigned to them, they can create a pull request to merge their code into the `main` branch (the workspace). We use the merge command rather than rebase for any branch merging in our repository. As our team is relatively small, we consider this option to be simpler.
+
+### Branch Naming
+
+Depending on the situation, a branch may be created to develop a new feature, fix a bug in the workspace, fix a bug in the production environment, etc. Thus, to ensure consistency within the team, we adopt the following structure to name our branches:
+
+    <prefix>/<issue-number>/<description>
+
+The available prefixes are:
+
+1. **`feature`**: When adding a feature to the code.
+2. **`bugfix`**: When there is a bug to fix in the workspace (main branch).
+3. **`hotfix`**: In case there is a bug to be fixed very quickly on a version of the code in production (production branch).
+4. **`docs`**: When additions are documentation.
+5. **`misc`**: If none of the other types apply.
+
+The `issue-number` parameter corresponds to the number of the issue associated with the branch.
+
+The branch description should consist of a few words that succinctly describe the work done on this branch. The description is composed of lowercase alphanumeric characters, and each word is separated by a hyphen.
+
+Here are some examples following the conventions mentioned above:
+
+    feature/12/improved-ui-login
+    bugfix/8/fix-api-response-time
+    docs/2/add-exercices-tp1
 # Code review process
 
 
@@ -97,3 +162,4 @@ while avoiding scheduling issues and other common errors
 mvn test
 ```
 >On github, our tests run automatically with actions, so make sure they all pass when creating a PR.
+>
