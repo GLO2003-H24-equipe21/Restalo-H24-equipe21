@@ -2,12 +2,14 @@ package ca.ulaval.glo2003.api;
 
 import ca.ulaval.glo2003.api.mappers.AvailabilityResponseMapper;
 import ca.ulaval.glo2003.api.mappers.ReservationSearchResponseMapper;
+import ca.ulaval.glo2003.api.mappers.ReviewResponseMapper;
 import ca.ulaval.glo2003.api.mappers.UserRestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.SearchRestaurantsRequest;
 import ca.ulaval.glo2003.domain.SearchService;
 import ca.ulaval.glo2003.domain.entities.Availability;
 import ca.ulaval.glo2003.domain.entities.Reservation;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
+import ca.ulaval.glo2003.domain.entities.Review;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -21,12 +23,14 @@ public class SearchResource {
     private final UserRestaurantResponseMapper restaurantResponseMapper;
     private final ReservationSearchResponseMapper reservationResponseMapper;
     private final AvailabilityResponseMapper availabilityResponseMapper;
+    private final ReviewResponseMapper reviewResponseMapper;
 
     public SearchResource(SearchService searchService) {
         this.searchService = searchService;
         restaurantResponseMapper = new UserRestaurantResponseMapper();
         reservationResponseMapper = new ReservationSearchResponseMapper();
         availabilityResponseMapper = new AvailabilityResponseMapper();
+        reviewResponseMapper = new ReviewResponseMapper();
     }
 
     @POST
@@ -78,6 +82,24 @@ public class SearchResource {
                 .entity(
                         availabilities.stream()
                                 .map(availabilityResponseMapper::from)
+                                .collect(Collectors.toList()))
+                .build();
+    }
+
+    @GET
+    @Path("restaurants/{id}/reviews")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchReviews(
+            @PathParam("id") String restaurantId,
+            @QueryParam("rating") List<String> ratings,
+            @QueryParam("from") String from,
+            @QueryParam("to") String to) {
+        List<Review> reviews = searchService.searchReviews(restaurantId, ratings, from, to);
+
+        return Response.status(Response.Status.OK)
+                .entity(
+                        reviews.stream()
+                                .map(reviewResponseMapper::from)
                                 .collect(Collectors.toList()))
                 .build();
     }

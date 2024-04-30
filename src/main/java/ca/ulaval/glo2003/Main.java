@@ -28,6 +28,7 @@ public class Main {
                         .register(new HealthResource())
                         .register(applicationContext.getRestaurantResource())
                         .register(applicationContext.getReservationResource())
+                        .register(applicationContext.getReviewResource())
                         .register(applicationContext.getSearchResource())
                         .register(new ProductionExceptionMapper())
                         .register(new ConstraintViolationExceptionMapper())

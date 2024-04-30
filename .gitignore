@@ -8,6 +8,7 @@
 # to it, we will enable those configurations to be added to the repo.
 .idea/
 out/
+true
 
 
 ### Maven ###

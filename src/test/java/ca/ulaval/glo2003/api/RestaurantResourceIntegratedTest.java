@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -77,6 +78,11 @@ class RestaurantResourceIntegratedTest {
 
         restaurants.add(RESTAURANT_MAPPER.from(RESTAURANT));
         restaurants.add(RESTAURANT_MAPPER.from(RESTAURANT2));
+    }
+
+    @AfterAll
+    static void stopServer() {
+        api.stop();
     }
 
     @Test

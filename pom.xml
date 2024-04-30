@@ -14,6 +14,8 @@
         <maven.compiler.release>21</maven.compiler.release>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
+        <intellij.coverage.agent.version>1.0.746</intellij.coverage.agent.version>
+        <intellij.agent.options>"${project.basedir}"/.qodana/code-coverage/output.ic,true,true,true,false</intellij.agent.options>
     </properties>
 
     <dependencyManagement>
@@ -124,6 +126,30 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>intellij-coverage-agent</id>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.jetbrains.intellij.deps</groupId>
+                                    <artifactId>intellij-coverage-agent</artifactId>
+                                    <version>${intellij.coverage.agent.version}</version>
+                                    <destFileName>intellij-coverage-agent.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.1</version>
@@ -142,6 +168,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.3</version>
+                <configuration>
+                    <argLine>-javaagent:"${project.build.directory}"/dependency/intellij-coverage-agent.jar=${intellij.agent.options}</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
