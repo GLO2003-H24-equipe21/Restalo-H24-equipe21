@@ -146,18 +146,36 @@ class SearchServiceTest {
     @Test
     void whenSearchReviews_thenReturnsReviewList() {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
-        when(reviewRepository.searchReviews(RESTAURANT_ID, RATINGS, LocalDate.parse(FROM), LocalDate.parse(TO))).thenReturn(REVIEWS);
+        when(reviewRepository.searchReviews(
+                        RESTAURANT_ID, RATINGS, LocalDate.parse(FROM), LocalDate.parse(TO)))
+                .thenReturn(REVIEWS);
 
-        List<Review> gottenReviews = searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, TO);
+        List<Review> gottenReviews =
+                searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, TO);
 
         assertThat(gottenReviews).isEqualTo(REVIEWS);
+    }
+
+    @Test
+    void givenRestaurantWithNoReviews_whenSearchReviews_thenReturnsEmptyList() {
+        when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
+        when(reviewRepository.searchReviews(
+                        RESTAURANT_ID, RATINGS, LocalDate.parse(FROM), LocalDate.parse(TO)))
+                .thenReturn(List.of());
+
+        List<Review> gottenReviews =
+                searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, TO);
+
+        assertThat(gottenReviews).isEmpty();
     }
 
     @Test
     void givenNonExistingRestaurant_whenSearchReviews_thenThrowsNotFoundException() {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, TO));
+        assertThrows(
+                NotFoundException.class,
+                () -> searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, TO));
     }
 
     @Test
@@ -165,7 +183,9 @@ class SearchServiceTest {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
         List<String> invalidRatings = List.of("1,2", "asdf");
 
-        assertThrows(IllegalArgumentException.class, () -> searchService.searchReviews(RESTAURANT_ID, invalidRatings, FROM, TO));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> searchService.searchReviews(RESTAURANT_ID, invalidRatings, FROM, TO));
     }
 
     @Test
@@ -173,7 +193,9 @@ class SearchServiceTest {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
         List<String> ratingBelow0 = List.of("-1");
 
-        assertThrows(IllegalArgumentException.class, () -> searchService.searchReviews(RESTAURANT_ID, ratingBelow0, FROM, TO));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> searchService.searchReviews(RESTAURANT_ID, ratingBelow0, FROM, TO));
     }
 
     @Test
@@ -181,7 +203,9 @@ class SearchServiceTest {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
         List<String> ratingAbove5 = List.of("5", "6");
 
-        assertThrows(IllegalArgumentException.class, () -> searchService.searchReviews(RESTAURANT_ID, ratingAbove5, FROM, TO));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> searchService.searchReviews(RESTAURANT_ID, ratingAbove5, FROM, TO));
     }
 
     @Test
@@ -189,7 +213,9 @@ class SearchServiceTest {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
         String invalidFrom = "january 16th";
 
-        assertThrows(IllegalArgumentException.class, () -> searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, invalidFrom, TO));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, invalidFrom, TO));
     }
 
     @Test
@@ -197,7 +223,9 @@ class SearchServiceTest {
         when(restaurantRepository.get(RESTAURANT_ID)).thenReturn(Optional.of(RESTAURANT));
         String invalidTo = "2023-25-25";
 
-        assertThrows(IllegalArgumentException.class, () -> searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, invalidTo));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> searchService.searchReviews(RESTAURANT_ID, RATINGS_STRING, FROM, invalidTo));
     }
 
     private static final String RESTAURANT_NAME = "restaurant";

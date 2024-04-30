@@ -132,10 +132,10 @@
                 <executions>
                     <execution>
                         <id>intellij-coverage-agent</id>
-                        <phase>process-test-classes</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
+                        <phase>process-test-classes</phase>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>

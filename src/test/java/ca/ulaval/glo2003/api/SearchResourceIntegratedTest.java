@@ -1,5 +1,7 @@
 package ca.ulaval.glo2003.api;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.NotFoundExceptionMapper;
@@ -15,21 +17,16 @@ import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
 import ca.ulaval.glo2003.domain.entities.Review;
 import ca.ulaval.glo2003.domain.entities.ReviewFixture;
 import ca.ulaval.glo2003.domain.factories.SearchFactory;
-import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.GenericType;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
-
-import static com.google.common.truth.Truth.assertThat;
 
 public class SearchResourceIntegratedTest {
 
@@ -42,7 +39,8 @@ public class SearchResourceIntegratedTest {
     static final SearchFactory searchFactory = new SearchFactory();
 
     static final SearchService searchService =
-            new SearchService(restaurantRepository, reservationRepository, reviewRepository, searchFactory);
+            new SearchService(
+                    restaurantRepository, reservationRepository, reviewRepository, searchFactory);
 
     protected static Application configure() {
         return new ResourceConfig()
@@ -59,6 +57,7 @@ public class SearchResourceIntegratedTest {
         api.start();
 
         restaurantRepository.add(RESTAURANT);
+        restaurantRepository.add(OTHER_RESTAURANT);
         reviewRepository.add(REVIEW);
         reviewRepository.add(OTHER_REVIEW);
     }
@@ -70,13 +69,11 @@ public class SearchResourceIntegratedTest {
 
     @Test
     void whenSearchReviews_thenReturnsReviewsWith200() {
-        Response response =
-                api.path("/restaurants/" + RESTAURANT_ID + "/reviews")
-                        .request()
-                        .get();
+        Response response = api.path("/restaurants/" + RESTAURANT_ID + "/reviews").request().get();
 
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {})).containsExactly(REVIEW_RESPONSE, OTHER_REVIEW_RESPONSE);
+        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {}))
+                .containsExactly(REVIEW_RESPONSE, OTHER_REVIEW_RESPONSE);
     }
 
     @Test
@@ -88,7 +85,8 @@ public class SearchResourceIntegratedTest {
                         .get();
 
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {})).containsExactly(REVIEW_RESPONSE);
+        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {}))
+                .containsExactly(REVIEW_RESPONSE);
     }
 
     @Test
@@ -101,7 +99,8 @@ public class SearchResourceIntegratedTest {
                         .get();
 
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {})).containsExactly(REVIEW_RESPONSE, OTHER_REVIEW_RESPONSE);
+        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {}))
+                .containsExactly(REVIEW_RESPONSE, OTHER_REVIEW_RESPONSE);
     }
 
     @Test
@@ -114,7 +113,8 @@ public class SearchResourceIntegratedTest {
                         .get();
 
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {})).containsExactly(OTHER_REVIEW_RESPONSE);
+        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {}))
+                .containsExactly(OTHER_REVIEW_RESPONSE);
     }
 
     @Test
@@ -156,24 +156,46 @@ public class SearchResourceIntegratedTest {
     @Test
     void givenInvalidRestaurantId_whenSearchReviews_thenReturnsNotFoundWith404() {
         Response response =
-                api.path("/restaurants/" + NON_EXISTING_RESTAURANT_ID + "/reviews")
-                        .request()
-                        .get();
+                api.path("/restaurants/" + NON_EXISTING_RESTAURANT_ID + "/reviews").request().get();
 
         assertThat(response.getStatus()).isEqualTo(404);
     }
 
+    @Test
+    void givenRestaurantWithNoReviews_whenSearchReviews_thenReturnsNoReviewsWith200() {
+        Response response =
+                api.path("/restaurants/" + OTHER_RESTAURANT_ID + "/reviews").request().get();
+
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.readEntity(new GenericType<List<ReviewResponse>>() {})).isEmpty();
+    }
+
     private static final String RESTAURANT_ID = UUID.randomUUID().toString();
+    private static final String OTHER_RESTAURANT_ID = UUID.randomUUID().toString();
     private static final String NON_EXISTING_RESTAURANT_ID = "12345";
     private static final String MAY_1 = "2024-05-01";
     private static final String MAY_5 = "2024-05-05";
 
     private static final Restaurant RESTAURANT =
             new RestaurantFixture().withId(RESTAURANT_ID).create();
+    private static final Restaurant OTHER_RESTAURANT =
+            new RestaurantFixture().withId(OTHER_RESTAURANT_ID).create();
 
-    private static final Review REVIEW = new ReviewFixture().withRestaurantId(RESTAURANT_ID).withRating(5).withDate(LocalDate.parse(MAY_1)).create();
-    private static final Review OTHER_REVIEW = new ReviewFixture().withRestaurantId(RESTAURANT_ID).withRating(2).withDate(LocalDate.parse(MAY_5)).create();
+    private static final Review REVIEW =
+            new ReviewFixture()
+                    .withRestaurantId(RESTAURANT_ID)
+                    .withRating(5)
+                    .withDate(LocalDate.parse(MAY_1))
+                    .create();
+    private static final Review OTHER_REVIEW =
+            new ReviewFixture()
+                    .withRestaurantId(RESTAURANT_ID)
+                    .withRating(2)
+                    .withDate(LocalDate.parse(MAY_5))
+                    .create();
 
-    private static final ReviewResponse REVIEW_RESPONSE = new ReviewResponse(REVIEW.getId(), 5, REVIEW.getComment(), MAY_1);
-    private static final ReviewResponse OTHER_REVIEW_RESPONSE = new ReviewResponse(OTHER_REVIEW.getId(), 2, OTHER_REVIEW.getComment(), MAY_5);
+    private static final ReviewResponse REVIEW_RESPONSE =
+            new ReviewResponse(REVIEW.getId(), 5, REVIEW.getComment(), MAY_1);
+    private static final ReviewResponse OTHER_REVIEW_RESPONSE =
+            new ReviewResponse(OTHER_REVIEW.getId(), 2, OTHER_REVIEW.getComment(), MAY_5);
 }

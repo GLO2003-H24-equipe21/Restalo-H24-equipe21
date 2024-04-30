@@ -28,11 +28,7 @@ public class TestUtils {
 
     public static List<Review> createReviews(int quantity, String restaurantId) {
         return IntStream.range(0, quantity)
-                .mapToObj(
-                        i ->
-                                new ReviewFixture()
-                                        .withRestaurantId(restaurantId)
-                                        .create())
+                .mapToObj(i -> new ReviewFixture().withRestaurantId(restaurantId).create())
                 .collect(Collectors.toList());
     }
 }
