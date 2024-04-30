@@ -52,7 +52,22 @@
    développement logiciel, si ce n'est que pour maintenir ces nouvelles technologies.
 
 ## Open Sourcing
+### Questions
 
+####  3 avantages à contribuer à des projets open source en tant qu'entreprise et justifiez en quoi cela peut être bénéfique pour tous.
+
+1. **Innovation et développement rapide** : Contribuer à l'open source permet aux entreprises de bénéficier de l'innovation collective, accélérant le développement de nouvelles technologies et solutions.
+2. **Amélioration de la réputation** : Les entreprises qui contribuent activement à l'open source sont souvent vues comme des leaders technologiques et des collaborateurs de confiance dans leur domaine, ce qui peut renforcer leur réputation.
+3. **Recrutement et rétention des talents** : Les développeurs préfèrent souvent travailler pour des entreprises qui soutiennent l'open source, car cela leur permet de développer leurs compétences et de collaborer avec des communautés globales.
+
+#### Défis de la mise en place d'un projet open source
+
+1. **Gestion de la communauté** : Il peut être difficile de gérer une communauté diverse et géographiquement dispersée, nécessitant des efforts constants pour maintenir une communication efficace et une culture inclusive.
+2. **Questions juridiques et de conformité** : Naviguer dans les complexités des licences open source et s'assurer de la conformité peut être un défi majeur, nécessitant souvent des conseils juridiques spécialisés.
+3. **Sécurité et qualité du code** : Maintenir des normes élevées de qualité et de sécurité du code dans un environnement où de nombreux contributeurs peuvent soumettre des modifications est un défi constant.
+
+#### Information la plus surprenante
+L'aspect le plus surprenant selon nous est l'ampleur des implications juridiques de l'open source. Beaucoup ne réalisent pas initialement combien il est crucial d'avoir une licence appropriée pour protéger le projet et clarifier les droits de contribution et d'utilisation du code.
 ### Contribution externe
 
 #### 1: CODE_OF_CONDUCT
