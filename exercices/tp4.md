@@ -52,6 +52,53 @@
    développement logiciel, si ce n'est que pour maintenir ces nouvelles technologies.
 
 ## Open Sourcing
+### Questions
+
+####  3 avantages à contribuer à des projets open source en tant qu'entreprise et justifiez en quoi cela peut être bénéfique pour tous.
+
+1. **Innovation et développement rapide** : Contribuer à l'open source permet aux entreprises de bénéficier de l'innovation collective, accélérant le développement de nouvelles technologies et solutions.
+2. **Amélioration de la réputation** : Les entreprises qui contribuent activement à l'open source sont souvent vues comme des leaders technologiques et des collaborateurs de confiance dans leur domaine, ce qui peut renforcer leur réputation.
+3. **Recrutement et rétention des talents** : Les développeurs préfèrent souvent travailler pour des entreprises qui soutiennent l'open source, car cela leur permet de développer leurs compétences et de collaborer avec des communautés globales.
+
+#### Défis de la mise en place d'un projet open source
+
+1. **Gestion de la communauté** : Il peut être difficile de gérer une communauté diverse et géographiquement dispersée, nécessitant des efforts constants pour maintenir une communication efficace et une culture inclusive.
+2. **Questions juridiques et de conformité** : Naviguer dans les complexités des licences open source et s'assurer de la conformité peut être un défi majeur, nécessitant souvent des conseils juridiques spécialisés.
+3. **Sécurité et qualité du code** : Maintenir des normes élevées de qualité et de sécurité du code dans un environnement où de nombreux contributeurs peuvent soumettre des modifications est un défi constant.
+
+#### Information la plus surprenante
+L'aspect le plus surprenant selon nous est l'ampleur des implications juridiques de l'open source. Beaucoup ne réalisent pas initialement combien il est crucial d'avoir une licence appropriée pour protéger le projet et clarifier les droits de contribution et d'utilisation du code.
+### Contribution externe
+
+#### 1: CODE_OF_CONDUCT
+* Nous avons utilisé le template fourni par Contributor Covenant,version 2.1, à
+  [Contributor Covenant](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html)
+* Pourquoi nous avons utilisé ce template:
+    * C'est utilisé par au délà de 40 000 projets open source, parmis lesquels se trouvent des projets très populaires tels que Rails et Swift.
+    * Le template recouvre toutes les comportoments non-voulus et les conséquences liés à ceux-ci. Ça clarifie exactement
+      les actions que nous devons prendre dans le cas d'une infraction, pour nous ainsi que pour les utilisateurs.
+
+
+#### 2: LICENSE
+* Nous avons utilisé le license de MIT pour notre projet
+* 3 raisons principales pourquoi nous avons utilisé ce template:
+    * 1. Le license est très permissive, ce que nous voulons parce que nous voulons partager l'utilité de Restalo avec le plus d'utilisateurs possibles.
+  Tant qu'on a considéré le license Apache 2.0, le point fort de celui-ci c'est ces permissions d'utilisation de brevets, mais nous n'en avions pas dans le projet,
+  donc ce n'est pas nécessaire.
+    * 2. Ce license déclare que nous ne sommes pas responsables pour des dommages causés par notre logiciel. Nous ne devons pas souciés de ce genre de trouble légal dans ce cas.
+    * 3. Nous avons remarqué que ce license est très souvent utilisé par plusieurs projets réputés. 
+  Ce license est donc très crédible et nous donne plus de raison de l'utiliser pour notre projet aussi
+
+#### 3: CONTRIBUTING
+* Nous avons utilisé le template fourni par Nayafia à [Nayafia-code_of_conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html)
+aussi inspiré par le projet Ruby on Rails à [Rails-code_of_conduct](https://github.com/rails/rails/blob/main/CONTRIBUTING.md)
+* Pourquoi nous avons utilisé ce template:
+    * Ce template permet de bien accueillir les nouveaux contributeurs ainsi que de bien clarifier ce qui est voulu comme contribution et comment procéder.
+    * Lorsque nous clarifions ce que nous voulons comme ça dans le fichier CONTRIBUTION, ça permet d'éviter à gérer des PRs non désiré et d'assurer que les demandes
+  de fix ou features se rendent à la bonne place.
+    * Aussi, nous avons incorporés quelques idées concernant différents types de pull-request du projet Ruby on Rails. Ça permet d'inclure la plupart des cas où qu'une personne
+  voudrais contribuer.
+
 
 ## Sécurité
 
