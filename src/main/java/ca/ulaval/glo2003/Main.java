@@ -2,14 +2,12 @@ package ca.ulaval.glo2003;
 
 import ca.ulaval.glo2003.api.HealthResource;
 import ca.ulaval.glo2003.api.exceptions.*;
+import io.sentry.Sentry;
 import java.net.URI;
-import java.util.EmptyStackException;
 import java.util.Objects;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import io.sentry.Sentry;
-
 
 public class Main {
     public static String BASE_URI = "http://0.0.0.0:8080/";
@@ -39,12 +37,13 @@ public class Main {
         dns = System.getenv("SENTRY_DSN");
 
         if (!Objects.isNull(dns)) {
-            Sentry.init(options -> {
-                options.setDsn(System.getenv("SENTRY_DSN"));
-                options.setEnableMetrics(true);
-                options.setTracesSampleRate(1.0);
-                options.setDebug(true);
-            });
+            Sentry.init(
+                    options -> {
+                        options.setDsn(System.getenv("SENTRY_DSN"));
+                        options.setEnableMetrics(true);
+                        options.setTracesSampleRate(1.0);
+                        options.setDebug(true);
+                    });
             Sentry.metrics().increment("start", 1);
         }
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), resourceConfig);
