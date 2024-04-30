@@ -3,22 +3,29 @@ package ca.ulaval.glo2003.data.inmemory;
 import ca.ulaval.glo2003.domain.ReviewRepository;
 import ca.ulaval.glo2003.domain.entities.Review;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ReviewRepositoryInMemory implements ReviewRepository {
 
-    private HashMap<String, List<Review>> restaurantIdToReviews;
+    private final Map<String, Review> reviewIdToReview;
+    private final Map<String, List<Review>> restaurantIdToReviews;
 
     public ReviewRepositoryInMemory() {
+        reviewIdToReview = new HashMap<>();
         restaurantIdToReviews = new HashMap<>();
     }
 
     @Override
-    public void add(Review review) {}
+    public void add(Review review) {
+        reviewIdToReview.put(review.getId(), review);
+
+        List<Review> reviews =
+                restaurantIdToReviews.getOrDefault(review.getRestaurantId(), new ArrayList<>());
+        reviews.add(review);
+
+        restaurantIdToReviews.put(review.getRestaurantId(), reviews);
+    }
 
     @Override
     public List<Review> searchReviews(

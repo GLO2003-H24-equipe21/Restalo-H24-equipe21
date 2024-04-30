@@ -7,9 +7,11 @@ import ca.ulaval.glo2003.data.mongo.mappers.ReviewMongoMapper;
 import ca.ulaval.glo2003.domain.ReviewRepository;
 import ca.ulaval.glo2003.domain.entities.Review;
 import dev.morphia.Datastore;
+import dev.morphia.query.Query;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 public class ReviewRepositoryMongo implements ReviewRepository {
     private final Datastore datastore;
@@ -23,19 +25,26 @@ public class ReviewRepositoryMongo implements ReviewRepository {
     }
 
     @Override
-    public void add(Review review) {}
+    public void add(Review review) {
+        datastore.save(reviewMongoMapper.toMongo(review));
+    }
 
     @Override
     public List<Review> searchReviews(
             String restaurantId, List<Integer> ratings, LocalDate from, LocalDate to) {
-        return datastore
-                .find(ReviewMongo.class)
-                .filter(eq("restaurantId", restaurantId))
-                .filter(in("rating", ratings))
-                .filter(gte("from", from.format(dateTimeFormatter)))
-                .filter(lte("to", to.format(dateTimeFormatter)))
-                .stream()
-                .map(reviewMongoMapper::fromMongo)
-                .toList();
+        Query<ReviewMongo> query =
+                datastore.find(ReviewMongo.class).filter(eq("restaurantId", restaurantId));
+
+        if (!ratings.isEmpty()) {
+            query = query.filter(in("rating", ratings));
+        }
+        if (!Objects.isNull(from)) {
+            query = query.filter(gte("date", from.format(dateTimeFormatter)));
+        }
+        if (!Objects.isNull(to)) {
+            query = query.filter(lte("date", to.format(dateTimeFormatter)));
+        }
+
+        return query.stream().map(reviewMongoMapper::fromMongo).toList();
     }
 }
