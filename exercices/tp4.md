@@ -122,6 +122,15 @@ Finalement, utiliser des outils de gestion de version et de vérification de sig
 ![SCA_3](pictures_tp4/tools/SCA_3.png)
 ![SCA_4](pictures_tp4/tools/SCA_4.png)
 
+## Outils de métrique
+
+![SENTRY_SUMMARY](pictures_tp4/sentry/Summary.png)
+![SENTRY_1](pictures_tp4/sentry/Detail1.png)
+![SENTRY_2](pictures_tp4/sentry/Detail2.png)
+![SENTRY_2_5](pictures_tp4/sentry/Detail2.5.png)
+![SENTRY_3](pictures_tp4/sentry/Detail3.png)
+![SENTRY_4](pictures_tp4/sentry/Detail4.png)
+
 ## Stories
 
 En fonction des commentaires et suggestions de notre correcteur, voici en détails les deux _stories_ que nous avons 

@@ -10,6 +10,8 @@
 out/
 true
 
+### Qodana ###
+.qodana
 
 ### Maven ###
 target/
