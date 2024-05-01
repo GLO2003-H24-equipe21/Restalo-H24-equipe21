@@ -7,9 +7,9 @@ import static org.mockito.Mockito.when;
 
 import ca.ulaval.glo2003.api.pojos.CustomerPojo;
 import ca.ulaval.glo2003.domain.entities.*;
+import ca.ulaval.glo2003.domain.exceptions.EntityNotFoundException;
 import ca.ulaval.glo2003.domain.factories.CustomerFactory;
 import ca.ulaval.glo2003.domain.factories.ReservationFactory;
-import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -88,12 +88,12 @@ class ReservationServiceTest {
     }
 
     @Test
-    void givenNonExistingNumber_whenGetReservation_thenThrowsNotFoundException() {
+    void givenNonExistingNumber_whenGetReservation_thenThrowsEntityNotFoundException() {
         String nonExistingNumber = "1234";
         when(reservationRepository.get(nonExistingNumber)).thenReturn(Optional.empty());
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> reservationService.getReservation(nonExistingNumber));
     }
 
@@ -107,11 +107,11 @@ class ReservationServiceTest {
     }
 
     @Test
-    void givenNonExistingNumber_whenDeleteReservation_thenThrowsNotFoundException() {
+    void givenNonExistingNumber_whenDeleteReservation_thenThrowsEntityNotFoundException() {
         String nonExistingNumber = "1234";
 
         assertThrows(
-                NotFoundException.class,
+                EntityNotFoundException.class,
                 () -> reservationService.deleteReservation(nonExistingNumber));
     }
 

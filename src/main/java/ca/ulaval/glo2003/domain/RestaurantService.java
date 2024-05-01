@@ -5,10 +5,10 @@ import ca.ulaval.glo2003.api.pojos.RestaurantHoursPojo;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantConfiguration;
 import ca.ulaval.glo2003.domain.entities.RestaurantHours;
+import ca.ulaval.glo2003.domain.exceptions.EntityNotFoundException;
 import ca.ulaval.glo2003.domain.factories.RestaurantConfigurationFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantFactory;
 import ca.ulaval.glo2003.domain.factories.RestaurantHoursFactory;
-import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,10 +56,11 @@ public class RestaurantService {
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
-                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Restaurant does not exist"));
 
         if (!restaurant.getOwnerId().equals(ownerId)) {
-            throw new NotFoundException("Restaurant owner id is invalid");
+            throw new EntityNotFoundException("Restaurant owner id is invalid");
         }
 
         return restaurant;
@@ -73,10 +74,11 @@ public class RestaurantService {
         Restaurant restaurant =
                 restaurantRepository
                         .get(restaurantId)
-                        .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Restaurant does not exist"));
 
         if (!restaurant.getOwnerId().equals(ownerId)) {
-            throw new NotFoundException("Restaurant owner id is invalid");
+            throw new EntityNotFoundException("Restaurant owner id is invalid");
         }
 
         reservationRepository.deleteAll(restaurantId);

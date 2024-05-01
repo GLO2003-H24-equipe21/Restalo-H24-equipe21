@@ -5,8 +5,12 @@ import ca.ulaval.glo2003.api.RestaurantResource;
 import ca.ulaval.glo2003.api.ReviewResource;
 import ca.ulaval.glo2003.api.SearchResource;
 import ca.ulaval.glo2003.data.DatastoreProvider;
-import ca.ulaval.glo2003.data.inmemory.*;
-import ca.ulaval.glo2003.data.mongo.*;
+import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
+import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
+import ca.ulaval.glo2003.data.inmemory.ReviewRepositoryInMemory;
+import ca.ulaval.glo2003.data.mongo.ReservationRepositoryMongo;
+import ca.ulaval.glo2003.data.mongo.RestaurantRepositoryMongo;
+import ca.ulaval.glo2003.data.mongo.ReviewRepositoryMongo;
 import ca.ulaval.glo2003.domain.*;
 import ca.ulaval.glo2003.domain.factories.*;
 

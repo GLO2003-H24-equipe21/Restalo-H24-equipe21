@@ -2,7 +2,10 @@ package ca.ulaval.glo2003.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.ulaval.glo2003.api.exceptions.*;
+import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.EntityNotFoundExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
 import ca.ulaval.glo2003.api.mappers.OwnerRestaurantResponseMapper;
 import ca.ulaval.glo2003.api.requests.CreateRestaurantRequest;
 import ca.ulaval.glo2003.api.requests.RestaurantRequestFixture;
@@ -61,7 +64,7 @@ class RestaurantResourceIntegratedTest {
                 .register(new NullPointerExceptionMapper())
                 .register(new IllegalArgumentExceptionMapper())
                 .register(new ConstraintViolationExceptionMapper())
-                .register(new NotFoundExceptionMapper());
+                .register(new EntityNotFoundExceptionMapper());
     }
 
     @BeforeAll

@@ -3,15 +3,18 @@ package ca.ulaval.glo2003.api;
 import static com.google.common.truth.Truth.assertThat;
 
 import ca.ulaval.glo2003.api.exceptions.ConstraintViolationExceptionMapper;
+import ca.ulaval.glo2003.api.exceptions.EntityNotFoundExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.IllegalArgumentExceptionMapper;
-import ca.ulaval.glo2003.api.exceptions.NotFoundExceptionMapper;
 import ca.ulaval.glo2003.api.exceptions.NullPointerExceptionMapper;
 import ca.ulaval.glo2003.api.responses.ErrorResponse;
 import ca.ulaval.glo2003.api.responses.ReviewResponse;
 import ca.ulaval.glo2003.data.inmemory.ReservationRepositoryInMemory;
 import ca.ulaval.glo2003.data.inmemory.RestaurantRepositoryInMemory;
 import ca.ulaval.glo2003.data.inmemory.ReviewRepositoryInMemory;
-import ca.ulaval.glo2003.domain.*;
+import ca.ulaval.glo2003.domain.ReservationRepository;
+import ca.ulaval.glo2003.domain.RestaurantRepository;
+import ca.ulaval.glo2003.domain.ReviewRepository;
+import ca.ulaval.glo2003.domain.SearchService;
 import ca.ulaval.glo2003.domain.entities.Restaurant;
 import ca.ulaval.glo2003.domain.entities.RestaurantFixture;
 import ca.ulaval.glo2003.domain.entities.Review;
@@ -48,7 +51,7 @@ public class SearchResourceIntegratedTest {
                 .register(new NullPointerExceptionMapper())
                 .register(new IllegalArgumentExceptionMapper())
                 .register(new ConstraintViolationExceptionMapper())
-                .register(new NotFoundExceptionMapper());
+                .register(new EntityNotFoundExceptionMapper());
     }
 
     @BeforeAll

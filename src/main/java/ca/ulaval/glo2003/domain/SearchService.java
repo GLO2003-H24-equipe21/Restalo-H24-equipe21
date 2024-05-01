@@ -2,8 +2,8 @@ package ca.ulaval.glo2003.domain;
 
 import ca.ulaval.glo2003.api.pojos.SearchOpenedPojo;
 import ca.ulaval.glo2003.domain.entities.*;
+import ca.ulaval.glo2003.domain.exceptions.EntityNotFoundException;
 import ca.ulaval.glo2003.domain.factories.SearchFactory;
-import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,7 +44,7 @@ public class SearchService {
         Restaurant restaurant = getRestaurantIfExists(restaurantId);
 
         if (!restaurant.getOwnerId().equals(ownerId)) {
-            throw new NotFoundException("Restaurant owner id is invalid");
+            throw new EntityNotFoundException("Restaurant owner id is invalid");
         }
 
         return reservationRepository.searchReservations(
@@ -54,7 +54,7 @@ public class SearchService {
     private Restaurant getRestaurantIfExists(String restaurantId) {
         return restaurantRepository
                 .get(restaurantId)
-                .orElseThrow(() -> new NotFoundException("Restaurant does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Restaurant does not exist"));
     }
 
     private LocalDate parseDate(String date) {

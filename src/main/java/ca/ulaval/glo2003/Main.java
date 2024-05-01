@@ -31,7 +31,7 @@ public class Main {
                         .register(new ConstraintViolationExceptionMapper())
                         .register(new NullPointerExceptionMapper())
                         .register(new IllegalArgumentExceptionMapper())
-                        .register(new NotFoundExceptionMapper());
+                        .register(new EntityNotFoundExceptionMapper());
 
         String sentryDsn = System.getenv("SENTRY_DSN");
         if (!Objects.isNull(sentryDsn)) {
