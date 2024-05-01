@@ -99,8 +99,14 @@ aussi inspiré par le projet Ruby on Rails à [Rails-code_of_conduct](https://gi
     * Aussi, nous avons incorporés quelques idées concernant différents types de pull-request du projet Ruby on Rails. Ça permet d'inclure la plupart des cas où qu'une personne
   voudrais contribuer.
 
-
 ## Sécurité
+
+### Analyse de sécurité
+
+![Security_1](pictures_tp4/tools/security_1.png)
+
+### Vers des pratiques plus sécures
+
 Il existe plusieurs pratiques en sécurité logicielle qui permettent de réduire les risques de vulnérabilité à l'intérieur d'un processus de développement logiciel. Elles bloquent certaines cyberattaques et de ce fait, maintiennent une conformité réglementaire. De plus, la confiance des utilisateurs reste intacte et il est possible d'économiser des frais associés à la réparation d'incidents de sécurité. 
 
 Tout d'abord, il y a l'intégration de la sécurité logicielle dès le début d'un projet. Les équipes de sécurité sont impliquées dès le début pour identifier les risques de sécurité. Ainsi, l'objectif est d'automatiser, au sein de pipelines *CI/CD*, les tests de sécurité, la gestion des configurations sécurisées, la surveillance en continue de la sécurité et bien d'autres tâches. Ça permet d'identifier, avec proactivité, les vulnérabilités du système en fournissant une évaluation du niveau de sécurité au sein duquel un logiciel se situe. En l'occurence, il est possible de déterminer les procédures à suivre, ainsi que les ressources à allouer pour diminuer les faiblesses de ce dernier. Plusieurs *frameworks* permettent, dès le début du projet, d'intégrer les pratiques de sécurité dès le début d'un projet pour maintenir un niveau de sécurité suffisamment élevé pour les processus de développement logiciel. Par exemple, il y a DevSecOps qui intègre dans l'approche DevOps des pratiques de sécurité logicielle au sein de pipelines d'intégration continu et de déploiement continu.
@@ -108,6 +114,14 @@ Tout d'abord, il y a l'intégration de la sécurité logicielle dès le début d
 Par la suite, il est crucial de rester conformes à des normes de codages sécurisées. En uniformisant les pratiques de sécurité logicielle, on garantit une approche cohérente au sein des équipes et des projets. Les normes de sécurité établissent des standards à respecter. D'ailleurs, ces dernières fournissent des directives claires que les équipes peuvent suivre pour détecter les failles de sécurité et les corriger rapidement. SDLC est un processus de développement logiciel, qui met en place pratiques de sécurité au sein de chaque phase du cycle de vie logiciel et en mettant en place des politiques et normes de sécurité.
 
 Finalement, utiliser des outils de gestion de version et de vérification de signatures numériques, permet de garder des traces des modifications apportées au sein d'un logiciel. Si une nouvelle vulnérabilité est identifiée, il est possible de retracer son origine. Puis, en signant des packages logiciels, un suivi peut être effectué pour empêcher que des tiers malveillants impactent le développement d'un logiciel.Cette pratique fait référence au *Software supply chain security*, une pratique qui identifie et adresse les risques de technologies et de processus inclus dans le développement logiciel.
+
+## Outils d'analyse de code (SCA)
+
+![SCA_1](pictures_tp4/tools/SCA_1.png)
+![SCA_2](pictures_tp4/tools/SCA_2.png)
+![SCA_3](pictures_tp4/tools/SCA_3.png)
+![SCA_4](pictures_tp4/tools/SCA_4.png)
+
 ## Stories
 
 En fonction des commentaires et suggestions de notre correcteur, voici en détails les deux _stories_ que nous avons 
@@ -294,24 +308,27 @@ En tant qu'utilisateur, je peux voir les évaluations d'un restaurant.
 ### Issues
 
 Issue #1
-![Issue_2]()
+![Issue_2](pictures_tp4/issue_148.png)
 
 Issue #2
-![Issue_1]()
+![Issue_1](pictures_tp4/issue_158.png)
 
 Issue #3
-![Issue_1]()
+![Issue_1](pictures_tp4/issue_144.png)
 
 ### Pull requests
 
 Pull request #1
-![Pull_request_1]()
+![Pull_request_1](pictures_tp4/pr_161_1.png)
+![Pull_request_1_2](pictures_tp4/pr_161_2.png)
 
 Pull request #2
-![Pull_request_2]()
+![Pull_request_2](pictures_tp4/pr_164_1.png)
+![Pull_request_2_2](pictures_tp4/pr_164_2.png)
 
 Pull request #3
-![Pull_request_3]()
+![Pull_request_3](pictures_tp4/pr_160_1.png)
+![Pull_request_3_2](pictures_tp4/pr_160_2.png)
 
 ### Arbre de commits
 
