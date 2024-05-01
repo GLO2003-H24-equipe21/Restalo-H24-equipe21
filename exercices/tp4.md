@@ -235,6 +235,54 @@ En tant qu'utilisateur, je peux voir les évaluations d'un restaurant.
 
 ## Architecture
 
+### Créer un restaurant
+
+![createRestaurant](pictures_tp4/architecture/createRestaurant.png)
+
+### Obtenir un restaurant
+
+![getRestaurant](pictures_tp4/architecture/getRestaurant.png)
+
+### Lister des restaurants
+
+![listRestaurants](pictures_tp4/architecture/listRestaurants.png)
+
+### Rechercher des restaurants
+
+![searchRestaurant](pictures_tp4/architecture/searchRestaurants.png)
+
+### Créer une réservation
+
+![createReservation](pictures_tp4/architecture/createReservation.png)
+
+### Obtenir une réservation
+
+![getReservation](pictures_tp4/architecture/getReservation.png)
+
+### Rechercher des réservations
+
+![searchReservations](pictures_tp4/architecture/searchReservations.png)
+
+### Rechercher des disponibilités
+
+![searchAvailabilities](pictures_tp4/architecture/searchAvailabilities.png)
+
+### Supprimer une réservation
+
+![deleteReservation](pictures_tp4/architecture/deleteReservation.png)
+
+### Supprimer un restaurant
+
+![deleteRestaurant](pictures_tp4/architecture/deleteRestaurant.png)
+
+### Ajouter une évaluation
+
+![createReview](pictures_tp4/architecture/createReview.png)
+
+### Rechercher des évaluations
+
+![searchReviews](pictures_tp4/architecture/searchReviews.png)
+
 ## Planification du travail
 
 ### GitHub Project
